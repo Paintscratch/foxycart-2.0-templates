@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html id="fc">
+<html id="fc" lang={{ language_iso_code }}>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>{{ config.store_name }} Cart</title>
+    <title>{{ config.store_name }} Secure Checkout</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+
     <!--[if lt IE 9 ]>
         <script type="text/javascript">
             var IEElms = ['article', 'aside', 'header', 'main', 'nav', 'section'];
@@ -15,9 +16,10 @@
             };
         </script>
     <![endif]-->
-    <link href="{{ config.css_file }}" rel="stylesheet" media="screen">
 
-    <link rel="stylesheet" href="{{ config.template_config.custom_config.ps_domain  }}/shop/foxycart_templates/styles/ps-foxycart-styles.css">
+    {% for css_file_href in config.css_files %}
+    <link href="{{ css_file_href }}" rel="stylesheet" media="screen">
+    {% endfor %}
 
     <!-- FC script insertion -->{{ fc_header_content|raw }}<!-- /FC script insertion -->
     <!--[if lt IE 9 ]>
@@ -34,17 +36,19 @@
             }
         </style>
     <![endif]-->
+
 </head>
-<body class="fc-context--cart-fullpage" data-fc-context='{"cart_is_fullpage":true}'>
+<body>
+<!-- has to be here because of chrome bug -->
+    {% include 'svg.inc.twig' %}
 
-    {% set cart_is_fullpage = true %}
-    <div data-fc-container="cart">
-        {% embed 'cart.inc.twig' %}
-        {% endembed %}
-    </div>
-
-
+    {% import "utils.inc.twig" as utils %}
+    {% embed 'checkout.inc.twig' %}
+    {% endembed %}
 
     <!-- FC footer script insertion -->{% include template_from_string(fc_footer_content) %}<!-- /FC footer scripts -->
+    <!--[if lt IE 10 ]>
+        <script src="https://{{ config.store_domain }}/static/scripts/placeholder/placeholder_polyfill.jquery.js" charset="utf-8"></script>
+    <![endif]-->
 </body>
 </html>

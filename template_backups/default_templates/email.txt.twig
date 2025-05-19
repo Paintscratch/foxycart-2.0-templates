@@ -1,0 +1,205 @@
+===========================================================
+{% if is_updateinfo %}
+{{ config.lang.email_subject_updateinfo|upper|raw }}
+{% elseif is_subscription_dunning_reminder %}
+{{ config.lang.email_subject_subscription_past_due|upper|raw }}
+{% elseif is_expiring_payment_reminder %}
+{{ config.lang.email_subject_expiring_payment_reminder|upper|raw }}
+{% elseif is_subscription_modification %}
+{{ config.lang.email_subject_subscription_updated|upper|raw }}
+{% elseif is_subscription_cancel %}
+{{ config.lang.email_subject_subscription_cancelled|upper|raw }}
+{% else %}
+{{ config.lang.checkout_receipt|upper|raw }}
+{% endif  %}
+===========================================================
+
+{% if not is_subscription_dunning_cancellation and not is_subscription_dunning_reminder and not is_expiring_payment_reminder %}
+{{ config.lang.email_view_in_your_browser|raw }}: {{ receipt_url }}
+
+{% endif  %}
+{% if is_order %}
+{{ config.lang.email_text_message_order|raw }}
+{% elseif is_subscription_dunning_reminder %}
+{% set sub = subscriptions|first %}
+{% if sub %}
+{{ config.lang.email_text_message_subscription_dunning_reminder|replace({
+'{{ sub_token_url }}': sub.sub_token_url
+})|replace(
+{
+'{{ days_since_first_failed_transaction }}': days_since_first_failed_transaction
+})|raw }}
+{% endif %}
+{% elseif is_expiring_payment_reminder %}
+{{ config.lang.email_text_message_expiring_payment_reminder|replace({
+'{{ billing_address.first_name }}': billing_address.first_name
+})|replace({
+'{{ billing_address.last_name }}': billing_address.last_name
+})|replace({
+'{{ cc_exp_year }}': cc_exp_year
+})|replace({
+'{{ cc_exp_month }}': cc_exp_month
+})|replace({
+'{{ config.store_domain }}': config.store_domain
+})|replace({
+'{{ customer_email }}': customer_email
+})|raw }}
+{% elseif is_updateinfo %}
+{{ config.lang.email_message_updateinfo|raw }}
+{% elseif is_subscription_cancel %}
+{% if is_subscription_dunning_cancellation %}
+{{ config.lang.email_message_subscription_dunning_cancel|raw }}
+{% else %}
+{{ config.lang.email_message_subscription_cancel|raw }}
+{% endif %}
+{% elseif is_subscription_modification %}
+{{ config.lang.email_message_subscription_modification|raw }}
+{% endif %}
+{% if status == 'pending' and is_show_additional_payment_data %}
+
+{{ config.lang.email_paypal_plus_pui|raw }}
+{% endif %}
+===========================================================
+
+{% if not is_updateinfo %}
+{% if has_downloadables and is_subscription_cancel == false %}
+{{ config.lang.email_text_downloadable_products|pad(60,"-"," ")|raw }}
+
+{% for item in downloadable_links %}
+{{ item.name }}
+{% if item.url %}
+  -> {{ item.url }}
+{% endif %}
+{% endfor %}
+
+
+{% endif %} {# has downloads #}
+{% endif %} {# is not update info #}
+{% if not is_expiring_payment_reminder %}
+{% if not is_subscription_dunning_cancellation and not is_subscription_dunning_reminder %}
+{% if not is_updateinfo %}
+{{ config.lang.email_text_order_summary|pad(60,"-"," ")|raw }}
+{% endif %} {# is not update info #}
+
+  * {{ config.lang.checkout_merchant|pad(20)|raw }} {{ config.store_name }}
+  * {% if is_order %}{{ config.lang.email_order_number|pad(20)|raw }}{% else %}{{ config.lang.email_reference_number|pad(20) }}{% endif  %} {{ order_id }}
+  * {{ config.lang.checkout_date|pad(20)|raw }} {{ checkout_date }}
+{% if purchase_order != '' %}
+  * {{ config.lang.checkout_purchase_order|pad(20)|raw }} {{ purchase_order }}
+{% endif %}
+{% if (payment_type == 'plastic' or payment_type == 'pos') and cc_number_masked %}
+  * {{ config.lang.checkout_card_number|pad(20)|raw }} {{ cc_number_masked }} ({{ cc_type }})
+{% endif %}
+{% if is_order %}
+  * {{ config.lang.cart_order_total|pad(20)|raw }} {{ total_order|money_format }}
+{% endif %}
+{% if shipping_address.has_live_rate_shippable_products and not has_multiship %}
+  * {{ config.lang.email_shipping|pad(20)|raw }} {{ shipping_address.shipping_service_description }}
+{% endif %}
+  * {{ config.lang.checkout_processor_response|pad(20)|raw }} {{ texted_processor_response }}
+{% if custom_fields|length > 0 %}
+
+{% for key,custom_field in custom_fields %}
+{% if not custom_field.is_hidden %}
+  * {{ key|pad(20)|replace({'_': ' '})|title }} {{ custom_field.value }}
+{% endif %}
+{% endfor %}
+{% endif %} {# has custom fields #}
+{% endif %} {# not dunning reminder email #}
+
+
+{% if not is_updateinfo %}
+{{ config.lang.email_text_purchasing_information|pad(60,"-"," ")|raw }}
+{% endif %} {# is not update info #}
+
+{{ config.lang.email_email|raw }}:
+    {{ customer_email }}
+
+{% if not (config.template_config.custom_checkout_field_requirements['billing_first_name'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_last_name'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_address1'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_address2'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_city'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_region'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_postal_code'] == 'hidden' and config.template_config.custom_checkout_field_requirements['billing_country'] == 'hidden') %}
+{{ config.lang.email_billing_address|raw }}:
+{% include "address.email.inc.txt.twig" with {'address': billing_address} %}
+{% if billing_address.phone %}
+  {{ config.lang.checkout_phone }}: {{ billing_address.phone }}
+{% endif %} {# billing_address.phone #}
+{% endif %}
+{% if has_multiship %}
+{% for multiship in multiship_data %}
+
+{{ config.lang.email_ship_to|raw }}: {{ multiship.address_name }}
+{% include "address.email.inc.txt.twig" with {'address': multiship} %}
+{% if multiship.phone %}
+  {{ config.lang.checkout_phone }}: {{ multiship.phone }}
+{% endif %} {# multiship.phone #}
+
+{% if multiship.custom_fields|length > 0 %}
+{% for key,custom_field in multiship.custom_fields %}
+{% if not custom_field.is_hidden %}
+  {{ key|pad(20)|replace({'_': ' '})|title }} {{ custom_field.value }}
+{% endif %}
+{% endfor %}{# multiship #}
+{% endif %}{# has multiship custom fields #}
+{% if not is_updateinfo %}
+    {{ config.lang.cart_subtotal|raw }}:
+    {% if has_inclusive_taxes %}
+        {{ multiship.total_item_with_tax_price|money_format }}
+    {% else %}
+        {{ multiship.total_item_price|money_format }}
+    {% endif %}
+{% endif %}
+{% if multiship.has_shippable_products %}
+{% if has_inclusive_taxes %}
+    {% set  multiship_total_shipping = multiship.total_shipping_with_tax_price %}
+{% else %}
+    {% set  multiship_total_shipping = multiship.total_shipping %}
+{% endif %}
+{% if multiship.shipping_service_description %}
+    {{ multiship.shipping_service_description }}: {{ multiship_total_shipping|money_format }}
+{% else %}
+    {{ shipping_and_handling_label }}: {{ multiship_total_shipping|money_format }}
+{% endif %}
+{% endif %}
+{% if not is_updateinfo %}
+{% for tax in multiship.taxes %}
+    {% if tax.rate is null  %}
+        {% set tax_rate = '' %}
+    {% else %}
+        {% set tax_rate = ' (' ~ tax.rate ~ '%)' %}
+    {% endif %}
+    {{ tax.name }}{{ tax_rate }} {{ config.lang.cart_tax|raw }}: {{ tax.amount|money_format }}
+{% endfor %}
+    {{ config.lang.checkout_shipment_total|raw }}: {{ multiship.total_price|money_format }}
+{% endif %}
+{% endfor %}{# multishp for loop #}
+{% else %}{# multiship #}
+{% if shipping_address.has_shippable_products %}
+
+{{ config.lang.email_shipping_address|raw }}:
+{% include "address.email.inc.txt.twig" with {'address': shipping_address} %}
+{% if shipping_address.phone %}
+  {{ config.lang.checkout_phone }}: {{ shipping_address.phone }}
+{% endif %} {# shipping_address.phone #}
+{% endif %} {# has shippable products #}
+{% endif %} {# not multiship #}
+
+{% if subscriptions|length > 0 and not is_subscription_cancel %}
+{{ config.lang.email_text_manage_subscriptions|pad(60,"-"," ")|raw }}
+
+{{ config.lang.email_text_subscription_instructions|raw }}
+
+{% for subscription in subscriptions %}
+{{ subscription.description }}
+
+{{ subscription.text_links }}
+{% if not loop.last %}
+
+----------------------------------------
+{% endif %}
+
+{% endfor %} {# subscription loop #}
+
+{% endif %} {# has subscriptions #}
+
+{% if not is_updateinfo %}
+{% include 'cart.inc.txt.twig' %}
+{% endif %}
+{% endif %} {# not is_expiring_payment_reminder #}
