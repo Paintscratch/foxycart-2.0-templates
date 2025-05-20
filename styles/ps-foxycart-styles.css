@@ -2,6 +2,11 @@
  * FoxyCart Cart Include Styles
  */
 
+#fc div.modal {
+    padding: 15px 30px;
+
+}
+
 
 /* Styles applied to sidecart in all places (like checkout) */
 #fc #fc-cart--fixed-width .fc-cart__item__price {
