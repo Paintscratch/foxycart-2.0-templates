@@ -5,27 +5,6 @@
 
 {% if context == 'cart' %}
     {% include 'svg.inc.twig' %}
-
-    <nav class="fc-sidecart-only-fixed" role="navigation">
-        {# block sidecart_top_fixed_actions #}
-        <div class="fc-fixed-button-left">
-            <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
-                <svg class="fc-svg-icon" role="presentation" title="Checkout Icon">
-                    <use xlink:href="#fa-caret-left"/>
-                </svg>
-                <span class="fc-fixed-button-left--text">{{ config.lang.cart_keep_shopping|raw }}</span></a>
-        </div>
-        <div class="fc-fixed-button-right">
-            <a class="fc-sidecart-button fc-btn-action"
-               href="https://{{ config.store_domain }}/checkout?{{ session_name }}={{ session_id }}" target="_top">
-                {{ config.lang.cart_checkout|raw }}
-                <svg class="fc-svg-icon" role="presentation" title="Checkout Icon">
-                    <use xlink:href="#fa-caret-right"/>
-                </svg>
-            </a>
-        </div>
-        {# endblock sidecart_top_fixed_actions #}
-    </nav>
 {% endif %}
 
 <div id="fc-cart" {% if context== 'cart' %} class="fc-container"{% endif %}>
@@ -88,6 +67,13 @@
                 <div class="fc-cart__title fc-container__grid">
                     {% block cart_title %}
                         <h2 class="fc-cart__title__header">{{ config.lang.cart_caption|raw }}</h2>
+                        {% if context == 'cart' %}
+                        <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
+                            <svg class="fc-svg-icon" role="presentation" title="Close Cart Icon">
+                                <use xlink:href="#fa-times-circle" />
+                            </svg>
+                        </a>
+                        {% endif %}
                         <p class="fc-order-quantity">
                             {% set temp_lang_cart_items = config.lang.cart_items|raw %}
                             {% if item_count == 1 %}
@@ -455,14 +441,8 @@
                                         <div class="fc-address-entry">
                                             <h4>
                                                 <svg class="fc-svg-icon fc-icon-large" role="presentation">
-                                                    {% if shipping_address.has_live_rate_shippable_products %}
-                                                    <use xlink:href="#fa-truck"/>
-                                                </svg>
-                                                {{ config.lang.cart_calculate_shipping|raw }}
-                                                {% else %}
                                                     <use xlink:href="#fa-bank"/>
-                                                    </svg> {{ config.lang.cart_calculate_taxes|raw }}
-                                                {% endif %}
+                                                </svg> {{ config.lang.cart_calculate_taxes|raw }}
                                             </h4>
 
                                             {% include 'postal_code.inc.twig' with {'address': shipping_address} %}

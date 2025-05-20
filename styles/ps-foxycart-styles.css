@@ -104,10 +104,14 @@
 }
 /* End Remove items buttons to the right */
 
-#fc [data-fc-id="block-address-entry"],
-#fc [data-fc-id="change-shipping-location-button"] {
+#fc [data-fc-id="block-shipping-results"] {
     display: none;
 }
+
+.ps-foxy #fc .fc-sidebar--cart .fc-address-entry {
+    border-bottom: 0;
+}
+
 
 
 /* ==========================================================================
@@ -232,12 +236,18 @@
 
 
 /* ===== Cart Title Styles (Scoped to .ps-foxy) ===== */
+.ps-foxy #fc .fc-cart__title__header {
+    margin-top: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline-block;
+}
 .ps-foxy #fc .fc-cart__title__header, .ps-foxy #fc .fc-cart__title__header, .ps-foxy #fc .fc-transaction__header, .ps-foxy #fc .fc-order-quantity { /* Cart Title */
     text-align: left;
 }
 
 /* ===== Remove Sidecart Navigation (Scoped to .ps-foxy) ===== */
-.ps-foxy #fc nav.fc-sidecart-only-fixed .fc-fixed-button-right, .ps-foxy #fc nav.fc-sidecart-only-fixed svg, .ps-foxy #fc nav.fc-sidecart-only-fixed .fc-fixed-button-left span {
+ .ps-foxy #fc nav.fc-sidecart-only-fixed svg, .fc-fixed-button-left span {
     display: none;
 }
 
@@ -373,6 +383,7 @@
 }
 
 .ps-foxy #fc div[data-fc-id="block-address-entry"] input.fc-form-control,
+.ps-foxy #fc div[data-fc-id="block-address-entry"] select.fc-form-control,
 .ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-foxycomplete-element input.fc-form-control { /* For country dropdown */
     height: 26px;
     font-size: 0.9em; /* ~11.5px */
@@ -592,20 +603,6 @@
         -ms-transform: translate3d(-500px, 0, 0) !important;
         -o-transform: translate3d(-500px, 0, 0) !important;
         transform: translate3d(-500px, 0, 0) !important;
-    }
-
-    /* 3. Adjust Fixed Navigation Bar inside Sidecart */
-    .ps-foxy #fc .fc-sidecart-only-fixed {
-        width: 500px !important;
-    }
-
-    .ps-foxy #fc .fc-sidecart-only-fixed .fc-fixed-button-left {
-        /* width: 45%; */
-    }
-
-    .ps-foxy #fc .fc-sidecart-only-fixed .fc-fixed-button-right {
-        /* width: 55%; */
-        /* left: 45%; */
     }
 
     /* 4. Inner Cart Content Container */
