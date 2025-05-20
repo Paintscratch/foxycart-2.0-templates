@@ -104,6 +104,11 @@
 }
 /* End Remove items buttons to the right */
 
+#fc [data-fc-id="block-address-entry"],
+#fc [data-fc-id="change-shipping-location-button"] {
+    display: none;
+}
+
 
 /* ==========================================================================
    New Styles for Single-Line Shipping Display in Cart
