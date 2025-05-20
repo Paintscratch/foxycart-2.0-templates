@@ -577,12 +577,12 @@
                                                         {% set shipping_service_label = shipping_address.shipping_service_description %}
                                                     {% endif %}
                                                     <span class="fc-shipping-summary-line__shipping-label">
-                                                        {%- if shipping_service_label and shipping_service_label|trim is not empty -%}
-                                                            {{- shipping_service_label|trim|raw }}{{ ':' }}
-                                                        {%- else -%}
+                                                        {% if shipping_service_label and shipping_service_label|trim is not empty %}
+                                                            {{ shipping_service_label|trim|raw }}{{ ':' }}
+                                                        {% else %}
                                                             {# Fallback if the determined label is empty, ensures "Shipping" or "Shipping and Handling" still shows #}
-                                                            {{- config.lang.cart_shipping_and_handling|default('Shipping')|raw }}{{ ':' }}
-                                                        {%- endif -%}
+                                                            {{ config.lang.cart_shipping_and_handling|default('Shipping')|raw }}{{ ':' }}
+                                                        {% endif %}
                                                     </span>
                                                     <span class="fc-shipping-summary-line__shipping-value">
                                                         {% if has_inclusive_taxes %}

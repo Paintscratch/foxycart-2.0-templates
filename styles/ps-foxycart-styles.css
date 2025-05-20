@@ -153,6 +153,10 @@
 .ps-foxy #fc .fc-shipping-summary-line__shipping-value {
     font-weight: bold; /* Makes the shipping cost text bold, as in your screenshot */
 }
+
+.ps-foxy #fc .fc-shipping-summary-line__shipping-label {
+    display: none !important; /* Use !important if needed to override other FoxyCart styles */
+}
 /* END Shipping section */
 
 
