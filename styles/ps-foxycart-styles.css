@@ -6,12 +6,6 @@
     padding: 15px 30px;
 }
 
-
-/* Styles applied to sidecart in all places (like checkout) */
-#fc #fc-cart--fixed-width .fc-cart__item__price {
-    display: none;
-}
-
 #fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image, #fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image .fc-cart__item__details {
     width: 100%;
 }
@@ -72,7 +66,7 @@
 }
 
 /* Quantity wrapper and buttons */
-.fc-quantity-wrapper {
+#fc .fc-quantity-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,7 +77,7 @@
     max-width: 120px;
 }
 
-.fc-quantity-button {
+#fc .fc-quantity-button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,12 +92,12 @@
     user-select: none;
 }
 
-.fc-quantity-button:hover {
+#fc .fc-quantity-button:hover {
     background-color: #eaeaea;
 }
 
 /* Style for the number input */
-.fc-cart__item__quantity__input {
+#fc .fc-cart__item__quantity__input {
     width: 40px;
     border: none;
     text-align: center;
@@ -114,46 +108,166 @@
 }
 
 /* Hide default number input arrows */
-.fc-cart__item__quantity__input::-webkit-outer-spin-button,
-.fc-cart__item__quantity__input::-webkit-inner-spin-button {
+#fc .fc-cart__item__quantity__input::-webkit-outer-spin-button,
+#fc .fc-cart__item__quantity__input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Cart item layout adjustments to match "Happy Ninja" style */
-.fc-cart__item {
+/* Cart item layout and styling */
+#fc .fc-cart__item {
     display: flex;
-    align-items: center;
-    padding: 12px;
+    padding: 15px 10px;
     position: relative;
+    border-bottom: 1px solid #eee;
+    align-items: center;
 }
 
-.fc-cart__item__details-and-image {
+#fc .fc-cart__item__details-and-image {
     display: flex;
     align-items: center;
     flex: 1;
+    min-width: 0; /* Prevents flex item from overflowing */
 }
 
-.fc-cart__item__image {
-    width: 60px;
-    margin-right: 12px;
-}
-
-.fc-cart__item__details {
-    flex: 1;
-}
-
-.fc-cart__item__totals {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+#fc .fc-cart__item__image {
+    width: 80px;
     min-width: 80px;
+    margin-right: 15px;
 }
 
-.fc-cart__item__remove-action {
+#fc .fc-cart__item__image__img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+#fc .fc-cart__item__details {
+    flex: 1;
+    min-width: 0; /* Prevents flex item from overflowing */
+}
+
+#fc .fc-cart__item__name {
+    font-weight: bold;
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+/* Price and Quantity controls */
+#fc .fc-cart__item__totals {
+    min-width: 120px;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.ps-foxy #fc #fc-cart--fixed-width .fc-cart__item__totals {
+    width: 100%;
+    text-align: left;
+}
+
+
+#fc .fc-item-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px; /* Space between quantity and price */
+}
+
+#fc .fc-item-price {
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 60px;
+    text-align: right;
+}
+
+#fc .fc-item-unit-price {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+}
+
+/* Quantity wrapper and controls styling */
+#fc .fc-quantity-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+    height: 32px;
+}
+
+#fc .fc-quantity-button {
+    width: 28px;
+    height: 32px;
+    background-color: #f5f5f5;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+#fc .fc-quantity-button:hover {
+    background-color: #e5e5e5;
+}
+
+#fc .fc-cart__item__quantity__input {
+    width: 32px;
+    height: 32px;
+    border: none;
+    text-align: center;
+    -moz-appearance: textfield;
+    padding: 0;
+    background: white;
+    font-size: 14px;
+}
+
+#fc .fc-cart__item__quantity__input::-webkit-outer-spin-button,
+#fc .fc-cart__item__quantity__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#fc .fc-quantity-display {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 4px 8px;
+    min-width: 30px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+/* Parent-child relationship styling */
+#fc .fc-cart__item--child-product {
+    padding-left: 25px;
+    background-color: #f9f9f9;
+}
+
+/* Remove button styling */
+#fc .fc-cart__item__remove-action {
     position: absolute;
     top: 8px;
     right: 8px;
+}
+
+#fc .fc-cart__item__remove-action a {
+    color: #999;
+    text-decoration: none;
+}
+
+#fc .fc-cart__item__remove-action a:hover {
+    color: #333;
+}
+
+/* Parent header styling */
+#fc .fc-cart__item--parent-product {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
 }
 
 
@@ -261,28 +375,28 @@
 
 /* Free shipping stuff */
 /* Styling for the new table rows containing free shipping messages */
-.fc-free-shipping-notice-row td,
-.fc-free-shipping-achieved-row td {
+#fc .fc-free-shipping-notice-row td,
+#fc .fc-free-shipping-achieved-row td {
     padding-top: 8px !important; /* Add some space above the message */
     padding-bottom: 8px !important;
     /* background-color: #f8f9fa; /* Optional subtle background for the cell */
 }
 
-.fc-free-shipping-notice { /* Class for the text itself */
+#fc .fc-free-shipping-notice { /* Class for the text itself */
     color: #0050b3; /* Informative blue */
     font-size: 0.9em;
     font-weight: 500;
     /* text-align: center; /* Applied by fc-align-center if used */
 }
 
-.fc-free-shipping-achieved { /* Class for the text itself */
+#fc .fc-free-shipping-achieved { /* Class for the text itself */
     color: #28a745; /* Success green */
     font-size: 0.9em;
     font-weight: 500;
     /* text-align: center; /* Applied by fc-align-center if used */
 }
 
-.fc-align-center { /* Utility class if you want to ensure text is centered */
+#fc .fc-align-center { /* Utility class if you want to ensure text is centered */
     text-align: center !important;
 }
 

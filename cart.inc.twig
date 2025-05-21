@@ -220,7 +220,7 @@
                                                 </div>
                                             {% endif %}
                                             <div class="fc-cart__item__details-and-image">
-                                                {% if has_product_images %}
+                                                {% if has_product_images and item.parent_code != '' %}
                                                     <div class="fc-cart__item__image">
                                                         {% if item.url != '' and item.image != '' %}
                                                         <a href="{{ item.url }}" target="_top"
@@ -238,6 +238,83 @@
                                                 {% endif %}
                                                 <div class="fc-cart__item__details">
                                                     <p class="fc-cart__item__name">{{ item.name }}</p>
+                                                    {% if item.parent_code != '' %}
+                                                        <div class="fc-cart__item__totals">
+                                                            <div class="fc-container__row">
+
+                                                                <div class="fc-cart__item__price">
+                                                                    {% if item.quantity != 1 %}
+                                                                        <p class="fc-cart__item__price__each">Price:
+                                                                            {% if has_inclusive_taxes %}
+                                                                                {{ item.price_each_with_tax|money_format }}{% if
+                                                                                item.price_each_with_tax_is_fractional %}<span
+                                                                                title="{{ item.price_each_with_tax }}">
+                                                                                    …</span>{% endif %}
+                                                                            {% else %}
+                                                                                {{ item.price_each|money_format }}{% if item.price_each_is_fractional %}
+                                                                            <span
+                                                                                    title="{{ item.price_each }}">
+                                                                                    …</span>{% endif %}
+                                                                            {% endif %}
+                                                                            <small>
+                                                                                {{ config.lang.cart_each|raw }}
+                                                                            </small>
+                                                                        </p>
+                                                                    {% endif %}
+                                                                </div>
+
+                                                                <div class="fc-cart__item__quantity">
+                                                                    {% if context == 'receipt' %}
+                                                                        <p class="text-center">{{ item.quantity }}</p>
+                                                                    {% elseif item.parent_code == '' or (item.parent_code != '' and item.quantity_min == 0) %}
+                                                                        {% if with_controls and checkout_sub_cancel == false %}
+                                                                            <input type="hidden" id="id{{ item.item_number }}" name="id{{ item.item_number }}" value="{{ item.id }}"/>
+                                                                            <label class="hidden" for="quantity{{ item.item_number }}">{{ config.lang.cart_quantity }}</label>
+
+                                                                            <div class="fc-quantity-wrapper">
+                                                                                <button type="button" class="fc-quantity-button fc-quantity-decrease" data-fc-item-id="{{ item.id }}">-</button>
+                                                                                <input class="fc-cart__item__quantity__input fc-form-control"
+                                                                                       type="number"
+                                                                                       name="quantity{{ item.item_number }}"
+                                                                                       id="quantity{{ item.item_number }}"
+                                                                                       min="1"
+                                                                                       value="{{ item.quantity }}"
+                                                                                       data-fc-id="item-quantity-input"
+                                                                                       data-fc-item-id="{{ item.id }}"/>
+                                                                                <button type="button" class="fc-quantity-button fc-quantity-increase" data-fc-item-id="{{ item.id }}">+</button>
+                                                                            </div>
+                                                                        {% else %}
+                                                                            <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
+                                                                    {% endif %}
+                                                                    <div class="fc-cart__item__total">
+                                                                        {% if has_inclusive_taxes %}
+                                                                            {% if item.parent_code == '' or (item.parent_code != '' and
+                                                                                item.price_with_tax > 0) %}
+                                                                                <p>
+                                                                                    {{ item.price_with_tax|money_format }}{% if
+                                                                                        item.price_with_tax_is_fractional %}<span
+                                                                                        title="{{ item.price_with_tax }}">
+                                                                                            …</span>{% endif %}
+                                                                                </p>
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                            {% if item.parent_code == '' or (item.parent_code != '' and item.price > 0) %}
+                                                                                <p>
+                                                                                    {{ item.price|money_format }}{% if item.price_is_fractional %}
+                                                                                    <span
+                                                                                            title="{{ item.price }}">…</span>{% endif %}
+                                                                                </p>
+                                                                            {% endif %}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+
                                                     {% block product_options %}
                                                         {% set show_product_options = true %}
                                                         {% set show_product_weight = true %}
@@ -341,82 +418,6 @@
                                                     {% endblock %}
                                                 </div>
                                             </div>
-
-                                            <div class="fc-cart__item__totals">
-                                                <div class="fc-container__row">
-                                                    <div class="fc-cart__item__total">
-                                                        {% if has_inclusive_taxes %}
-                                                            {% if item.parent_code == '' or (item.parent_code != '' and
-                                                                item.price_with_tax > 0) %}
-                                                                <p>
-                                                                    {{ item.price_with_tax|money_format }}{% if
-                                                                        item.price_with_tax_is_fractional %}<span
-                                                                        title="{{ item.price_with_tax }}">
-                                                                            …</span>{% endif %}
-                                                                </p>
-                                                            {% endif %}
-                                                        {% else %}
-                                                            {% if item.parent_code == '' or (item.parent_code != '' and item.price > 0) %}
-                                                                <p>
-                                                                    {{ item.price|money_format }}{% if item.price_is_fractional %}
-                                                                    <span
-                                                                            title="{{ item.price }}">…</span>{% endif %}
-                                                                </p>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    </div>
-
-                                                    <div class="fc-cart__item__price">
-                                                        {% if item.quantity != 1 %}
-                                                            <p class="fc-cart__item__price__each">
-                                                                {% if has_inclusive_taxes %}
-                                                                    {{ item.price_each_with_tax|money_format }}{% if
-                                                                    item.price_each_with_tax_is_fractional %}<span
-                                                                    title="{{ item.price_each_with_tax }}">
-                                                                        …</span>{% endif %}
-                                                                {% else %}
-                                                                    {{ item.price_each|money_format }}{% if item.price_each_is_fractional %}
-                                                                <span
-                                                                        title="{{ item.price_each }}">
-                                                                        …</span>{% endif %}
-                                                                {% endif %}
-                                                                <small>
-                                                                    {{ config.lang.cart_each|raw }}
-                                                                </small>
-                                                            </p>
-                                                        {% endif %}
-                                                    </div>
-
-                                                    <div class="fc-cart__item__quantity">
-                                                        {% if context == 'receipt' %}
-                                                            <p class="text-center">{{ item.quantity }}</p>
-                                                        {% elseif item.parent_code == '' or (item.parent_code != '' and item.quantity_min == 0) %}
-                                                            {% if with_controls and checkout_sub_cancel == false %}
-                                                                <input type="hidden" id="id{{ item.item_number }}" name="id{{ item.item_number }}" value="{{ item.id }}"/>
-                                                                <label class="hidden" for="quantity{{ item.item_number }}">{{ config.lang.cart_quantity }}</label>
-
-                                                                <div class="fc-quantity-wrapper">
-                                                                    <button type="button" class="fc-quantity-button fc-quantity-decrease" data-fc-item-id="{{ item.id }}">-</button>
-                                                                    <input class="fc-cart__item__quantity__input fc-form-control"
-                                                                           type="number"
-                                                                           name="quantity{{ item.item_number }}"
-                                                                           id="quantity{{ item.item_number }}"
-                                                                           min="1"
-                                                                           value="{{ item.quantity }}"
-                                                                           data-fc-id="item-quantity-input"
-                                                                           data-fc-item-id="{{ item.id }}"/>
-                                                                    <button type="button" class="fc-quantity-button fc-quantity-increase" data-fc-item-id="{{ item.id }}">+</button>
-                                                                </div>
-                                                            {% else %}
-                                                                <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
-                                                            {% endif %}
-                                                        {% else %}
-                                                            <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
 
                                     {% endfor %}
