@@ -5,6 +5,16 @@
 
 {% if context == 'cart' %}
     {% include 'svg.inc.twig' %}
+    {# --- Add your custom fa-times SVG below --- #}
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" data-fc-ide="fc-custom-svg-ps">
+        <symbol id="fa-times" viewBox="0 0 352 512">
+            <title>Close</title>
+            <path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"/>
+        </symbol>
+        {# You can add other custom SVG symbols here if needed for PaintScratch #}
+    </svg>
+    {# --- End of your custom fa-times SVG --- #}
+
 {% endif %}
 
 <div id="fc-cart" {% if context== 'cart' %} class="fc-container"{% endif %}>
@@ -69,8 +79,8 @@
                         <h2 class="fc-cart__title__header">{{ config.lang.cart_caption|raw }}</h2>
                         {% if context == 'cart' %}
                         <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
-                            <svg class="fc-svg-icon" role="presentation" title="Close Cart Icon">
-                                <use xlink:href="#fa-times-circle" />
+                            <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
+                                <use xlink:href="#fa-times-circle"/>
                             </svg>
                         </a>
                         {% endif %}
@@ -193,7 +203,9 @@
                                                        title="{{ config.lang.cart_remove_item }}"
                                                        data-fc-id="item-remove-link"
                                                        data-fc-item-id="{{ item.id }}">
-                                                        X
+                                                        <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
+                                                            <use xlink:href="#fa-times"/>
+                                                        </svg>
                                                     </a>
                                                 </div>
                                             {% endif %}
@@ -378,24 +390,25 @@
                                                     <div class="fc-cart__item__quantity">
                                                         {% if context == 'receipt' %}
                                                             <p class="text-center">{{ item.quantity }}</p>
-                                                        {% elseif item.parent_code == '' or (item.parent_code != '' and
-                                                            item.quantity_min == 0) %}
+                                                        {% elseif item.parent_code == '' or (item.parent_code != '' and item.quantity_min == 0) %}
                                                             {% if with_controls and checkout_sub_cancel == false %}
-                                                                <input type="hidden" id="id{{ item.item_number }}"
-                                                                       name="id{{ item.item_number }}"
-                                                                       value="{{ item.id }}"/>
-                                                                <label class="hidden"
-                                                                       for="quantity{{ item.item_number }}">{{ config.lang.cart_quantity }}</label>
-                                                                <input class="fc-cart__item__quantity__input fc-form-control"
-                                                                       type="number"
-                                                                       name="quantity{{ item.item_number }}"
-                                                                       id="quantity{{ item.item_number }}" min="1"
-                                                                       value="{{ item.quantity }}"
-                                                                       data-fc-id="item-quantity-input"
-                                                                       data-fc-item-id="{{ item.id }}"/>
+                                                                <input type="hidden" id="id{{ item.item_number }}" name="id{{ item.item_number }}" value="{{ item.id }}"/>
+                                                                <label class="hidden" for="quantity{{ item.item_number }}">{{ config.lang.cart_quantity }}</label>
+
+                                                                <div class="fc-quantity-wrapper">
+                                                                    <button type="button" class="fc-quantity-button fc-quantity-decrease" data-fc-item-id="{{ item.id }}">-</button>
+                                                                    <input class="fc-cart__item__quantity__input fc-form-control"
+                                                                           type="number"
+                                                                           name="quantity{{ item.item_number }}"
+                                                                           id="quantity{{ item.item_number }}"
+                                                                           min="1"
+                                                                           value="{{ item.quantity }}"
+                                                                           data-fc-id="item-quantity-input"
+                                                                           data-fc-item-id="{{ item.id }}"/>
+                                                                    <button type="button" class="fc-quantity-button fc-quantity-increase" data-fc-item-id="{{ item.id }}">+</button>
+                                                                </div>
                                                             {% else %}
-                                                                <p>{{ config.lang.cart_qty|raw }}
-                                                                    : {{ item.quantity }}</p>
+                                                                <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
                                                             {% endif %}
                                                         {% else %}
                                                             <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>

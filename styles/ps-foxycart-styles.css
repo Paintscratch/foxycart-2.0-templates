@@ -4,7 +4,6 @@
 
 #fc div.modal {
     padding: 15px 30px;
-
 }
 
 
@@ -70,6 +69,91 @@
 /* spinner action on checkout submit button */
 #fc .fc-button--submit .fc-spinner > div {
     background-color: #101a5c;
+}
+
+/* Quantity wrapper and buttons */
+.fc-quantity-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 120px;
+}
+
+.fc-quantity-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: #f7f7f7;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+    user-select: none;
+}
+
+.fc-quantity-button:hover {
+    background-color: #eaeaea;
+}
+
+/* Style for the number input */
+.fc-cart__item__quantity__input {
+    width: 40px;
+    border: none;
+    text-align: center;
+    -moz-appearance: textfield; /* Hide spinner in Firefox */
+    height: 30px;
+    padding: 0;
+    font-size: 14px;
+}
+
+/* Hide default number input arrows */
+.fc-cart__item__quantity__input::-webkit-outer-spin-button,
+.fc-cart__item__quantity__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Cart item layout adjustments to match "Happy Ninja" style */
+.fc-cart__item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    position: relative;
+}
+
+.fc-cart__item__details-and-image {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.fc-cart__item__image {
+    width: 60px;
+    margin-right: 12px;
+}
+
+.fc-cart__item__details {
+    flex: 1;
+}
+
+.fc-cart__item__totals {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    min-width: 80px;
+}
+
+.fc-cart__item__remove-action {
+    position: absolute;
+    top: 8px;
+    right: 8px;
 }
 
 
@@ -508,9 +592,26 @@
 
 /* The header of the cart (where "Your Cart" and item count is) */
 .ps-foxy #fc .fc-cart__header {
+    position: relative; /* Establishes a positioning context for the close button */
     background-color: #fff !important;
     /* You might want to adjust the border color if it was designed for a gray background */
     /* border-bottom-color: #eeeeee !important; */
+}
+
+.ps-foxy #fc .fc-cart__header .fc-cart__title a.fc-sidecart-button {
+    position: absolute;
+    top: 0; /* Adjust as needed for vertical alignment */
+    right: 0; /* Adjust as needed for horizontal alignment */
+    display: inline-block; /* Override display: block */
+    width: auto; /* Override width: 100% */
+    padding: 5px; /* Adjust padding for clickable area and visual spacing */
+    line-height: 1; /* Helps with vertical alignment of the icon if it's text-based */
+}
+
+/* Optional: Ensure the icon itself is sized appropriately */
+.ps-foxy #fc .fc-cart__header .fc-cart__title a.fc-sidecart-button .fc-svg-icon {
+    width: 25px; /* Example size, adjust as needed */
+    height: 25px; /* Example size, adjust as needed */
 }
 
 /* The sidebar area containing Order Summary, Tax, Coupons, etc. */
@@ -542,15 +643,6 @@
     background-color: #fff !important;
     /* You might want to add a subtle border if it looks too flat against white content */
     /* border-bottom: 1px solid #f0f0f0 !important; */
-}
-
-/* Optional: Adjust default borders that might look too dark or disappear on a white background */
-/* Example: Making borders a very light gray */
-.ps-foxy #fc .fc-cart__item,
-.ps-foxy #fc .fc-transaction__total,
-.ps-foxy #fc .fc-cart__items__header,
-.ps-foxy #fc .fc-cart__header {
-    /* border-color: #f0f0f0 !important; */ /* Uncomment and adjust if borders need tweaking */
 }
 
 /* Input fields are usually white by default, but ensure consistency if needed */
