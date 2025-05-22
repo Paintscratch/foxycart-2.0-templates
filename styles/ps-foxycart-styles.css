@@ -1,120 +1,23 @@
 /*
- * FoxyCart Cart Include Styles
+ * PaintScratch FoxyCart 2.0 Customized Styles
+ * Organized with sections for easier maintenance
  */
 
+/* ==========================================================================
+   1. Core Structure & Basic Elements
+   ========================================================================== */
+
+/* Modal and cart containers */
 #fc div.modal {
     padding: 15px 30px;
 }
 
-#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image, #fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image .fc-cart__item__details {
+#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image,
+#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image .fc-cart__item__details {
     width: 100%;
 }
 
-#fc #fc-cart--fixed-width .fc-cart__item--parent-product
-.fc-cart__item__remove a {
-    color: transparent;
-    position: relative;
-    white-space: nowrap; /* keep everything on one line */
-}
-
-#fc #fc-cart--fixed-width .fc-cart__item--parent-product
-.fc-cart__item__remove a::after {
-    content: "Remove vehicle and items";
-    color: #000;
-    position: absolute;
-    left: 0;
-    top: 0;
-    white-space: nowrap; /* same rule for the pseudo-element */
-}
-
-
-/* Remove total from parent products in cart */
-#fc .fc-cart__item--parent-product .fc-cart__item__total, #fc .fc-cart__item--parent-product .fc-cart__item__quantity, .fc-cart__item--parent-product .fc-cart__item__totals {
-    display: none;
-}
-
-/* Padlock icon in cart "Checkout" button */
-#fc .fa-lock {
-    fill: #FFFFFF;
-}
-
-/* Cart/Checkout buttons */
-#fc .fc-action--checkout--button, #fc .fc-button--subscription-cancel, #fc .fc-button--submit {
-    border-radius: 8px;
-    background: #1d4ed8;
-}
-
-/* Cart/Checkout buttons - Hover */
-#fc .fc-action--checkout--button:hover, #fc .fc-action--checkout--button:focus, #fc .fc-button--subscription-cancel:hover, #fc .fc-button--subscription-cancel:focus, #fc .fc-button--submit:hover, #fc .fc-button--submit:focus {
-    background: #ec6725;
-    text-shadow: 1px 1px 0 #ec6725;
-}
-
-/* Sidecart top checkout button */
-[data-fc-sidecart] #fc .fc-fixed-button-right .fc-btn-action {
-    background: #ec6725;
-}
-
-/* Sidecart top checkout button - Hover */
-[data-fc-sidecart] #fc .fc-fixed-button-right .fc-btn-action:hover {
-    background: #ec6725;
-}
-
-/* spinner action on checkout submit button */
-#fc .fc-button--submit .fc-spinner > div {
-    background-color: #101a5c;
-}
-
-/* Quantity wrapper and buttons */
-#fc .fc-quantity-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-    width: 100%;
-    max-width: 120px;
-}
-
-#fc .fc-quantity-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    background-color: #f7f7f7;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 0;
-    user-select: none;
-}
-
-#fc .fc-quantity-button:hover {
-    background-color: #eaeaea;
-}
-
-/* Style for the number input */
-#fc .fc-cart__item__quantity__input {
-    width: 40px;
-    border: none;
-    text-align: center;
-    -moz-appearance: textfield; /* Hide spinner in Firefox */
-    height: 30px;
-    padding: 0;
-    font-size: 14px;
-}
-
-/* Hide default number input arrows */
-#fc .fc-cart__item__quantity__input::-webkit-outer-spin-button,
-#fc .fc-cart__item__quantity__input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Cart item layout and styling */
+/* Basic layout containers */
 #fc .fc-cart__item {
     display: flex;
     padding: 15px 10px;
@@ -123,13 +26,80 @@
     align-items: center;
 }
 
-#fc .fc-cart__item__details-and-image {
+#fc #fc-cart--fixed-width.fc-cart__item__details-and-image {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     flex: 1;
     min-width: 0; /* Prevents flex item from overflowing */
 }
 
+#fc .fc-cart__item__details {
+    display: flex;
+    flex-direction: column;
+    /* Changed from space-between to flex-start or remove */
+    justify-content: flex-start;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    min-height: 80px;
+}
+
+#fc .fc-sidebar {
+    background: #ffffff;
+}
+/* Core text and content elements */
+#fc .fc-cart__item__name {
+    font-weight: bold;
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   2. Parent-Child Product Relationship Styling
+   ========================================================================== */
+
+/* Parent product styling (vehicle headers) */
+#fc .fc-cart__item--parent-product {
+    background: #FFFFFF;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Remove total from parent products in cart */
+#fc .fc-cart__item--parent-product .fc-cart__item__total,
+#fc .fc-cart__item--parent-product .fc-cart__item__quantity,
+.fc-cart__item--parent-product .fc-cart__item__totals {
+    display: none;
+}
+
+/* Custom "Remove vehicle and items" text */
+#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__remove a {
+    color: transparent;
+    position: relative;
+    white-space: nowrap; /* keep everything on one line */
+}
+
+#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__remove a::after {
+    content: "Remove vehicle and items";
+    color: #000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap; /* same rule for the pseudo-element */
+}
+
+/* Child products styling */
+#fc .fc-cart__item.fc-cart__item--child-product {
+    padding-left: 25px;
+    padding-right: 5px;
+    background: #FFFFFF;
+}
+
+/* ==========================================================================
+   3. Cart Items & Product Display
+   ========================================================================== */
+
+/* Product images */
 #fc .fc-cart__item__image {
     width: 80px;
     min-width: 80px;
@@ -142,35 +112,167 @@
     display: block;
 }
 
-#fc .fc-cart__item__details {
+/* Product options list */
+#fc .fc-cart__item__options {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+/* Price and totals */
+/* Cart item layout for consistent alignment with image */
+#fc .fc-cart__item {
+    display: flex;
+    padding: 15px 10px;
+    position: relative;
+    border-bottom: 1px solid #eee;
+    align-items: flex-start; /* Start alignment to allow custom positioning */
+}
+
+/* Container for image and product details */
+#fc .fc-cart__item__details-and-image {
+    display: flex;
+    align-items: flex-start;
     flex: 1;
     min-width: 0; /* Prevents flex item from overflowing */
 }
 
+#fc .fc-checkout  #fc-cart--fixed-width  .fc-cart__item__details-and-image {
+    flex: none;
+    width: 100%;
+}
+
+#fc .fc-checkout #fc-cart--fixed-width .fc-cart__item__totals {
+    width: 100%;
+}
+
+/* Product image */
+#fc .fc-cart__item__image {
+    width: 80px;
+    min-width: 80px;
+    margin-right: 15px;
+    align-self: flex-start; /* Keep image at top */
+}
+
+/* Product details container */
+#fc .fc-cart__item__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    /* Set minimum height to match product image */
+    min-height: 80px;
+}
+
+/* Product name alignment */
 #fc .fc-cart__item__name {
     font-weight: bold;
     margin: 0 0 5px;
     font-size: 16px;
+    /* Align with left edge of content area */
+    text-align: left;
 }
 
-/* Price and Quantity controls */
+/* Special row for bottom-aligned price and quantity */
 #fc .fc-cart__item__totals {
-    min-width: 120px;
-    text-align: right;
-    margin-left: 10px;
+    min-width: 0;
+    /* margin-top: auto; */ /* Remove this line */
+    padding-top: 10px;
+    width: 100%;
 }
 
-.ps-foxy #fc #fc-cart--fixed-width .fc-cart__item__totals {
+/* Layout for price, quantity and total */
+#fc .fc-cart__item__totals .fc-container__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     width: 100%;
+}
+
+/* Price at bottom-left */
+#fc .fc-cart__item__price {
+    text-align: left;
+    margin-right: auto; /* Push other elements to the right */
+}
+
+#fc .fc-cart__item__price p {
+    margin: 0;
+}
+
+/* Align "Price: $X.XX" text to left */
+#fc .fc-cart__item__price__each {
+    text-align: left;
+    margin: 0;
+}
+
+/* Quantity controls in middle */
+#fc .fc-cart__item__quantity {
+    margin: 0; /* Remove auto centering */
+    width: 100%; /* Take full available width */
+    max-width: 120px; /* But don't exceed reasonable size */
+}
+
+#fc .fc-checkout #fc-cart--fixed-width .fc-cart__item__quantity {
     text-align: left;
 }
 
 
+/* Total on the far right */
+#fc .fc-cart__item__total {
+    text-align: right;
+    margin-left: auto; /* Push to right */
+}
+
+#fc .fc-cart__item__total p {
+    margin: 0;
+    text-align: right;
+}
+
+/* PaintScratch specific override */
+.ps-foxy #fc #fc-cart--fixed-width .fc-cart__item__totals {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Right-align cart item totals */
+#fc #fc-cart--fixed-width .fc-cart__item__total {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    text-align: right !important;
+}
+
+#fc #fc-cart--fixed-width .fc-cart__item__total p {
+    text-align: right !important;
+    width: 100% !important;
+    margin-left: auto !important; /* Pushes content to the right */
+    font-weight: normal;
+}
+
+/* Additional selector for mobile and responsive views */
+#fc #fc-cart--responsive .fc-cart__item__total {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    text-align: right !important;
+}
+
+#fc #fc-cart--responsive .fc-cart__item__total p {
+    text-align: right !important;
+    width: 100% !important;
+    margin-left: auto !important;
+}
+
 #fc .fc-item-controls-row {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 8px; /* Space between quantity and price */
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 100%;
 }
 
 #fc .fc-item-price {
@@ -186,50 +288,85 @@
     margin-top: 4px;
 }
 
-/* Quantity wrapper and controls styling */
+/* ==========================================================================
+   4. Quantity Controls
+   ========================================================================== */
+
+/* Quantity wrapper and buttons - fill available space */
 #fc .fc-quantity-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
     border: 1px solid #ddd;
-    border-radius: 3px;
+    border-radius: 4px;
     overflow: hidden;
+    width: 100%; /* Fill the parent container */
     height: 32px;
 }
 
 #fc .fc-quantity-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 28px;
     height: 32px;
     background-color: #f5f5f5;
     border: none;
     cursor: pointer;
     font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+    user-select: none;
     line-height: 1;
     color: #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
+    /* Ensure no default margins/borders */
+    margin: 0;
+    box-sizing: border-box;
 }
 
 #fc .fc-quantity-button:hover {
     background-color: #e5e5e5;
 }
 
+/* Style for the number input - with fixes for alignment */
 #fc .fc-cart__item__quantity__input {
-    width: 32px;
+    flex: 1; /* Take up remaining space between buttons */
     height: 32px;
     border: none;
     text-align: center;
-    -moz-appearance: textfield;
+    -moz-appearance: textfield; /* Hide spinner in Firefox */
     padding: 0;
+    margin: 0; /* Remove any default margins */
     background: white;
     font-size: 14px;
+    box-sizing: border-box;
+    /* Override any default form control styling that might be causing issues */
+    line-height: normal;
+    vertical-align: top;
+    outline: none;
+    min-width: 40px; /* Ensure minimum readable width */
 }
 
+/* Hide default number input arrows */
 #fc .fc-cart__item__quantity__input::-webkit-outer-spin-button,
 #fc .fc-cart__item__quantity__input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+/* Override any conflicting FoxyCart form control styles */
+#fc .fc-quantity-wrapper .fc-form-control {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    height: 32px !important;
+}
+
+/* Ensure buttons have no focus outline that might affect alignment */
+#fc .fc-quantity-button:focus {
+    outline: none;
+    box-shadow: none;
 }
 
 #fc .fc-quantity-display {
@@ -241,11 +378,9 @@
     background-color: #f9f9f9;
 }
 
-/* Parent-child relationship styling */
-#fc .fc-cart__item--child-product {
-    padding-left: 25px;
-    background-color: #f9f9f9;
-}
+/* ==========================================================================
+   5. Buttons & Actions
+   ========================================================================== */
 
 /* Remove button styling */
 #fc .fc-cart__item__remove-action {
@@ -263,144 +398,423 @@
     color: #333;
 }
 
-/* Parent header styling */
-#fc .fc-cart__item--parent-product {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    border-bottom: 1px solid #ddd;
-}
-
-
-/*
- * Styles that only apply on own website per body class 'ps-foxy' in app.blade.php
- */
-
-
 /* Move the Remove items buttons to the right */
-/* Make the main item container a positioning context */
 .ps-foxy #fc .fc-cart__item {
     position: relative;
-    /* You might need a little padding at the top if content gets too close to the X */
-    /* padding-top: 5px; */ /* Example: Adjust if needed */
 }
 
-/* Style and position the new remove button container */
 .ps-foxy #fc .fc-cart__item__remove-action {
     position: absolute;
-    top: 0; /* Adjust for desired vertical position from the top of the item */
-    right: 0; /* Adjust for desired horizontal position from the right of the item */
-    z-index: 5; /* Ensure it's above other elements if necessary */
+    top: 0;
+    right: 0;
+    z-index: 5;
 }
 
-/* Style the remove link itself */
 .ps-foxy #fc .fc-cart__item__remove-action a {
     display: inline-block;
-    padding: 2px; /* Add some clickable area around the icon */
-    line-height: 1; /* Helps align the icon */
-    color: #777; /* Default color for the icon, adjust as you like */
+    padding: 2px;
+    line-height: 1;
+    color: #777;
     text-decoration: none;
 }
 
 .ps-foxy #fc .fc-cart__item__remove-action a:hover,
 .ps-foxy #fc .fc-cart__item__remove-action a:focus {
-    color: #c00; /* Color on hover, e.g., red */
+    color: #c00;
 }
-/* End Remove items buttons to the right */
+
+/* Cart/Checkout buttons */
+#fc .fc-action--checkout--button,
+#fc .fc-button--subscription-cancel,
+#fc .fc-button--submit {
+    border-radius: 8px;
+    background: #1d4ed8;
+}
+
+/* Cart/Checkout buttons - Hover */
+#fc .fc-action--checkout--button:hover,
+#fc .fc-action--checkout--button:focus,
+#fc .fc-button--subscription-cancel:hover,
+#fc .fc-button--subscription-cancel:focus,
+#fc .fc-button--submit:hover,
+#fc .fc-button--submit:focus {
+    background: #ec6725;
+    text-shadow: 1px 1px 0 #ec6725;
+}
+
+/* Padlock icon in cart "Checkout" button */
+#fc .fa-lock {
+    fill: #FFFFFF;
+}
+
+/* Sidecart top checkout button */
+[data-fc-sidecart] #fc .fc-fixed-button-right .fc-btn-action {
+    background: #ec6725;
+}
+
+/* Sidecart top checkout button - Hover */
+[data-fc-sidecart] #fc .fc-fixed-button-right .fc-btn-action:hover {
+    background: #ec6725;
+}
+
+/* spinner action on checkout submit button */
+#fc .fc-button--submit .fc-spinner > div {
+    background-color: #101a5c;
+}
+
+/* ==========================================================================
+   6. Cart Title & Header Styles
+   ========================================================================== */
+
+.ps-foxy #fc .fc-cart__title__header {
+    margin-top: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.ps-foxy #fc .fc-cart__title__header,
+.ps-foxy #fc .fc-cart__title__header,
+.ps-foxy #fc .fc-transaction__header,
+.ps-foxy #fc .fc-order-quantity {
+    text-align: left;
+}
+
+/* ==========================================================================
+   7. Order Summary, Shipping & Address Styles
+   ========================================================================== */
+
+/* Shipping section */
+.ps-foxy #fc .fc-sidebar--cart .fc-address-entry {
+    border-bottom: 0;
+}
 
 #fc [data-fc-id="block-shipping-results"] {
     display: none;
 }
 
-.ps-foxy #fc .fc-sidebar--cart .fc-address-entry {
-    border-bottom: 0;
-}
-
-
-
-/* ==========================================================================
-   New Styles for Single-Line Shipping Display in Cart
-   ========================================================================== */
-
-/* Main container for the single shipping line (replaces old table row structure for this info) */
+/* Shipping Summary Line */
 .ps-foxy #fc .fc-shipping-summary-line {
-    display: flex; /* Enables Flexbox for horizontal alignment */
-    justify-content: space-between; /* Pushes address details to left, cost to right */
-    align-items: center; /* Vertically aligns items in the middle of the line */
-    padding: 10px 0; /* Adjust vertical padding as needed for spacing */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+#fc .fc-checkout .fc-shipping-summary-line__address-details {
+    display: none;
 }
 
-/* Flex containers for the left (address) and right (cost) parts of the line */
-.ps-foxy #fc .fc-shipping-summary-line__address-details,
 .ps-foxy #fc .fc-shipping-summary-line__cost-details {
-    display: flex; /* Make children flex items too for easy inline spacing */
-    align-items: center; /* Align items within these groups vertically */
+    display: flex;
+    align-items: center;
 }
 
-/* Spacing for items within the address details part (e.g., "Ship to:", address, "Change") */
 .ps-foxy #fc .fc-shipping-summary-line__address-details > * {
-    margin-right: 8px; /* Adjust spacing as needed */
+    margin-right: 8px;
 }
+
 .ps-foxy #fc .fc-shipping-summary-line__address-details > *:last-child {
-    margin-right: 0; /* No margin for the last item in this group */
+    margin-right: 0;
 }
 
-/* Spacing for items within the cost details part (Shipping Label : Shipping Value) */
-/* This adds space specifically before the shipping value, after its label */
 .ps-foxy #fc .fc-shipping-summary-line__cost-details > .fc-shipping-summary-line__shipping-value {
-    margin-left: 8px; /* Adjust spacing as needed */
+    margin-left: 8px;
 }
 
-/* Styling for the <address> tag when it's part of the new shipping summary line */
 .ps-foxy #fc .fc-shipping-summary-line__address {
-    display: inline; /* Ensures it flows correctly with other text elements in the line */
-    margin: 0; /* Resets any default browser margins on the <address> tag */
-    font-style: normal; /* Overrides the default italic styling for <address> if you prefer */
+    display: inline;
+    margin: 0;
+    font-style: normal;
 }
 
 .ps-foxy #fc .fc-shipping-summary-line__change-button {
     line-height: 1;
 }
 
-/* Styling for the actual shipping cost value (e.g., "$7.00") */
-.ps-foxy #fc .fc-shipping-summary-line__shipping-value {
-    font-weight: bold; /* Makes the shipping cost text bold, as in your screenshot */
+.ps-foxy .fc-checkout #fc .fc-shipping-summary-line__shipping-value {
+    font-weight: bold;
 }
 
 .ps-foxy #fc .fc-shipping-summary-line__shipping-label {
-    display: none !important; /* Use !important if needed to override other FoxyCart styles */
+    display: none !important;
 }
-/* END Shipping section */
 
+/* Order Summary Styles */
+.ps-foxy #fc div[data-fc-id="block-order-totals"] {
+    font-size: 13px;
+    line-height: 1.3;
+}
 
+#fc .fc-subtotal__label {
+    padding-left: 0;
+}
 
-/* Free shipping stuff */
-/* Styling for the new table rows containing free shipping messages */
+#fc .fc-subtotal__value {
+    vertical-align: revert;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] > .fc-transaction__header {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] > .fc-transaction > li.fc-transaction__section {
+    padding: 2px 0;
+    margin: 0;
+    border-top: none;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__ui {
+    margin-bottom: 3px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__ui h5.fc-transaction__ui__header,
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-address-entry h4 {
+    font-size: 0.9em;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal--row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1px 0;
+    font-size: 0.95em;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal--row td {
+    padding: 0;
+    border: none;
+    vertical-align: baseline;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal__label {
+    text-align: left;
+    padding-right: 8px;
+    font-weight: normal;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal__label h5 {
+    margin: 0;
+    font-size: 1em;
+    font-weight: normal;
+    display: inline;
+}
+
+#fc div[data-fc-id="block-order-totals"] .fc-subtotal__value {
+    text-align: right;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+#fc div[data-fc-id="block-order-totals"] .fc-transaction__total .fc-subtotal__value {
+    font-weight: bold;
+}
+
+#fc .fc-shipping-summary-line__shipping-label {
+    display: inline-block;
+    float: left;
+}
+#fc .fc-shipping-summary-line__shipping-value {
+    display: inline-block;
+    float: right;
+}
+
+#fc .fc-subtotal--taxes h5 {
+    font-weight: normal;
+}
+
+/* Grand Total Styling */
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total {
+    border-top: 1px solid #ccc;
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total .fc-subtotal--row .fc-subtotal__label,
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total .fc-subtotal--row .fc-subtotal__value {
+    font-size: 1.05em;
+}
+
+/* Address Entry Section */
+.ps-foxy #fc div[data-fc-id="block-address-entry"] {
+    padding: 3px 0;
+    margin-bottom: 3px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-form-group {
+    margin-bottom: 2px !important;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-form-label {
+    font-size: 0.85em;
+    margin-bottom: 0;
+    display: block;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] input.fc-form-control,
+.ps-foxy #fc div[data-fc-id="block-address-entry"] select.fc-form-control,
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-foxycomplete-element input.fc-form-control {
+    height: 26px;
+    font-size: 0.9em;
+    padding: 3px 5px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-button {
+    padding: 3px 7px;
+    font-size: 0.9em;
+    height: 26px;
+    line-height: normal;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-transaction__ui__button {
+    display: none;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-foxycomplete-flag {
+    height: 26px !important;
+    top: 0px !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+
+.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-container__grid--country input.fc-form-control {
+    padding-left: 25px !important;
+}
+
+/* Coupon Entry Section */
+.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-transaction__ui__toggle {
+    font-size: 0.85em;
+    padding: 1px 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+    float: none;
+    display: inline-block;
+    position: static;
+}
+
+.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-coupon-entry--input {
+    display: flex;
+    margin-top: 2px;
+    margin-bottom: 4px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-coupon-entry__input {
+    flex-grow: 1;
+    font-size: 0.9em;
+    height: 26px;
+    padding: 3px 5px;
+    margin-right: 3px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-coupon-entry__apply {
+    font-size: 0.9em;
+    padding: 3px 7px;
+    height: 26px;
+    line-height: normal;
+}
+
+/* Applied coupons list */
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts table {
+    margin-top: 2px;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-subtotal--row {
+    padding: 0;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-subtotal--row .fc-subtotal__label,
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-subtotal--row .fc-subtotal__value {
+    font-size: 0.85em;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-action--close .fc-svg-icon {
+    width: 8px;
+    height: 8px;
+}
+
+/* Shipping details like address */
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__shipping .fc-transaction__shipping-address {
+    font-size: 0.85em;
+    margin: 1px 0 3px 0;
+    line-height: 1.2;
+    border: none;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__shipping .fc-transaction__ui__toggle {
+    font-size: 0.85em;
+    padding: 1px 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+    float: none;
+    display: inline-block;
+    position: static;
+}
+
+/* Remove any extra space from empty table bodies */
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal--taxes:empty {
+    display: none;
+}
+
+.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__taxes li:empty {
+    display: none;
+}
+
+/* Checkout Stuff */
+#fc .fc-checkout__section--payment #fc-icon-lock-large {
+    display: none;
+}
+
+#fc .fc-checkout .fc-form-group .fc-input-group-container__title {
+    margin-left: -10px;
+    background: revert;
+}
+
+#fc .fc-checkout .fc-input-group-container__title:before {
+    left: 10px;
+    clip: revert;
+}
+
+/* ==========================================================================
+   8. Free Shipping Notifications
+   ========================================================================== */
+
+/* Free shipping message styling */
 #fc .fc-free-shipping-notice-row td,
 #fc .fc-free-shipping-achieved-row td {
-    padding-top: 8px !important; /* Add some space above the message */
+    padding-top: 8px !important;
     padding-bottom: 8px !important;
-    /* background-color: #f8f9fa; /* Optional subtle background for the cell */
 }
 
-#fc .fc-free-shipping-notice { /* Class for the text itself */
-    color: #0050b3; /* Informative blue */
+#fc .fc-free-shipping-notice {
+    color: #0050b3;
     font-size: 0.9em;
     font-weight: 500;
-    /* text-align: center; /* Applied by fc-align-center if used */
 }
 
-#fc .fc-free-shipping-achieved { /* Class for the text itself */
-    color: #28a745; /* Success green */
+#fc .fc-free-shipping-achieved {
+    color: #28a745;
     font-size: 0.9em;
     font-weight: 500;
-    /* text-align: center; /* Applied by fc-align-center if used */
 }
 
-#fc .fc-align-center { /* Utility class if you want to ensure text is centered */
+#fc .fc-align-center {
     text-align: center !important;
 }
 
-/* End free shipping stuff */
+/* ==========================================================================
+   9. Sidecart Layout & Structure
+   ========================================================================== */
 
 /* 1. Make the sidebar a flex column container */
 .ps-foxy #fc .fc-sidebar--cart {
@@ -419,11 +833,10 @@
 .ps-foxy #fc .fc-actions--payment {
     position: sticky;
     bottom: 0;
-    background: #fff; /* optional: to avoid overlapping content */
+    background: #fff;
     padding: 1em;
     z-index: 10;
 }
-
 
 .ps-foxy #fc .fc-action--payment--checkout {
     text-align: right;
@@ -437,20 +850,9 @@
     background: #1d4ed8;
 }
 
-
-/* ===== Cart Title Styles (Scoped to .ps-foxy) ===== */
-.ps-foxy #fc .fc-cart__title__header {
-    margin-top: 5px;
-    font-size: 1.2em;
-    font-weight: bold;
-    display: inline-block;
-}
-.ps-foxy #fc .fc-cart__title__header, .ps-foxy #fc .fc-cart__title__header, .ps-foxy #fc .fc-transaction__header, .ps-foxy #fc .fc-order-quantity { /* Cart Title */
-    text-align: left;
-}
-
-/* ===== Remove Sidecart Navigation (Scoped to .ps-foxy) ===== */
- .ps-foxy #fc nav.fc-sidecart-only-fixed svg, .fc-fixed-button-left span {
+/* Sidecart Navigation */
+.ps-foxy #fc nav.fc-sidecart-only-fixed svg,
+.fc-fixed-button-left span {
     display: none;
 }
 
@@ -464,7 +866,7 @@
 }
 
 .ps-foxy #fc nav.fc-sidecart-only-fixed .fc-fixed-button-left .fc-sidecart-button:before {
-    content: 'X'; /* Unicode for fa-times-circle */
+    content: 'X';
     font-size: 1.5em;
     font-weight: 900;
     margin-right: 0.8em;
@@ -476,335 +878,98 @@
     background-color: #fff;
 }
 
-/* ===== Reset Sidecart Backgrounds to White (Scoped to .ps-foxy) ===== */
-.ps-foxy #fc .fc-cart__item.fc-cart__item--child-product, .ps-foxy #fc .fc-cart__item.fc-cart__item--parent-product, .ps-foxy tbody tr:nth-child(2n) {
+/* Reset Sidecart Backgrounds to White */
+.ps-foxy #fc .fc-cart__item.fc-cart__item--child-product,
+.ps-foxy #fc .fc-cart__item.fc-cart__item--parent-product,
+.ps-foxy tbody tr:nth-child(2n) {
     background: #fff none;
 }
 
-/* ===== Order Summary Condensing Styles (Scoped to .ps-foxy) ===== */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] {
-    font-size: 13px; /* Adjust base font size for the block if needed */
-    line-height: 1.3; /* Tighter line height */
-}
-
-/* Main "Order Summary" Title */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] > .fc-transaction__header {
-    font-size: 1.1em; /* e.g., 14px */
-    font-weight: bold;
-    margin-bottom: 8px; /* Space below "Order Summary" */
-    padding-bottom: 4px;
-    /* border-bottom: 1px solid #ddd; */ /* Optional: if you want a separator */
-}
-
-/* All list items (Subtotal, Shipping, Discounts, Taxes, Total sections) */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] > .fc-transaction > li.fc-transaction__section {
-    padding: 2px 0; /* Minimal vertical padding for sections */
-    margin: 0;
-    border-top: none; /* Remove default borders for a cleaner look */
-}
-
-/* Section Headers within each list item (e.g., "Shipping to", "Discounts", "Taxes" titles) */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__ui {
-    margin-bottom: 3px; /* Small space after these headers if they exist */
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__ui h5.fc-transaction__ui__header,
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-address-entry h4 { /* For "Calculate Taxes" title */
-    font-size: 0.9em; /* e.g., ~11.5px */
-    font-weight: bold;
-    display: inline-block; /* Keep it from taking full width if possible */
-}
-
-/* Styling for each label-value row (Subtotal, Shipping Amount, Tax Amount, etc.) */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__section table {
-    width: 100%;
-    border-collapse: collapse; /* Important for removing cell spacing */
-    margin: 0; /* Reset table margins */
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal--row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 1px 0; /* Extremely tight padding for each data row */
-    font-size: 0.95em; /* e.g., ~12.5px */
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal--row td {
-    padding: 0; /* No padding on table cells */
-    border: none;
-    vertical-align: baseline;
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal__label {
-    text-align: left;
-    padding-right: 8px; /* Minimal space before value */
-    font-weight: normal;
-}
-
-/* Target h5 inside labels if they exist to reset their styles */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal__label h5 {
-    margin: 0;
-    font-size: 1em; /* Match parent td font-size */
-    font-weight: normal;
-    display: inline;
-}
-
-#fc div[data-fc-id="block-order-totals"] .fc-subtotal__value {
-    text-align: right;
-    font-weight: bold; /* Default values to normal weight */
-    white-space: nowrap;
-}
-
-/* Grand Total Styling */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total {
-    border-top: 1px solid #ccc;
-    margin-top: 4px;
-    padding-top: 4px;
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total .fc-subtotal--row .fc-subtotal__label,
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total .fc-subtotal--row .fc-subtotal__value {
-    font-size: 1.05em; /* e.g., ~13.5px - Make total slightly more prominent */
-    font-weight: bold;
-}
-
-/* If it should be visible but compact: */
-.ps-foxy #fc div[data-fc-id="block-address-entry"] {
-    padding: 3px 0;
-    margin-bottom: 3px;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-form-group {
-    margin-bottom: 2px !important;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-form-label {
-    font-size: 0.85em; /* ~11px */
-    margin-bottom: 0;
-    display: block;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] input.fc-form-control,
-.ps-foxy #fc div[data-fc-id="block-address-entry"] select.fc-form-control,
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-foxycomplete-element input.fc-form-control { /* For country dropdown */
-    height: 26px;
-    font-size: 0.9em; /* ~11.5px */
-    padding: 3px 5px;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-button { /* "Go!" or "Calculate" */
-    padding: 3px 7px;
-    font-size: 0.9em; /* ~11.5px */
-    height: 26px;
-    line-height: normal;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-transaction__ui__button {
-    display: none;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-foxycomplete-flag { /* Country flag */
-    height: 26px !important;
-    top: 0px !important;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center left;
-}
-
-.ps-foxy #fc div[data-fc-id="block-address-entry"] .fc-container__grid--country input.fc-form-control {
-    padding-left: 25px !important; /* Space for flag */
-}
-
-
-/* --- Coupon Entry Section --- */
-.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-transaction__ui__toggle { /* "Add Coupon" button */
-    font-size: 0.85em; /* ~11px */
-    padding: 1px 4px;
-    margin-left: 5px;
-    vertical-align: middle;
-    float: none; /* Prevent floating issues */
-    display: inline-block;
-    position: static;
-}
-
-.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-coupon-entry--input {
-    display: flex;
-    margin-top: 2px;
-    margin-bottom: 4px;
-}
-
-.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-coupon-entry__input { /* Coupon text field */
-    flex-grow: 1;
-    font-size: 0.9em; /* ~11.5px */
-    height: 26px;
-    padding: 3px 5px;
-    margin-right: 3px;
-}
-
-.ps-foxy #fc div[data-fc-id="block-coupon-entry"] .fc-coupon-entry__apply { /* "Apply" button */
-    font-size: 0.9em; /* ~11.5px */
-    padding: 3px 7px;
-    height: 26px;
-    line-height: normal;
-}
-
-/* Applied coupons list */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts table {
-    margin-top: 2px;
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-subtotal--row {
-    padding: 0; /* Even tighter for discount lines */
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-subtotal--row .fc-subtotal__label,
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-subtotal--row .fc-subtotal__value {
-    font-size: 0.85em; /* ~11px */
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__discounts .fc-action--close .fc-svg-icon {
-    width: 8px;
-    height: 8px;
-}
-
-/* Shipping details like address */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__shipping .fc-transaction__shipping-address {
-    font-size: 0.85em; /* ~11px */
-    margin: 1px 0 3px 0;
-    line-height: 1.2;
-    border: none;
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__shipping .fc-transaction__ui__toggle { /* "Change" shipping button */
-    font-size: 0.85em; /* ~11px */
-    padding: 1px 4px;
-    margin-left: 5px;
-    vertical-align: middle;
-    float: none;
-    display: inline-block;
-    position: static;
-}
-
-/* Remove any extra space from empty table bodies that might be there for taxes if none are applied */
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-subtotal--taxes:empty {
-    display: none;
-}
-
-.ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__taxes li:empty {
-    display: none;
-}
-
-/* ===== END Order Summary Condensing Styles (Scoped to .ps-foxy) ===== */
-
-/* ===== Reset Sidecart Backgrounds to White (Scoped to .ps-foxy) ===== */
-
-/* Main sidecart panel itself (default is #fdfdfd, very light, but can be forced to #fff) */
+/* Sidecart Panel Background */
 .ps-foxy[data-fc-with-sidecart] [data-fc-sidecart] {
     background-color: #fff !important;
 }
 
-/* The header of the cart (where "Your Cart" and item count is) */
+/* The header of the cart */
 .ps-foxy #fc .fc-cart__header {
-    position: relative; /* Establishes a positioning context for the close button */
+    position: relative;
     background-color: #fff !important;
-    /* You might want to adjust the border color if it was designed for a gray background */
-    /* border-bottom-color: #eeeeee !important; */
 }
 
 .ps-foxy #fc .fc-cart__header .fc-cart__title a.fc-sidecart-button {
     position: absolute;
-    top: 0; /* Adjust as needed for vertical alignment */
-    right: 0; /* Adjust as needed for horizontal alignment */
-    display: inline-block; /* Override display: block */
-    width: auto; /* Override width: 100% */
-    padding: 5px; /* Adjust padding for clickable area and visual spacing */
-    line-height: 1; /* Helps with vertical alignment of the icon if it's text-based */
+    top: 0;
+    right: 0;
+    display: inline-block;
+    width: auto;
+    padding: 5px;
+    line-height: 1;
 }
 
-/* Optional: Ensure the icon itself is sized appropriately */
 .ps-foxy #fc .fc-cart__header .fc-cart__title a.fc-sidecart-button .fc-svg-icon {
-    width: 25px; /* Example size, adjust as needed */
-    height: 25px; /* Example size, adjust as needed */
+    width: 25px;
+    height: 25px;
 }
 
-/* The sidebar area containing Order Summary, Tax, Coupons, etc. */
-/* This is often the main element with the light gray background. */
+/* Sidebar area with white background */
 .ps-foxy #fc .fc-sidebar.fc-sidebar--cart {
     background-color: #fff !important;
 }
 
-/* The header for the list of cart items (usually "Item", "Quantity", "Total") */
 .ps-foxy #fc .fc-cart__items__header {
     background-color: #fff !important;
-    /* border-bottom-color: #eeeeee !important; */ /* Adjust if needed */
 }
 
-/* General list items within transaction sections, if they have specific backgrounds */
-/* Making them transparent will allow them to inherit the new white background from .fc-sidebar */
 .ps-foxy #fc .fc-transaction > li.fc-transaction__section {
     background-color: transparent !important;
 }
 
-/* Specific blocks like address entry or coupon entry, if they have their own background */
 .ps-foxy #fc div[data-fc-id="block-address-entry"],
 .ps-foxy #fc div[data-fc-id="block-coupon-entry"] {
-    background-color: transparent !important; /* So they inherit the new white background */
+    background-color: transparent !important;
 }
 
-/* Fixed top navigation bar in the sidecart ("Keep Shopping" / "Proceed to Checkout") */
 .ps-foxy #fc .fc-sidecart-only-fixed {
     background-color: #fff !important;
-    /* You might want to add a subtle border if it looks too flat against white content */
-    /* border-bottom: 1px solid #f0f0f0 !important; */
 }
 
-/* Input fields are usually white by default, but ensure consistency if needed */
 .ps-foxy #fc .fc-form-control {
-    background-color: #fff !important; /* Usually default, but can be explicit */
-    /* border: 1px solid #ccc !important; */ /* Adjust border if needed */
+    background-color: #fff !important;
 }
 
-/* ===== END Reset Sidecart Backgrounds to White (Scoped to .ps-foxy) ===== */
-
-/* ===== Remove Postcode Search Icon (Scoped to .ps-foxy) ===== */
-.ps-foxy #fc .fc-postal-code-entry__with-search, .ps-foxy #fc .fc-transaction__shipping-address img {
+/* Remove Postcode Search Icon */
+.ps-foxy #fc .fc-postal-code-entry__with-search,
+.ps-foxy #fc .fc-transaction__shipping-address img {
     display: none !important;
 }
 
+/* ==========================================================================
+   10. Responsive Styles (Media Queries)
+   ========================================================================== */
 
 @media (min-width: 768px) {
-    /* Applies to tablets and desktops */
+    /* Desktop and tablet styles */
     /* 1. Main Sidecart Panel - Base and Hidden State */
     .ps-foxy[data-fc-with-sidecart] [data-fc-sidecart] {
         width: 500px !important;
-        right: -500px !important; /* Correct initial off-screen position */
+        right: -500px !important;
         -webkit-transform: translate3d(500px, 0, 0) !important;
         -moz-transform: translate3d(500px, 0, 0) !important;
         -ms-transform: translate3d(500px, 0, 0) !important;
         -o-transform: translate3d(500px, 0, 0) !important;
-        transform: translate3d(500px, 0, 0) !important; /* Adjust initial transform for hiding */
+        transform: translate3d(500px, 0, 0) !important;
     }
 
-    /* When cart is visible - FoxyCart's default .cart-visible rules usually handle this:
-       .cart-visible [data-fc-sidecart] {
-         transform: translate3d(0,0,0);
-         right: 0;
-       }
-       So, we might not need to override the .cart-visible [data-fc-sidecart] state explicitly,
-       as long as our base styles above are correct for the hidden state.
-    */
-    /* If the above is not enough, you can be explicit: */
+    /* When cart is visible */
     .ps-foxy[data-fc-with-sidecart].cart-visible [data-fc-sidecart] {
-        width: 500px !important; /* Ensure width is maintained */
-        right: 0 !important; /* Ensure it's fully on-screen */
+        width: 500px !important;
+        right: 0 !important;
         -webkit-transform: translate3d(0, 0, 0) !important;
         -moz-transform: translate3d(0, 0, 0) !important;
         -ms-transform: translate3d(0, 0, 0) !important;
         -o-transform: translate3d(0, 0, 0) !important;
-        transform: translate3d(0, 0, 0) !important; /* Ensure it slides fully into view */
+        transform: translate3d(0, 0, 0) !important;
     }
-
 
     /* 2. Adjust Page Push Effect */
     .ps-foxy[data-fc-with-sidecart].cart-visible [data-fc-store-page],
@@ -821,61 +986,54 @@
     .ps-foxy #fc #fc-cart--fixed-width,
     .ps-foxy #fc #fc-cart--responsive,
     .ps-foxy #fc .ps-sidecart {
+
         max-width: none !important;
+    }
+
+    #fc .fc-checkout .fc-cart__item__image {
+        margin-left: -10% !important;
+    }
+
+    #fc .fc-sidebar--checkout {
+        padding-left: 20px !important;
+        border-left: 1px solid #ddd !important;
     }
 }
 
-
 @media (max-width: 767px) {
-    /*mobile breakpoint */
-    /* --- Sidecart Container (Scoped to .ps-foxy) --- */
-    /* Make the main sidecart panel full width on your site */
+    /* Mobile styles */
+    /* Sidecart Container */
     .ps-foxy[data-fc-with-sidecart] [data-fc-sidecart] {
-        width: 100% !important; /* Force full width */
-        right: -100% !important; /* Start fully off-screen to the right */
-        border-left: none !important; /* Optional: remove the left border */
-        box-shadow: none !important; /* Optional: remove sidecart's own shadow */
+        width: 100% !important;
+        right: -100% !important;
+        border-left: none !important;
+        box-shadow: none !important;
     }
 
-    /* When the cart is visible on your site, ensure it slides in fully */
+    /* When the cart is visible */
     .ps-foxy[data-fc-with-sidecart].cart-visible [data-fc-sidecart] {
         right: 0 !important;
     }
 
-    /* --- Main Page and Overlay Adjustments (Scoped to .ps-foxy) --- */
-    /* Prevent the main page content and the UI block from being pushed aside on your site */
+    /* Main Page and Overlay Adjustments */
     .ps-foxy[data-fc-with-sidecart].cart-visible [data-fc-store-page],
     .ps-foxy[data-fc-with-sidecart].cart-visible [data-fc-ui-block] {
         -webkit-transform: none !important;
         -moz-transform: none !important;
         -ms-transform: none !important;
         -o-transform: none !important;
-        transform: none !important; /* Stop the push animation/effect */
+        transform: none !important;
     }
 
-    /* Ensure the ui-block (page overlay/dimmer) still covers the page correctly on your site */
+    /* UI block (overlay/dimmer) */
     .ps-foxy[data-fc-with-sidecart].cart-visible [data-fc-ui-block] {
         display: none;
     }
 
-    /* --- Inner Content of Cart (Scoped to .ps-foxy and #fc) --- */
-    /* Ensure the inner content container (from your cart.inc.twig) also uses the full width */
-    .ps-foxy #fc #fc-cart, /* General cart container within #fc */
-    .ps-foxy #fc #fc-cart--fixed-width, /* Specific ID for fixed width cart content area */
-    .ps-foxy #fc #fc-cart--responsive { /* Specific ID for responsive cart content area */
-        width: 100% !important;
-        max-width: none !important; /* Remove any max-width that might constrain it */
-        padding-left: 15px; /* Add some horizontal padding for content inside the cart */
-        padding-right: 15px;
-        box-sizing: border-box; /* Important for padding to be included in width */
-    }
-
-    .ps-foxy #fc #fc-cart {
-        padding-top: 30px;
-    }
-
-    /* If you used the class .ps-sidecart on your main inner cart div (e.g., #fc-cart--fixed-width) */
-    .ps-foxy #fc .ps-sidecart { /* Targets the element with class="ps-sidecart" inside #fc */
+    /* Inner Content of Cart */
+    .ps-foxy #fc #fc-cart,
+    .ps-foxy #fc #fc-cart--fixed-width,
+    .ps-foxy #fc #fc-cart--responsive {
         width: 100% !important;
         max-width: none !important;
         padding-left: 15px;
@@ -883,9 +1041,20 @@
         box-sizing: border-box;
     }
 
+    .ps-foxy #fc #fc-cart {
+        padding-top: 30px;
+    }
 
-    /* --- Fixed Top Navigation in Sidecart (Scoped to .ps-foxy and #fc) --- */
-    /* Adjust the fixed "Keep Shopping" / "Proceed to Checkout" navigation bar */
+    /* For .ps-sidecart class */
+    .ps-foxy #fc .ps-sidecart {
+        width: 100% !important;
+        max-width: none !important;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Fixed Top Navigation in Sidecart */
     .ps-foxy #fc .fc-sidecart-only-fixed {
         width: 100% !important;
         left: 0 !important;
@@ -893,20 +1062,17 @@
         box-sizing: border-box;
     }
 
-    /* Optional: Adjust fixed nav buttons if needed */
+    /* Adjust fixed nav buttons if needed */
     .ps-foxy #fc .fc-sidecart-only-fixed .fc-fixed-button-left {
-        /* Example: width: auto; to allow content to size or use flex for distribution */
-        padding-left: 15px; /* Ensure padding aligns with content area */
+        padding-left: 15px;
     }
 
     .ps-foxy #fc .fc-sidecart-only-fixed .fc-fixed-button-right {
-        /* Example: width: auto; */
-        padding-right: 15px; /* Ensure padding aligns with content area */
+        padding-right: 15px;
     }
 
-    /* Ensure the main cart content area has adequate padding, especially below the fixed nav */
+    /* Main cart content area padding */
     .ps-foxy #fc .fc-cart-container {
-        padding-top: 60px; /* Adjust based on the actual height of your .fc-sidecart-only-fixed bar */
+        padding-top: 60px;
     }
 }
-

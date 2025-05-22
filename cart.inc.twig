@@ -241,7 +241,6 @@
                                                     {% if item.parent_code != '' %}
                                                         <div class="fc-cart__item__totals">
                                                             <div class="fc-container__row">
-
                                                                 <div class="fc-cart__item__price">
                                                                     {% if item.quantity != 1 %}
                                                                         <p class="fc-cart__item__price__each">Price:
@@ -262,7 +261,8 @@
                                                                         </p>
                                                                     {% endif %}
                                                                 </div>
-
+                                                            </div>
+                                                            <div class="fc-container__row">
                                                                 <div class="fc-cart__item__quantity">
                                                                     {% if context == 'receipt' %}
                                                                         <p class="text-center">{{ item.quantity }}</p>
@@ -289,29 +289,31 @@
                                                                     {% else %}
                                                                         <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
                                                                     {% endif %}
-                                                                    <div class="fc-cart__item__total">
-                                                                        {% if has_inclusive_taxes %}
-                                                                            {% if item.parent_code == '' or (item.parent_code != '' and
-                                                                                item.price_with_tax > 0) %}
-                                                                                <p>
-                                                                                    {{ item.price_with_tax|money_format }}{% if
-                                                                                        item.price_with_tax_is_fractional %}<span
-                                                                                        title="{{ item.price_with_tax }}">
-                                                                                            …</span>{% endif %}
-                                                                                </p>
-                                                                            {% endif %}
-                                                                        {% else %}
-                                                                            {% if item.parent_code == '' or (item.parent_code != '' and item.price > 0) %}
-                                                                                <p>
-                                                                                    {{ item.price|money_format }}{% if item.price_is_fractional %}
-                                                                                    <span
-                                                                                            title="{{ item.price }}">…</span>{% endif %}
-                                                                                </p>
-                                                                            {% endif %}
+                                                                </div>
+
+                                                                <div class="fc-cart__item__total">
+                                                                    {% if has_inclusive_taxes %}
+                                                                        {% if item.parent_code == '' or (item.parent_code != '' and
+                                                                            item.price_with_tax > 0) %}
+                                                                            <p>
+                                                                                {{ item.price_with_tax|money_format }}{% if
+                                                                                    item.price_with_tax_is_fractional %}<span
+                                                                                    title="{{ item.price_with_tax }}">
+                                                                                        …</span>{% endif %}
+                                                                            </p>
                                                                         {% endif %}
-                                                                    </div>
+                                                                    {% else %}
+                                                                        {% if item.parent_code == '' or (item.parent_code != '' and item.price > 0) %}
+                                                                            <p>
+                                                                                {{ item.price|money_format }}{% if item.price_is_fractional %}
+                                                                                <span
+                                                                                        title="{{ item.price }}">…</span>{% endif %}
+                                                                            </p>
+                                                                        {% endif %}
+                                                                    {% endif %}
                                                                 </div>
                                                             </div>
+
                                                         </div>
                                                     {% endif %}
 

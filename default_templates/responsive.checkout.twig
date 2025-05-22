@@ -16,7 +16,7 @@
 
     {{ fc_header_content|raw }}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 </head>
-<body>
+<body class="ps-foxy">
 {% include 'svg.inc.twig' %}
 
 {% import "utils.inc.twig" as utils %}
@@ -42,44 +42,42 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
-{% include template_from_string(fc_footer_content) %}<script>
-    // FoxyCart's JavaScript and jQuery might load after your initial scripts.
-    // It's best to wrap your jQuery-dependent code in a way that ensures jQuery is available.
-    // FoxyCart provides FC.onLoad and FC.client.on('ready.done') for this.
-
+{% include template_from_string(fc_footer_content) %}
+<script>
     var FC = FC || {};
     FC.onLoad = function() {
         FC.client.on('ready.done', function() {
-            // Ensure jQuery is loaded
             if (typeof jQuery == 'undefined') {
                 console.error("jQuery is not loaded. Cannot initialize modal.");
                 return;
             }
 
-            // Give the link inside fc-cancel-continue-shopping an ID if it doesn't have one
-            // Or select it more specifically if you know its structure.
-            // For this example, we assume there's a link, and we'll target the first one.
-            // It's more robust to give your link a specific ID in the Twig template.
             var $cancelLink = $('.fc-cancel-continue-shopping a').first();
             if (!$cancelLink.attr('id')) {
-                $cancelLink.attr('id', 'fc-generated-cancel-link'); // Add an ID if none exists for easier targeting
+                $cancelLink.attr('id', 'fc-generated-cancel-link');
             }
 
-            // If you added an ID like `ps-cancel-checkout-link` in your Twig override:
-            // var $cancelLink = $('#ps-cancel-checkout-link');
-
-
             $cancelLink.on('click', function(event) {
-                event.preventDefault(); // Prevent the link from navigating immediately
+                event.preventDefault();
                 $('#ps-confirm-cancel-modal').modal();
             });
 
-            // Handle the "Yes, Cancel" button in the modal
             $('#ps-confirm-cancel-yes').on('click', function(event) {
                 event.preventDefault();
-                // Use history.back() to go to the previous page
-                history.back(-1);
-                // It's good practice to also close the modal, though history.back() might make this redundant
+                var fallbackUrl = '';
+                if (FC && FC.json && FC.json.cart_cancel_and_continue_link) {
+                    fallbackUrl = FC.json.cart_cancel_and_continue_link;
+                } else {
+                    // A more generic fallback if FC.json.cart_cancel_and_continue_link is somehow not available
+                    // This could be your store's homepage.
+                    fallbackUrl = (FC && FC.json && FC.json.config && FC.json.config.store_url) ? FC.json.config.store_url : '/';
+                }
+
+                if (document.referrer === "" || (history.length !== undefined && history.length <= 2)) {
+                    window.location.href = fallbackUrl;
+                } else {
+                    history.back(-1);
+                }
                 jQuery.modal.close();
             });
         });

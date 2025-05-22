@@ -1,0 +1,52 @@
+{% raw %}
+    <script>
+        function attachFoxyRemoveListener() {
+            // Check if FC and FC.client and the 'on' method are available
+            if (typeof FC !== 'undefined' && FC.client && typeof FC.client.on === 'function') {
+
+                // Check if listener already attached to prevent duplicates
+                if (!window.foxyRemoveListenerAttached) {
+                    FC.client.on('cart-item-remove', function (params, next) {
+                        // Show browser confirmation
+                        if (confirm('Are you sure you want to remove this item?')) {
+                            // If OK, proceed with FoxyCart's default remove action
+                            next();
+                        } else {
+                            // If Cancel, do nothing (which stops the default action)
+                        }
+                    });
+                    // Set flag to prevent attaching multiple listeners
+                    window.foxyRemoveListenerAttached = true;
+                }
+
+            } else {
+                // If FoxyCart isn't ready yet, try again in 250ms
+                setTimeout(attachFoxyRemoveListener, 250);
+            }
+        }
+
+        // Start checking for FoxyCart readiness when this script loads
+        attachFoxyRemoveListener();
+
+    </script>{% endraw %}
+
+
+{% if context == "cart" or context == "checkout" %}
+    <script>
+        // To auto-select the single shiping rate
+        FC.client.on(FC.json.context + '-shipping-options-update.done', autoSelectRate);
+
+        function autoSelectRate(params) {
+            var prefix = (params.address.prefix == 'shipping') ? '' : params.address.prefix + "_";
+            if (jQuery('[name=' + prefix + 'shipping_service_id]:first').length) {
+                jQuery('[name=' + prefix + 'shipping_service_id]:first').trigger('click');
+                FC.Template(FC.json.context).clearOutput();
+                if (FC.json.context == 'cart' && FC.json.shipping_address.shipping_results.length > 1) {
+                    FC.cart.showShippingLocationInput();
+                } else if (FC.json.context == "checkout") {
+                    FC.checkout.renderShippingRates(params.address);
+                }
+            }
+        }
+    </script>
+{% endif %}
