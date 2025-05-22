@@ -54,6 +54,11 @@
     font-size: 16px;
 }
 
+#fc .fc-cart__item__color__swatch {
+    display: block;
+    height: 20px;
+}
+
 /* ==========================================================================
    2. Parent-Child Product Relationship Styling
    ========================================================================== */
@@ -498,7 +503,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
 }
 #fc .fc-checkout .fc-shipping-summary-line__address-details {
     display: none;
@@ -529,6 +533,8 @@
 
 .ps-foxy #fc .fc-shipping-summary-line__change-button {
     line-height: 1;
+    font-size: 12px;
+    padding: 3px;
 }
 
 .ps-foxy .fc-checkout #fc .fc-shipping-summary-line__shipping-value {
@@ -790,22 +796,17 @@
    ========================================================================== */
 
 /* Free shipping message styling */
-#fc .fc-free-shipping-notice-row td,
-#fc .fc-free-shipping-achieved-row td {
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+#fc .fc-shipping-free-shipping-message {
+    display: inline-block;
+    font-weight: bold;
 }
 
 #fc .fc-free-shipping-notice {
     color: #0050b3;
-    font-size: 0.9em;
-    font-weight: 500;
 }
 
 #fc .fc-free-shipping-achieved {
     color: #28a745;
-    font-size: 0.9em;
-    font-weight: 500;
 }
 
 #fc .fc-align-center {
@@ -840,6 +841,7 @@
 
 .ps-foxy #fc .fc-action--payment--checkout {
     text-align: right;
+    float: right;
 }
 
 .ps-foxy #fc .fc-action--payment--checkout svg {

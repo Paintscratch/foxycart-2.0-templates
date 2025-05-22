@@ -78,11 +78,11 @@
                     {% block cart_title %}
                         <h2 class="fc-cart__title__header">{{ config.lang.cart_caption|raw }}</h2>
                         {% if context == 'cart' %}
-                        <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
-                            <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
-                                <use xlink:href="#fa-times-circle"/>
-                            </svg>
-                        </a>
+                            <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
+                                <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
+                                    <use xlink:href="#fa-times-circle"/>
+                                </svg>
+                            </a>
                         {% endif %}
                         <p class="fc-order-quantity">
                             {% set temp_lang_cart_items = config.lang.cart_items|raw %}
@@ -203,7 +203,8 @@
                                                        title="{{ config.lang.cart_remove_item }}"
                                                        data-fc-id="item-remove-link"
                                                        data-fc-item-id="{{ item.id }}">
-                                                        <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
+                                                        <svg class="fc-svg-icon fc-icon-small" role="presentation"
+                                                             title="Close Icon">
                                                             <use xlink:href="#fa-times"/>
                                                         </svg>
                                                     </a>
@@ -238,6 +239,26 @@
                                                 {% endif %}
                                                 <div class="fc-cart__item__details">
                                                     <p class="fc-cart__item__name">{{ item.name }}</p>
+                                                    {% if item.parent_code == '' %}
+                                                        {# Initialize a variable to hold the RGB value #}
+                                                        {% set item_color_rgb = '' %}
+                                                        {% set found_color_option = false %} {# Flag to ensure we only take the first match #}
+
+                                                        {# Loop through the item's custom options to find 'vehicle_color_rgb' #}
+                                                        {% for option in item.options %}
+                                                            {% if option.class == 'vehicle_color_rgb' and not found_color_option %}
+                                                                {% set item_color_rgb = option.value %}
+                                                                {% set found_color_option = true %} {# Mark as found to stop further assignments #}
+                                                            {% endif %}
+                                                        {% endfor %}
+
+                                                        {# Check if a valid RGB value was found before rendering #}
+                                                        {% if item_color_rgb is not empty and item_color_rgb != '' %}
+                                                            <div class="fc-cart__item__color">
+                                                                <span class="fc-cart__item__color__swatch" style="background-color: {{ item_color_rgb | raw }};"></span>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
                                                     {% if item.parent_code != '' %}
                                                         <div class="fc-cart__item__totals">
                                                             <div class="fc-container__row">
@@ -246,8 +267,9 @@
                                                                         <p class="fc-cart__item__price__each">Price:
                                                                             {% if has_inclusive_taxes %}
                                                                                 {{ item.price_each_with_tax|money_format }}{% if
-                                                                                item.price_each_with_tax_is_fractional %}<span
-                                                                                title="{{ item.price_each_with_tax }}">
+                                                                                item.price_each_with_tax_is_fractional %}
+                                                                            <span
+                                                                                    title="{{ item.price_each_with_tax }}">
                                                                                     …</span>{% endif %}
                                                                             {% else %}
                                                                                 {{ item.price_each|money_format }}{% if item.price_each_is_fractional %}
@@ -268,11 +290,19 @@
                                                                         <p class="text-center">{{ item.quantity }}</p>
                                                                     {% elseif item.parent_code == '' or (item.parent_code != '' and item.quantity_min == 0) %}
                                                                         {% if with_controls and checkout_sub_cancel == false %}
-                                                                            <input type="hidden" id="id{{ item.item_number }}" name="id{{ item.item_number }}" value="{{ item.id }}"/>
-                                                                            <label class="hidden" for="quantity{{ item.item_number }}">{{ config.lang.cart_quantity }}</label>
+                                                                            <input type="hidden"
+                                                                                   id="id{{ item.item_number }}"
+                                                                                   name="id{{ item.item_number }}"
+                                                                                   value="{{ item.id }}"/>
+                                                                            <label class="hidden"
+                                                                                   for="quantity{{ item.item_number }}">{{ config.lang.cart_quantity }}</label>
 
                                                                             <div class="fc-quantity-wrapper">
-                                                                                <button type="button" class="fc-quantity-button fc-quantity-decrease" data-fc-item-id="{{ item.id }}">-</button>
+                                                                                <button type="button"
+                                                                                        class="fc-quantity-button fc-quantity-decrease"
+                                                                                        data-fc-item-id="{{ item.id }}">
+                                                                                    -
+                                                                                </button>
                                                                                 <input class="fc-cart__item__quantity__input fc-form-control"
                                                                                        type="number"
                                                                                        name="quantity{{ item.item_number }}"
@@ -281,13 +311,19 @@
                                                                                        value="{{ item.quantity }}"
                                                                                        data-fc-id="item-quantity-input"
                                                                                        data-fc-item-id="{{ item.id }}"/>
-                                                                                <button type="button" class="fc-quantity-button fc-quantity-increase" data-fc-item-id="{{ item.id }}">+</button>
+                                                                                <button type="button"
+                                                                                        class="fc-quantity-button fc-quantity-increase"
+                                                                                        data-fc-item-id="{{ item.id }}">
+                                                                                    +
+                                                                                </button>
                                                                             </div>
                                                                         {% else %}
-                                                                            <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
+                                                                            <p>{{ config.lang.cart_qty|raw }}
+                                                                                : {{ item.quantity }}</p>
                                                                         {% endif %}
                                                                     {% else %}
-                                                                        <p>{{ config.lang.cart_qty|raw }}: {{ item.quantity }}</p>
+                                                                        <p>{{ config.lang.cart_qty|raw }}
+                                                                            : {{ item.quantity }}</p>
                                                                     {% endif %}
                                                                 </div>
 
@@ -297,8 +333,9 @@
                                                                             item.price_with_tax > 0) %}
                                                                             <p>
                                                                                 {{ item.price_with_tax|money_format }}{% if
-                                                                                    item.price_with_tax_is_fractional %}<span
-                                                                                    title="{{ item.price_with_tax }}">
+                                                                                    item.price_with_tax_is_fractional %}
+                                                                                <span
+                                                                                        title="{{ item.price_with_tax }}">
                                                                                         …</span>{% endif %}
                                                                             </p>
                                                                         {% endif %}
@@ -307,7 +344,8 @@
                                                                             <p>
                                                                                 {{ item.price|money_format }}{% if item.price_is_fractional %}
                                                                                 <span
-                                                                                        title="{{ item.price }}">…</span>{% endif %}
+                                                                                        title="{{ item.price }}">
+                                                                                        …</span>{% endif %}
                                                                             </p>
                                                                         {% endif %}
                                                                     {% endif %}
@@ -612,32 +650,6 @@
                                                    value="{{ final_total_shipping_for_hidden_input }}"/>
                                             <input id="total_future_shipping" type="hidden" name="total_future_shipping"
                                                    value="{{ total_future_shipping }}"/>
-
-                                            {# Keep Free Shipping Message logic - this will appear below the new single line #}
-                                            {% if context == 'cart' %}
-                                                <div class="fc-shipping-free-shipping-message"> {# Wrapper for styling consistency #}
-                                                    <table>
-                                                        <tbody class="fc-subtotal--shipping-extra">
-                                                        {% if not has_qualified_for_free_shipping and subtotal_for_shipping > 0 and subtotal_for_shipping < free_shipping_threshold %}
-                                                            {% set amount_needed = free_shipping_threshold - subtotal_for_shipping %}
-                                                            <tr class="fc-subtotal--row fc-free-shipping-notice-row">
-                                                                <td colspan="2"
-                                                                    class="fc-free-shipping-notice fc-align-center">
-                                                                    {{ config.lang.cart_add_for_free_shipping_start|default('Add') }} {{ amount_needed|money_format }} {{ config.lang.cart_add_for_free_shipping_end|default('for free shipping!') }}
-                                                                </td>
-                                                            </tr>
-                                                        {% elseif has_qualified_for_free_shipping %}
-                                                            <tr class="fc-subtotal--row fc-free-shipping-achieved-row">
-                                                                <td colspan="2"
-                                                                    class="fc-free-shipping-achieved fc-align-center">
-                                                                    {{ config.lang.cart_free_shipping_achieved|default("You've qualified for free shipping!") }}
-                                                                </td>
-                                                            </tr>
-                                                        {% endif %}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            {% endif %}
                                         </li>
                                     {% elseif total_shipping > 0 %} {# Handles cases where shipping_address.has_shippable_products is false #}
                                         <li class="fc-transaction__shipping fc-transaction__section">
@@ -1002,6 +1014,18 @@
                             {% if context == 'cart' %}
                                 <div class="fc-actions--payment">
                                     {% if items|length > 0 %}
+                                        <p class="fc-shipping-free-shipping-message">
+                                            {% if not has_qualified_for_free_shipping and subtotal_for_shipping > 0 and subtotal_for_shipping < free_shipping_threshold %}
+                                                {% set amount_needed = free_shipping_threshold - subtotal_for_shipping %}
+                                                <span class="fc-free-shipping-notice">
+                                                {{ config.lang.cart_add_for_free_shipping_start|default('Add') }} {{ amount_needed|money_format }} {{ config.lang.cart_add_for_free_shipping_end|default('for free shipping!') }}
+                                            </span>
+                                            {% elseif has_qualified_for_free_shipping %}
+                                                <span class="fc-free-shipping-achieved">
+                                                {{ config.lang.cart_free_shipping_achieved|default("You've qualified for free shipping!") }}
+                                            </span>
+                                            {% endif %}
+                                        </p>
 
                                         {% block order_payment_action_checkout %}
                                             <p class="fc-action--payment--checkout">
