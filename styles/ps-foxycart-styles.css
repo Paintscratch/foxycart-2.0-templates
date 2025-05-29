@@ -54,9 +54,28 @@
     font-size: 16px;
 }
 
-#fc .fc-cart__item__color__swatch {
+/* Container for name with color swatch */
+#fc .fc-cart__item__name-with-color {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between swatch and text */
+}
+
+/* Color swatch styling - make it a square */
+#fc .fc-cart__item__name-with-color .fc-cart__item__color__swatch {
     display: block;
-    height: 20px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #000; /* Black outline as shown in screenshot */
+    border-radius: 2px; /* Slight rounding for better appearance */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Ensure the name paragraph has no extra margins when in the flex container */
+#fc .fc-cart__item__name-with-color .fc-cart__item__name {
+    margin: 0; /* Remove default paragraph margins */
+    font-weight: bold;
+    font-size: 16px;
 }
 
 /* ==========================================================================
@@ -547,7 +566,6 @@
 
 /* Order Summary Styles */
 .ps-foxy #fc div[data-fc-id="block-order-totals"] {
-    font-size: 13px;
     line-height: 1.3;
 }
 
@@ -560,8 +578,8 @@
 }
 
 .ps-foxy #fc div[data-fc-id="block-order-totals"] > .fc-transaction__header {
-    font-size: 1.1em;
-    font-weight: bold;
+    font-size: 1.2em;
+    font-weight: 700;
     margin-bottom: 8px;
     padding-bottom: 4px;
 }
@@ -802,7 +820,7 @@
 }
 
 #fc .fc-free-shipping-notice {
-    color: #0050b3;
+    color: #b91c1c;
 }
 
 #fc .fc-free-shipping-achieved {
@@ -850,6 +868,8 @@
 
 .ps-foxy #fc .fc-action--checkout--button {
     background: #1d4ed8;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 /* Sidecart Navigation */

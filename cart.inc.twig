@@ -86,7 +86,7 @@
                         {% endif %}
                         <p class="fc-order-quantity">
                             {% set temp_lang_cart_items = config.lang.cart_items|raw %}
-                            {% if item_count == 1 %}
+                            {% if display_item_count == 1 %}
                                 {% set temp_lang_cart_items = config.lang.cart_item|raw %}
                             {% endif %}
                             <span data-fc-order-quantity-integer="fc-order-quantity-integer">{{ display_item_count }}</span>
@@ -238,7 +238,6 @@
                                                     </div>
                                                 {% endif %}
                                                 <div class="fc-cart__item__details">
-                                                    <p class="fc-cart__item__name">{{ item.name }}</p>
                                                     {% if item.parent_code == '' %}
                                                         {# Initialize a variable to hold the RGB value #}
                                                         {% set item_color_rgb = '' %}
@@ -254,10 +253,15 @@
 
                                                         {# Check if a valid RGB value was found before rendering #}
                                                         {% if item_color_rgb is not empty and item_color_rgb != '' %}
-                                                            <div class="fc-cart__item__color">
+                                                            <div class="fc-cart__item__name-with-color">
                                                                 <span class="fc-cart__item__color__swatch" style="background-color: {{ item_color_rgb | raw }};"></span>
+                                                                <p class="fc-cart__item__name">{{ item.name }}</p>
                                                             </div>
+                                                        {% else %}
+                                                            <p class="fc-cart__item__name">{{ item.name }}</p>
                                                         {% endif %}
+                                                    {% else %}
+                                                        <p class="fc-cart__item__name">{{ item.name }}</p>
                                                     {% endif %}
                                                     {% if item.parent_code != '' %}
                                                         <div class="fc-cart__item__totals">
@@ -493,11 +497,7 @@
                                 {% if context == 'cart' and not has_multiple_addresses %}
                                     {% if show_address_entry %}
                                         <div class="fc-address-entry">
-                                            <h4>
-                                                <svg class="fc-svg-icon fc-icon-large" role="presentation">
-                                                    <use xlink:href="#fa-bank"/>
-                                                </svg> {{ config.lang.cart_calculate_taxes|raw }}
-                                            </h4>
+                                            <h4>{{ config.lang.cart_calculate_taxes|raw }}</h4>
 
                                             {% include 'postal_code.inc.twig' with {'address': shipping_address} %}
 
@@ -552,7 +552,7 @@
                                 {% endif %}
 
 
-                                <h3 class="fc-transaction__header">{{ config.lang.cart_order_summary|raw }}</h3>
+                                <h2 class="fc-transaction__header">{{ config.lang.cart_order_summary|raw }}</h2>
 
                                 <ul class="fc-transaction">
                                     {% if shipping_address.has_shippable_products or has_taxes or has_discounts %}
@@ -580,7 +580,13 @@
                                             <div class="fc-shipping-summary-line"> {# NEW: Main container for the single line #}
                                                 <div class="fc-shipping-summary-line__address-details"> {# NEW: Left part #}
                                                     {% if context == 'cart' and not has_multiple_addresses %}
-                                                        <span class="fc-shipping-summary-line__ship-to-label">{{ config.lang.cart_shipping_to|raw }}</span>
+                                                        <span class="fc-shipping-summary-line__ship-to-label">
+                                                            {% if show_shipping_tbd %}
+                                                                Shipping
+                                                            {% else %}
+                                                                {{ config.lang.cart_shipping_to|raw }}
+                                                            {% endif %}
+                                                        </span>
                                                         {% if shipping_address.country and shipping_address.city %}
                                                             <address
                                                                     class="fc-transaction__shipping-address fc-shipping-summary-line__address">
