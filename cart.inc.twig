@@ -1,4 +1,14 @@
 {# BEGIN CART TWIG TEMPLATE - Modified for PaintScratch #}
+<!-- Add this at the top of cart.inc.twig -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script>
+    // Only load modal library if not already loaded
+    if (typeof jQuery !== 'undefined' && !jQuery.fn.modal) {
+        var script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js';
+        document.head.appendChild(script);
+    }
+</script>
 
 {# ===================================================== #}
 {% block cart %}
@@ -14,7 +24,6 @@
         {# You can add other custom SVG symbols here if needed for PaintScratch #}
     </svg>
     {# --- End of your custom fa-times SVG --- #}
-
 {% endif %}
 
 <div id="fc-cart" {% if context== 'cart' %} class="fc-container"{% endif %}>
@@ -73,6 +82,20 @@
 
     <div id="{{ container_id }}">
         <header class="fc-cart__header fc-container__row" role="banner">
+            {% if cart_is_fullpage or context == 'checkout' %}
+                <div class="fc-cancel-continue-shopping fc-container__grid">
+                    {% block continue_shopping %}
+                        {% if cart_cancel_and_continue_link != '' %}
+                            <a href="{{ cart_cancel_and_continue_link }}" class="fc-button fc-button--cancel">
+                                <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Back Arrows">
+                                    <use xlink:href="#fa-angle-double-left"/>
+                                </svg>
+                                {{ config.lang.cart_cancel_and_continue|raw }}
+                            </a>
+                        {% endif %}
+                    {% endblock continue_shopping %}
+                </div>
+            {% endif %}
             {% if not is_updateinfo %}
                 <div class="fc-cart__title fc-container__grid">
                     {% block cart_title %}
@@ -95,21 +118,6 @@
                             {{ config.lang.cart_in_your_order|raw }}
                         </p>
                     {% endblock cart_title %}
-                </div>
-            {% endif %}
-
-            {% if cart_is_fullpage or context == 'checkout' %}
-                <div class="fc-cancel-continue-shopping fc-container__grid">
-                    {% block continue_shopping %}
-                        {% if cart_cancel_and_continue_link != '' %}
-                            <a href="{{ cart_cancel_and_continue_link }}" class="fc-button fc-button--cancel">
-                                <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Back Arrows">
-                                    <use xlink:href="#fa-angle-double-left"/>
-                                </svg>
-                                {{ config.lang.cart_cancel_and_continue|raw }}
-                            </a>
-                        {% endif %}
-                    {% endblock continue_shopping %}
                 </div>
             {% endif %}
         </header>
@@ -255,7 +263,7 @@
                                                         {% if item_color_rgb is not empty and item_color_rgb != '' %}
                                                             <div class="fc-cart__item__name-with-color">
                                                                 <span class="fc-cart__item__color__swatch" style="background-color: {{ item_color_rgb | raw }};"></span>
-                                                                <p class="fc-cart__item__name">{{ item.name }}</p>
+                                                                <p class="fc-cart__item__name">Products in {{ item.name }}</p>
                                                             </div>
                                                         {% else %}
                                                             <p class="fc-cart__item__name">{{ item.name }}</p>
@@ -563,7 +571,7 @@
                                             <table>
                                                 <tr class="fc-subtotal--row">
                                                     <td class="fc-subtotal__label">
-                                                        <h5>{{ config.lang.cart_subtotal|raw }}</h5></td>
+                                                        <h5>{{ config.lang.cart_subtotal|raw }}:</h5></td>
                                                     {% if has_inclusive_taxes %}
                                                         <td class="fc-subtotal__value">{{ total_item_with_tax_price|money_format }}</td>
                                                     {% else %}
@@ -616,14 +624,14 @@
                                                     {% if shipping_address.shipping_service_id != 0 and shipping_address.shipping_service_description %}
                                                         {% set shipping_service_label = shipping_address.shipping_service_description %}
                                                     {% endif %}
-                                                    <span class="fc-shipping-summary-line__shipping-label">
+                                                    <h5 class="fc-shipping-summary-line__shipping-label">
                                                         {% if shipping_service_label and shipping_service_label|trim is not empty %}
                                                             {{ shipping_service_label|trim|raw }}{{ ':' }}
                                                         {% else %}
                                                             {# Fallback if the determined label is empty, ensures "Shipping" or "Shipping and Handling" still shows #}
                                                             {{ config.lang.cart_shipping_and_handling|default('Shipping')|raw }}{{ ':' }}
                                                         {% endif %}
-                                                    </span>
+                                                    </h5>
                                                     <span class="fc-shipping-summary-line__shipping-value">
                                                         {% if has_inclusive_taxes %}
                                                             {% set current_shipping_cost_display = total_shipping_with_tax %}
@@ -856,7 +864,7 @@
                                                     {% if total_tax > 0 %}
                                                         <tr class="fc-subtotal--row">
                                                             <td class="fc-subtotal__label">
-                                                                <h5 class="fc-transaction__ui__header">{{ config.lang.cart_tax|raw }}</h5>
+                                                                <h5 class="fc-transaction__ui__header">{{ config.lang.cart_tax|raw }}:</h5>
                                                             </td>
                                                             <td class="fc-subtotal__value">
                                                                 {{ total_tax|money_format }}
@@ -1104,5 +1112,14 @@
         {# #fc-cart-responsive / #fc-cart-non-responsive #}
 
     </div><!-- data-fc-container="cart" -->
+
+    <!-- Remove item confirmation modal -->
+    <div id="ps-remove-item-modal" class="modal" style="display: none;">
+        <h5>Remove this item from your cart?</h5>
+        <div class="modal-buttons">
+            <a href="#" id="ps-remove-confirm-yes" class="btn btn-primary">Yes, Remove</a>
+            <a href="#" id="ps-remove-confirm-no" class="btn" rel="modal:close">Cancel</a>
+        </div>
+    </div>
     {% endblock %}{# cart #}
 {# ===================================================== #}

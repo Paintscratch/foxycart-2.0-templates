@@ -7,9 +7,40 @@
    1. Core Structure & Basic Elements
    ========================================================================== */
 
+#fc body.ps-foxy {
+    background: #fff;
+}
+
 /* Modal and cart containers */
 #fc div.modal {
     padding: 15px 30px;
+}
+
+div.blocker {
+    z-index: 99999 !important;
+}
+
+/* Center modal content with button wrapper */
+.modal {
+    text-align: center !important;
+    padding: 20px !important;
+}
+
+.modal h5 {
+    text-align: center !important;
+    margin: 0 0 20px 0 !important;
+    font-size: 1.2em !important;
+}
+
+.modal .modal-buttons {
+    text-align: center !important;
+    margin-top: 15px !important;
+}
+
+.modal .modal-buttons a.btn {
+    display: inline-block !important;
+    margin: 0 5px !important;
+    vertical-align: top !important;
 }
 
 #fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image,
@@ -20,7 +51,7 @@
 /* Basic layout containers */
 #fc .fc-cart__item {
     display: flex;
-    padding: 15px 10px;
+    padding: 0 10px 15px 10px;
     position: relative;
     border-bottom: 1px solid #eee;
     align-items: center;
@@ -47,12 +78,6 @@
 #fc .fc-sidebar {
     background: #ffffff;
 }
-/* Core text and content elements */
-#fc .fc-cart__item__name {
-    font-weight: bold;
-    margin: 0 0 5px;
-    font-size: 16px;
-}
 
 /* Container for name with color swatch */
 #fc .fc-cart__item__name-with-color {
@@ -75,7 +100,7 @@
 #fc .fc-cart__item__name-with-color .fc-cart__item__name {
     margin: 0; /* Remove default paragraph margins */
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1em;
 }
 
 /* ==========================================================================
@@ -136,6 +161,11 @@
     display: block;
 }
 
+#fc .fc-checkout .fc-cart__item__image__img {
+    width: 80px;
+    max-width: 80px;
+}
+
 /* Product options list */
 #fc .fc-cart__item__options {
     list-style: none;
@@ -148,7 +178,7 @@
 /* Cart item layout for consistent alignment with image */
 #fc .fc-cart__item {
     display: flex;
-    padding: 15px 10px;
+    padding: 0 10px 15px 10px;
     position: relative;
     border-bottom: 1px solid #eee;
     align-items: flex-start; /* Start alignment to allow custom positioning */
@@ -162,7 +192,207 @@
     min-width: 0; /* Prevents flex item from overflowing */
 }
 
-#fc .fc-checkout  #fc-cart--fixed-width  .fc-cart__item__details-and-image {
+#fc .fc-checkout .ps-logo-container {
+    display: flex;
+}
+
+#fc .ps-foxy .fc-checkout-title {
+    display: inline-block;
+    text-align: left;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+#fc .ps-foxy .fc-logo__image {
+    max-width: 100px;
+    margin: 0 15px 0 0;
+    padding: 0;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   Section Title Alignment & Numbered Icon Removal
+   ========================================================================== */
+
+/* Hide the numbered circular icons */
+#fc .ps-foxy .fc-section-counter {
+    display: none !important;
+}
+
+/* Ensure fieldsets don't add extra spacing */
+#fc .ps-foxy .fc-checkout fieldset {
+    margin: 0 0 25px 0;
+    padding: 0;
+    border: none;
+}
+
+/* Base legend styling */
+#fc .ps-foxy .fc-checkout fieldset legend {
+    padding: 0 !important;
+    margin: 0 0 15px 0 !important;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+    border: none;
+    width: auto;
+    float: none;
+    position: static;
+    text-indent: 0;
+    box-sizing: border-box;
+}
+
+/* Label styling on checkout form */
+
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--customer-email {
+    margin-left: 0 !important;
+}
+
+/* Hide section labels  */
+#fc .ps-foxy .fc-checkout .fc-container__grid--label--name,
+#fc .ps-foxy .fc-checkout .fc-form-label--shipping-address1,
+#fc .ps-foxy .fc-checkout .fc-form-label--billing-address1 {
+    display: none !important;
+}
+
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--company,
+#fc .ps-foxy .fc-checkout .fc-container-checkout__grid--postal-code,
+#fc .ps-foxy .fc-checkout .fc-container__grid--payment-method,
+#fc .ps-foxy .fc-checkout .fc-container__grid--use-different-address,
+#fc .ps-foxy .fc-checkout .ps-special-requests,
+#fc .ps-foxy .fc-checkout .fc-container__grid--checkout-submit {
+    margin-left: 0 !important;
+}
+
+#fc .ps-foxy .fc-checkout .ps-special-requests {
+    width: 100% !important;
+}
+
+#fc .ps-foxy .fc-checkout .ps-special-requests .fc-form-group {
+    margin-top: 0 !important;
+}
+
+#fc .ps-foxy .fc-checkout .ps-special-requests .fc-input-group-container {
+    padding: 0 !important;
+    background: #fff !important;
+}
+
+#fc .ps-foxy .fc-checkout .ps-special-requests label {
+    display: none !important;
+}
+
+/* Override 1/3 width of checkout form container */
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--first-name,
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--last-name,
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--company,
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--address1,
+#fc .ps-foxy .fc-checkout .fc-container__grid--label--address2,
+#fc .ps-foxy .fc-checkout .fc-container__grid--input--phone {
+    width: 50%;
+}
+
+
+#fc .ps-foxy .fc-checkout .fc-container__grid--checkout-submit .fc-button--submit {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+}
+
+#fc .ps-foxy .fc-checkout .fc-alert-container--error .fc-input-group-container--active .fc-input-group-container__title:before {
+    left: 10px !important;
+}
+
+/* Desktop alignment (768px and up) - match the 25% margin of form containers */
+@media (min-width: 768px) {
+    #fc .ps-foxy .fc-checkout .fc-container__grid--checkout-submit {
+        width: 100% !important;
+    }
+}
+
+/* Mobile alignment (below 768px) - align with mobile form layout */
+@media (max-width: 767px) {
+    #fc .ps-foxy .fc-checkout fieldset legend {
+        padding-left: 0 !important; /* Adjust this value to match mobile form field padding */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #fc .ps-foxy .fc-checkout fieldset#fc-payment legend,
+    #fc .ps-foxy .fc-checkout fieldset#fc-additional-fields legend,
+    #fc .ps-foxy .fc-checkout .fc-container__grid--checkout-submit {
+        margin-left: 0 !important;
+    }
+}
+
+@media (min-width: 992px) {
+    #fc .ps-foxy .fc-checkout .fc-container__grid--checkout-submit {
+        width: 67% !important;
+    }
+}
+
+/* ==========================================================================
+   Email Section "— or —" and Express Payment Button Centering
+   ========================================================================== */
+
+/* Center the "— or —" text under the email field */
+#fc .ps-foxy .fc-checkout p.fc-action--payment--or {
+    margin: 10px 0 10px 80px !important;
+    display: inline-block !important;
+}
+
+/* Center the express payment options under the email field */
+#fc .ps-foxy .fc-checkout div#fc-checkout__section--express-options {
+    margin: 10px 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+}
+
+/* Center the Amazon Pay button within its container */
+#fc .ps-foxy .fc-checkout .fc-container__grid--authentication-button--amazon.fc-express-option {
+    text-align: left !important;
+    margin: 0 auto !important;
+    display: block !important;
+}
+
+/* Center the Amazon Pay button element itself */
+#fc .ps-foxy .fc-checkout #amazon-pay-button {
+    margin: 0 auto !important;
+    display: inline-block !important;
+}
+
+#fc .ps-foxy .fc-checkout #fc-payment-method-amazon_v2 {
+    display: none !important;
+}
+
+#fc .ps-foxy .fc-checkout fieldset {
+    margin-top: 50px !important;
+}
+
+#fc .ps-foxy .fc-checkout fieldset#fc-additional-fields {
+    margin-top: 0 !important;
+
+}
+
+#fc .ps-foxy .fc-checkout #Special_Requests {
+
+}
+
+#fc .ps-foxy .fc-checkout fieldset.fc-address-entry div.fc-form-group:last-child {
+    margin-bottom: 0 !important;
+}
+
+#fc .ps-foxy .fc-checkout fieldset.fc-address-entry {
+    margin-bottom: 0 !important;
+}
+
+#fc .ps-foxy .fc-checkout .fc-checkout__section--customer-billing-address__use-different-address {
+    margin-bottom: 40px !important;
+}
+
+/* Hide 'United States'  */
+#fc .ps-foxy .fc-checkout .fc-container__grid--country {
+    display: none !important;
+}
+
+#fc .fc-checkout #fc-cart--fixed-width .fc-cart__item__details-and-image {
     flex: none;
     width: 100%;
 }
@@ -191,11 +421,15 @@
     min-height: 80px;
 }
 
+#fc #fc-cart--fixed-width .fc-cart__items--with-images .fc-cart__item__details {
+    margin-top: 0 !important;
+}
+
 /* Product name alignment */
 #fc .fc-cart__item__name {
     font-weight: bold;
     margin: 0 0 5px;
-    font-size: 16px;
+    font-size: 1em;
     /* Align with left edge of content area */
     text-align: left;
 }
@@ -204,7 +438,7 @@
 #fc .fc-cart__item__totals {
     min-width: 0;
     /* margin-top: auto; */ /* Remove this line */
-    padding-top: 10px;
+    padding-top: 0;
     width: 100%;
 }
 
@@ -220,6 +454,10 @@
 #fc .fc-cart__item__price {
     text-align: left;
     margin-right: auto; /* Push other elements to the right */
+}
+
+#fc #fc-cart--fixed-width .fc-cart__item__price {
+    margin-bottom: 0 !important;
 }
 
 #fc .fc-cart__item__price p {
@@ -241,6 +479,7 @@
 
 #fc .fc-checkout #fc-cart--fixed-width .fc-cart__item__quantity {
     text-align: left;
+    padding: 0 !important;
 }
 
 
@@ -377,6 +616,7 @@
     -webkit-appearance: none;
     margin: 0;
 }
+
 /* Override any conflicting FoxyCart form control styles */
 #fc .fc-quantity-wrapper .fc-form-control {
     border: none !important;
@@ -504,6 +744,43 @@
     text-align: left;
 }
 
+#fc .fc-checkout h2.fc-cart__title__header,
+#fc .fc-checkout h2.fc-transaction__header {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+}
+
+#fc .fc-checkout h2.fc-transaction__header {
+    margin-top: 30px;
+    border-top: 1px solid #000;
+    padding-top: 30px;
+}
+
+#fc .fc-checkout h2.fc-cart__title__header {
+    display: inline-block;
+}
+
+#fc .fc-order-quantity {
+    display: inline-block;
+    margin-left:10px;
+    font-weight: normal;
+}
+
+#fc #fc-cart--fixed-width .fc-cancel-continue-shopping {
+    text-align: left;
+}
+
+@media (max-width: 767px) {
+    #fc #fc-cart--fixed-width .fc-cancel-continue-shopping {
+        margin-top: 20px;
+    }
+
+    #fc .ps-foxy .ps-logo-container {
+        padding-left: 20px;
+    }
+}
+
 /* ==========================================================================
    7. Order Summary, Shipping & Address Styles
    ========================================================================== */
@@ -523,6 +800,7 @@
     justify-content: space-between;
     align-items: center;
 }
+
 #fc .fc-checkout .fc-shipping-summary-line__address-details {
     display: none;
 }
@@ -560,14 +838,22 @@
     font-weight: bold;
 }
 
-.ps-foxy #fc .fc-shipping-summary-line__shipping-label {
-    display: none !important;
-}
-
 /* Order Summary Styles */
 .ps-foxy #fc div[data-fc-id="block-order-totals"] {
     line-height: 1.3;
 }
+
+#fc div[data-fc-id="block-order-totals"] .fc-transaction {
+    border-bottom: 2px solid #000;
+}
+
+@media (min-width: 768px) {
+    #fc div[data-fc-id="block-order-totals"] .fc-transaction {
+
+        border-bottom: none;
+    }
+}
+
 
 #fc .fc-subtotal__label {
     padding-left: 0;
@@ -582,6 +868,10 @@
     font-weight: 700;
     margin-bottom: 8px;
     padding-bottom: 4px;
+}
+
+#fc .ps-foxy .fc-transaction__section {
+    margin-bottom: 0;
 }
 
 .ps-foxy #fc div[data-fc-id="block-order-totals"] > .fc-transaction > li.fc-transaction__section {
@@ -645,17 +935,23 @@
 }
 
 #fc .fc-shipping-summary-line__shipping-label {
+    display: none;
+}
+
+
+#fc .fc-checkout .fc-shipping-summary-line__shipping-label {
     display: inline-block;
     float: left;
+    margin-top: 0;
 }
+
 #fc .fc-shipping-summary-line__shipping-value {
     display: inline-block;
     float: right;
+    margin-top: 0;
+
 }
 
-#fc .fc-subtotal--taxes h5 {
-    font-weight: normal;
-}
 
 /* Grand Total Styling */
 .ps-foxy #fc div[data-fc-id="block-order-totals"] .fc-transaction__total {
@@ -1019,6 +1315,7 @@
     #fc .fc-sidebar--checkout {
         padding-left: 20px !important;
         border-left: 1px solid #ddd !important;
+        margin-top: 50px !important;
     }
 }
 
@@ -1096,5 +1393,9 @@
     /* Main cart content area padding */
     .ps-foxy #fc .fc-cart-container {
         padding-top: 60px;
+    }
+
+    #fc .fc-checkout .fc-form-label--new-cc-cvv2 {
+        display: none !important;
     }
 }

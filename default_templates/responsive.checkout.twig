@@ -12,12 +12,19 @@
         <link href="{{ css_file_href }}" rel="stylesheet" media="screen">
     {% endfor %}
 
-    <link rel="stylesheet" href="{{ config.template_config.custom_config.ps_domain  }}/shop/foxycart_templates/styles/ps-foxycart-styles.css">
+    <link rel="stylesheet"
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css">
 
-    {{ fc_header_content|raw }}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    {{ fc_header_content|raw }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 </head>
 <body class="ps-foxy">
 {% include 'svg.inc.twig' %}
+<div class="fc-container ps-logo-container">
+    <img id="fc-logo" src="{{ config.cache_path }}{{ config.store_logo_url }}" class="fc-logo__image"
+         alt="{{ store_name }}">
+    <h1 class="fc-checkout-title">Secure Checkout</h1>
+</div>
 
 {% import "utils.inc.twig" as utils %}
 {% embed 'checkout.inc.twig' %}
@@ -33,20 +40,26 @@
                 </a>
             </div>
         {% endblock %} #}
+    {% block logo %}
+    {% endblock %}
+
+
 {% endembed %}
 
 <div id="ps-confirm-cancel-modal" class="modal">
     <h5>Return to shopping? Your cart will be saved.</h5>
-    <a href="#" rel="modal:close" class="btn btn-primary">Continue Checkout</a>
-    <a href="#" id="ps-confirm-cancel-yes" class="btn">Return to Shop</a>
+    <div class="modal-buttons">
+        <a href="#" rel="modal:close" class="btn btn-primary">Continue Checkout</a>
+        <a href="#" id="ps-confirm-cancel-yes" class="btn">Return to Shop</a>
+    </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
 {% include template_from_string(fc_footer_content) %}
 <script>
     var FC = FC || {};
-    FC.onLoad = function() {
-        FC.client.on('ready.done', function() {
+    FC.onLoad = function () {
+        FC.client.on('ready.done', function () {
             if (typeof jQuery == 'undefined') {
                 console.error("jQuery is not loaded. Cannot initialize modal.");
                 return;
@@ -57,12 +70,12 @@
                 $cancelLink.attr('id', 'fc-generated-cancel-link');
             }
 
-            $cancelLink.on('click', function(event) {
+            $cancelLink.on('click', function (event) {
                 event.preventDefault();
                 $('#ps-confirm-cancel-modal').modal();
             });
 
-            $('#ps-confirm-cancel-yes').on('click', function(event) {
+            $('#ps-confirm-cancel-yes').on('click', function (event) {
                 event.preventDefault();
                 var fallbackUrl = '';
                 if (FC && FC.json && FC.json.cart_cancel_and_continue_link) {
