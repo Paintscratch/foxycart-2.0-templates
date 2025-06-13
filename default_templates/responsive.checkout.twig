@@ -56,45 +56,100 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
 {% include template_from_string(fc_footer_content) %}
+{% set warning_threshold = config.template_config.custom_config.fraud_amount_threshold %}
 <script>
-    var FC = FC || {};
-    FC.onLoad = function () {
-        FC.client.on('ready.done', function () {
-            if (typeof jQuery == 'undefined') {
-                console.error("jQuery is not loaded. Cannot initialize modal.");
-                return;
+    (function($, FC) {
+
+        /**
+         * Checks if the warning for high-value orders with different billing
+         * addresses should be displayed and updates the DOM accordingly.
+         */
+        function checkBillingAddressWarning() {
+            if (!FC.json || !FC.json.total_order) {
+                return; // Exit if FoxyCart data isn't ready
             }
 
-            var $cancelLink = $('.fc-cancel-continue-shopping a').first();
-            if (!$cancelLink.attr('id')) {
-                $cancelLink.attr('id', 'fc-generated-cancel-link');
+            var threshold = {{ warning_threshold }};
+            var useDifferentBilling = $('#use_different_addresses').is(':checked');
+            var orderTotal = FC.json.total_order;
+            var $container = $('#billing-address-warning-container');
+
+            // Create the warning container if it doesn't exist
+            if ($container.length === 0) {
+                $container = $('<div id="billing-address-warning-container" style="display: none;"></div>');
+                var $billingAddressFieldset = $('fieldset[data-fc-id="billing_address"]');
+                if ($billingAddressFieldset.length) {
+                    $billingAddressFieldset.before($container);
+                } else {
+                    // Fallback: insert after the checkbox if billing fieldset not found
+                    $('#use_different_addresses').closest('label').after($container);
+                }
             }
 
-            $cancelLink.on('click', function (event) {
-                event.preventDefault();
-                $('#ps-confirm-cancel-modal').modal();
+            // Show or hide the warning message
+            if (useDifferentBilling && orderTotal > threshold) {
+                var message =
+                    '<div class="fc-alert fc-alert--warning" role="alert">' +
+                    '<p style="margin:0;"><strong>Please Note:</strong> For orders over $' + threshold.toFixed(2) + ' with different billing and shipping addresses, we recommend using PayPal or Apple Pay for the smoothest experience. Credit card payments may require additional verification.</p>' +
+                    '</div>';
+
+                if (!$container.is(':visible')) {
+                    $container.html(message).slideDown('fast');
+                }
+            } else {
+                if ($container.is(':visible')) {
+                    $container.slideUp('fast', function() { $(this).empty(); });
+                }
+            }
+        }
+
+        var FC = FC || {};
+        FC.onLoad = function() {
+            // This event fires once FoxyCart and all its data is ready on the page.
+            FC.client.on('ready.done', function() {
+
+                // --- Initial check on page load ---
+                checkBillingAddressWarning();
+
+                // --- Listen for checkbox changes directly ---
+                $(document).on('change', '#use_different_addresses', function() {
+                    // Small delay to ensure any related FoxyCart processing is complete
+                    setTimeout(checkBillingAddressWarning, 100);
+                });
+
+                // --- Your Cancel Modal Logic (Unchanged) ---
+                if (typeof $.modal == 'undefined') {
+                    console.error("jQuery Modal is not loaded. Cannot initialize modal.");
+                    return;
+                }
+                var $cancelLink = $('.fc-cancel-continue-shopping a').first();
+                if (!$cancelLink.attr('id')) {
+                    $cancelLink.attr('id', 'fc-generated-cancel-link');
+                }
+                $cancelLink.on('click', function(event) {
+                    event.preventDefault();
+                    $('#ps-confirm-cancel-modal').modal();
+                });
+                $('#ps-confirm-cancel-yes').on('click', function(event) {
+                    event.preventDefault();
+                    var fallbackUrl = FC.json.cart_cancel_and_continue_link || FC.json.config.store_url || '/';
+                    if (document.referrer === "" || (history.length !== undefined && history.length <= 2)) {
+                        window.location.href = fallbackUrl;
+                    } else {
+                        history.back(-1);
+                    }
+                    $.modal.close();
+                });
             });
 
-            $('#ps-confirm-cancel-yes').on('click', function (event) {
-                event.preventDefault();
-                var fallbackUrl = '';
-                if (FC && FC.json && FC.json.cart_cancel_and_continue_link) {
-                    fallbackUrl = FC.json.cart_cancel_and_continue_link;
-                } else {
-                    // A more generic fallback if FC.json.cart_cancel_and_continue_link is somehow not available
-                    // This could be your store's homepage.
-                    fallbackUrl = (FC && FC.json && FC.json.config && FC.json.config.store_url) ? FC.json.config.store_url : '/';
-                }
-
-                if (document.referrer === "" || (history.length !== undefined && history.length <= 2)) {
-                    window.location.href = fallbackUrl;
-                } else {
-                    history.back(-1);
-                }
-                jQuery.modal.close();
+            // --- Keep this for when cart totals change (coupons, etc.) ---
+            FC.client.on('cart-update', function() {
+                checkBillingAddressWarning();
             });
-        });
-    };
+
+        };
+
+    })(jQuery, FC);
 </script>
 
 </body>
