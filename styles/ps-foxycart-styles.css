@@ -103,6 +103,14 @@ div.blocker {
     font-size: 1em;
 }
 
+#fc .fc-checkout .fc-alert--warning {
+    /* High contrast version - meets WCAG AA standards */
+    border: 2px solid #8B4513;
+    color: #5D2F0A;
+    background-color: #FEF7E6;
+    text-shadow: none;
+}
+
 /* ==========================================================================
    2. Parent-Child Product Relationship Styling
    ========================================================================== */
@@ -385,6 +393,14 @@ div.blocker {
 
 #fc .ps-foxy .fc-checkout .fc-checkout__section--customer-billing-address__use-different-address {
     margin-bottom: 40px !important;
+}
+
+#fc .ps-foxy .fc-checkout .fc-container__grid--use-different-address {
+    width: 100%;
+}
+
+#fc .ps-foxy .fc-checkout #billing-address-warning-container {
+    margin-top: 5px;
 }
 
 /* Hide 'United States'  */
