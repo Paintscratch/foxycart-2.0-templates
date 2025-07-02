@@ -342,8 +342,9 @@ div.blocker {
 
 /* Center the "— or —" text under the email field */
 #fc .ps-foxy .fc-checkout p.fc-action--payment--or {
-    margin: 10px 0 10px 80px !important;
-    display: inline-block !important;
+    display: block !important;
+    font-weight: bold !important;
+    margin-bottom: 0;
 }
 
 /* Center the express payment options under the email field */
@@ -351,13 +352,19 @@ div.blocker {
     margin: 10px 0 !important;
     width: 100% !important;
     padding: 0 !important;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#fc .ps-foxy .fc-checkout div#fc-checkout__section--express-options.positioned {
+    opacity: 1;
 }
 
 /* Center the Amazon Pay button within its container */
 #fc .ps-foxy .fc-checkout .fc-container__grid--authentication-button--amazon.fc-express-option {
     text-align: left !important;
-    margin: 0 auto !important;
-    display: block !important;
+    position: relative;
+    top: 8px;
 }
 
 /* Center the Amazon Pay button element itself */
@@ -370,8 +377,31 @@ div.blocker {
     display: none !important;
 }
 
+#fc .ps-foxy .fc-checkout .fc-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5em 0;
+    width: 100%;
+}
+#fc .ps-foxy .fc-checkout .fc-divider__line {
+    flex: 1;
+    height: 1px;
+    background: #ccc;
+}
+#fc .ps-foxy .fc-checkout .fc-divider__text {
+    margin: 0 0.75em;
+    color: #666;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+
+#fc .ps-foxy .fc-checkout #fc-email {
+    width: 100% !important;
+}
+
 #fc .ps-foxy .fc-checkout fieldset {
-    margin-top: 50px !important;
+    margin-top: 30px !important;
 }
 
 #fc .ps-foxy .fc-checkout fieldset#fc-additional-fields {
@@ -785,6 +815,11 @@ div.blocker {
 
 #fc #fc-cart--fixed-width .fc-cancel-continue-shopping {
     text-align: left;
+    width: revert;
+    display: inline-block;
+    top: 16px;
+    float: right;
+    padding-right: 0;
 }
 
 @media (max-width: 767px) {

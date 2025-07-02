@@ -82,21 +82,6 @@
 
     <div id="{{ container_id }}">
         <header class="fc-cart__header fc-container__row" role="banner">
-            {% if cart_is_fullpage or context == 'checkout' %}
-                <div class="fc-cancel-continue-shopping fc-container__grid">
-                    {% block continue_shopping %}
-                        {% if cart_cancel_and_continue_link != '' %}
-                            <a href="{{ cart_cancel_and_continue_link }}" class="fc-button fc-button--cancel">
-                                <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Back Arrows">
-                                    <use xlink:href="#fa-angle-double-left"/>
-                                </svg>
-                                {{ config.lang.cart_cancel_and_continue|raw }}
-                            </a>
-                        {% endif %}
-                    {% endblock continue_shopping %}
-                </div>
-            {% endif %}
-            {% if not is_updateinfo %}
                 <div class="fc-cart__title fc-container__grid">
                     {% block cart_title %}
                         <h2 class="fc-cart__title__header">{{ config.lang.cart_caption|raw }}</h2>
@@ -118,6 +103,18 @@
                             {{ config.lang.cart_in_your_order|raw }}
                         </p>
                     {% endblock cart_title %}
+                    {% if cart_is_fullpage or context == 'checkout' %}
+                        <div class="fc-cancel-continue-shopping fc-container__grid">
+                            {% block continue_shopping %}
+                                {% if cart_cancel_and_continue_link != '' %}
+                                    <a href="{{ cart_cancel_and_continue_link }}" class="fc-button fc-button--cancel">
+                                        {{ config.lang.cart_cancel_and_continue|raw }}
+                                    </a>
+                                {% endif %}
+                            {% endblock continue_shopping %}
+                        </div>
+                    {% endif %}
+                    {% if not is_updateinfo %}
                 </div>
             {% endif %}
         </header>

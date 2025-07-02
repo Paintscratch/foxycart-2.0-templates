@@ -47,10 +47,10 @@
 {% endembed %}
 
 <div id="ps-confirm-cancel-modal" class="modal">
-    <h5>Return to shopping? Your cart will be saved.</h5>
+    <h5>Leave checkout to edit your cart?</h5>
     <div class="modal-buttons">
-        <a href="#" rel="modal:close" class="btn btn-primary">Continue Checkout</a>
-        <a href="#" id="ps-confirm-cancel-yes" class="btn">Return to Shop</a>
+        <a href="#" id="ps-confirm-cancel-no" class="btn btn-primary">Continue checkout</a>
+        <a href="#" id="ps-confirm-cancel-yes" class="btn btn-default">Edit my cart</a>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
@@ -59,98 +59,153 @@
 {% set warning_threshold = config.template_config.custom_config.fraud_amount_threshold %}
 <script>
     (function($, FC) {
+        "use strict";
 
-        /**
-         * Checks if the warning for high-value orders with different billing
-         * addresses should be displayed and updates the DOM accordingly.
-         */
+        // 1) High-value billing warning
         function checkBillingAddressWarning() {
-            if (!FC.json || !FC.json.total_order) {
-                return; // Exit if FoxyCart data isn't ready
-            }
+            if (!FC.json || !FC.json.total_order) return;
+            var threshold     = {{ warning_threshold }};
+            var useDifferent  = $('#use_different_addresses').is(':checked');
+            var total         = FC.json.total_order;
+            var $container    = $('#billing-address-warning-container');
 
-            var threshold = {{ warning_threshold }};
-            var useDifferentBilling = $('#use_different_addresses').is(':checked');
-            var orderTotal = FC.json.total_order;
-            var $container = $('#billing-address-warning-container');
-
-            // Create the warning container if it doesn't exist
-            if ($container.length === 0) {
-                $container = $('<div id="billing-address-warning-container" style="display: none;"></div>');
-                var $billingAddressFieldset = $('fieldset[data-fc-id="billing_address"]');
-                if ($billingAddressFieldset.length) {
-                    $billingAddressFieldset.before($container);
+            // inject container if missing
+            if (!$container.length) {
+                $container = $('<div id="billing-address-warning-container" style="display:none"></div>');
+                var $billingFs = $('fieldset[data-fc-id="billing_address"]');
+                if ($billingFs.length) {
+                    $billingFs.before($container);
                 } else {
-                    // Fallback: insert after the checkbox if billing fieldset not found
                     $('#use_different_addresses').closest('label').after($container);
                 }
             }
 
-            // Show or hide the warning message
-            if (useDifferentBilling && orderTotal > threshold) {
-                var message =
-                    '<div class="fc-alert fc-alert--warning" role="alert">' +
-                    '<p style="margin:0;">Use PayPal, Amazon Pay, or Apple Pay for different billing/shipping addresses. Credit cards may require additional verification.</p>' +
-                    '</div>';
-
+            // show or hide warning
+            if (useDifferent && total > threshold) {
+                var msg = ''
+                    + '<div class="fc-alert fc-alert--warning" role="alert">'
+                    +   '<p style="margin:0;">'
+                    +     'Use PayPal, Amazon Pay, or Apple Pay for different billing/shipping addresses. '
+                    +     'Credit cards may require additional verification.'
+                    +   '</p>'
+                    + '</div>';
                 if (!$container.is(':visible')) {
-                    $container.html(message).slideDown('fast');
+                    $container.html(msg).slideDown('fast');
                 }
-            } else {
-                if ($container.is(':visible')) {
-                    $container.slideUp('fast', function() { $(this).empty(); });
-                }
+            }
+            else if ($container.is(':visible')) {
+                $container.slideUp('fast', function(){ $(this).empty(); });
             }
         }
 
-        var FC = FC || {};
+        // 2) Fire on FoxyCart load
         FC.onLoad = function() {
-            // This event fires once FoxyCart and all its data is ready on the page.
             FC.client.on('ready.done', function() {
+                // A) Rename the “— or —” line
+                $('.fc-action--payment--or').text('Express checkout');
 
-                // --- Initial check on page load ---
+                // B) Move express buttons above the email fieldset
+                var $express  = $('#fc-checkout__section--express-options');
+                var $fieldset = $('#fc-checkout__section--email fieldset#fc-email');
+                if ($express.length && $fieldset.length) {
+                    $express.insertBefore($fieldset);
+                    setTimeout(function(){
+                        $express.addClass('positioned');
+                        // inject divider right below the express block
+                        var $divider = $(
+                            '<div class="fc-divider">' +
+                            '<span class="fc-divider__line"></span>' +
+                            '<span class="fc-divider__text">OR</span>' +
+                            '<span class="fc-divider__line"></span>' +
+                            '</div>'
+                        );
+                        if (!$express.next().is('.fc-divider')) {
+                            $express.after($divider);
+                        }
+                    }, 10);
+                } else {
+                    console.warn('Express options or email fieldset not found');
+                }
+
+                // C) Initial billing warning + listen for address changes
                 checkBillingAddressWarning();
-
-                // --- Listen for checkbox changes directly ---
-                $(document).on('change', '#use_different_addresses', function() {
-                    // Small delay to ensure any related FoxyCart processing is complete
+                $(document).on('change', '#use_different_addresses', function(){
                     setTimeout(checkBillingAddressWarning, 100);
                 });
 
-                // --- Your Cancel Modal Logic (Unchanged) ---
-                if (typeof $.modal == 'undefined') {
-                    console.error("jQuery Modal is not loaded. Cannot initialize modal.");
-                    return;
-                }
-                var $cancelLink = $('.fc-cancel-continue-shopping a').first();
-                if (!$cancelLink.attr('id')) {
-                    $cancelLink.attr('id', 'fc-generated-cancel-link');
-                }
-                $cancelLink.on('click', function(event) {
-                    event.preventDefault();
-                    $('#ps-confirm-cancel-modal').modal();
-                });
-                $('#ps-confirm-cancel-yes').on('click', function(event) {
-                    event.preventDefault();
-                    var fallbackUrl = FC.json.cart_cancel_and_continue_link || FC.json.config.store_url || '/';
-                    if (document.referrer === "" || (history.length !== undefined && history.length <= 2)) {
-                        window.location.href = fallbackUrl;
+                // D) “Cancel” modal logic
+                if (!$.modal) {
+                    console.error('jQuery Modal not loaded; cancel modal won’t work.');
+                } else {
+                    // pick the built-in cancel link by its cancel-button class
+                    var $cancelLink = $('a.fc-button--cancel');
+
+                    if (!$cancelLink.length) {
+                        console.error('Cancel-checkout link (fc-button--cancel) not found.');
                     } else {
-                        history.back(-1);
+                        // Open the dialog
+                        $cancelLink.on('click', function(e) {
+                            e.preventDefault();
+                            $('#ps-confirm-cancel-modal').modal();
+                        });
+
+                        // “No, continue checkout” inside the modal just closes it
+                        $('#ps-confirm-cancel-no').on('click', function(e) {
+                            e.preventDefault();
+                            $.modal.close();
+                        });
+
+                        // “Yes, edit my cart” does the navigation then hides
+                        $('#ps-confirm-cancel-yes').on('click', function(e) {
+                            e.preventDefault();
+                            // close the modal cleanly
+                            $.modal.close();
+                            // send them straight to your cart URL
+                            window.location.href = '{{ config.template_config.custom_config.ps_domain }}/cgi-bin/shopping-cart.cgi';
+                        });
                     }
-                    $.modal.close();
+                }
+
+                // =============================================
+                // E) HIDE AMAZON PAY MICRO-TEXT (NEW CODE)
+                // =============================================
+                function hideAmazonMicroText() {
+                    // 1. Find the host element that contains the Shadow DOM
+                    const amazonButtonHost = document.querySelector('#amazon-pay-button');
+
+                    // 2. Check if the host and its shadowRoot exist
+                    if (amazonButtonHost && amazonButtonHost.shadowRoot) {
+                        // 3. Query *inside* the Shadow DOM for the element to hide
+                        const microtextView = amazonButtonHost.shadowRoot.querySelector('.amazonpay-button-view3');
+
+                        // 4. If the element is found and is not already hidden, hide it.
+                        if (microtextView && microtextView.style.display !== 'none') {
+                            microtextView.style.display = 'none';
+                        }
+                    }
+                }
+
+                // Create an observer to watch for when the Amazon button is added to the page
+                const observer = new MutationObserver(function() {
+                    // When any change happens on the page, try to run our function
+                    hideAmazonMicroText();
                 });
+
+                // Start observing the main checkout container for any additions/changes
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+
+                // Run the function once on initial load just in case
+                hideAmazonMicroText();
             });
 
-            // --- Keep this for when cart totals change (coupons, etc.) ---
-            FC.client.on('cart-update', function() {
-                checkBillingAddressWarning();
-            });
-
+            // E) Also re-check billing warning on cart updates
+            FC.client.on('cart-update', checkBillingAddressWarning);
         };
 
     })(jQuery, FC);
 </script>
-
 </body>
 </html>
