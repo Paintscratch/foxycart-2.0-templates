@@ -78,6 +78,25 @@ div.blocker {
 #fc .fc-sidebar {
     background: #ffffff;
 }
+#fc .fc-sidebar .ps-cart-toggle {
+    display: none;
+}
+
+/* show it on phones */
+@media (max-width: 767px) {
+    #fc .fc-checkout [data-fc-id="block-cart-items-divs"] {
+        display: none !important;
+    }
+    /* when our wrapper has “expanded”, show it again */
+    #fc .fc-checkout  #fc-cart--fixed-width.expanded [data-fc-id="block-cart-items-divs"] {
+        display: block !important;
+    }
+
+    #fc .fc-sidebar .ps-cart-toggle   {
+        display: inline-block;
+        padding: 5px;
+    }
+}
 
 /* Container for name with color swatch */
 #fc .fc-cart__item__name-with-color {
@@ -824,7 +843,7 @@ div.blocker {
 
 @media (max-width: 767px) {
     #fc #fc-cart--fixed-width .fc-cancel-continue-shopping {
-        margin-top: 20px;
+        margin-top: 0;
     }
 
     #fc .ps-foxy .ps-logo-container {

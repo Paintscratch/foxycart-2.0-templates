@@ -104,6 +104,7 @@
                         </p>
                     {% endblock cart_title %}
                     {% if cart_is_fullpage or context == 'checkout' %}
+                        <button  id="ps-toggle-products"  type="button" class="ps-cart-toggle btn btn-default">Show items</button>
                         <div class="fc-cancel-continue-shopping fc-container__grid">
                             {% block continue_shopping %}
                                 {% if cart_cancel_and_continue_link != '' %}

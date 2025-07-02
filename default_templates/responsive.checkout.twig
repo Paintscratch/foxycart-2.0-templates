@@ -58,16 +58,16 @@
 {% include template_from_string(fc_footer_content) %}
 {% set warning_threshold = config.template_config.custom_config.fraud_amount_threshold %}
 <script>
-    (function($, FC) {
+    (function ($, FC) {
         "use strict";
 
         // 1) High-value billing warning
         function checkBillingAddressWarning() {
             if (!FC.json || !FC.json.total_order) return;
-            var threshold     = {{ warning_threshold }};
-            var useDifferent  = $('#use_different_addresses').is(':checked');
-            var total         = FC.json.total_order;
-            var $container    = $('#billing-address-warning-container');
+            var threshold = {{ warning_threshold }};
+            var useDifferent = $('#use_different_addresses').is(':checked');
+            var total = FC.json.total_order;
+            var $container = $('#billing-address-warning-container');
 
             // inject container if missing
             if (!$container.length) {
@@ -84,32 +84,33 @@
             if (useDifferent && total > threshold) {
                 var msg = ''
                     + '<div class="fc-alert fc-alert--warning" role="alert">'
-                    +   '<p style="margin:0;">'
-                    +     'Use PayPal, Amazon Pay, or Apple Pay for different billing/shipping addresses. '
-                    +     'Credit cards may require additional verification.'
-                    +   '</p>'
+                    + '<p style="margin:0;">'
+                    + 'Use PayPal, Amazon Pay, or Apple Pay for different billing/shipping addresses. '
+                    + 'Credit cards may require additional verification.'
+                    + '</p>'
                     + '</div>';
                 if (!$container.is(':visible')) {
                     $container.html(msg).slideDown('fast');
                 }
-            }
-            else if ($container.is(':visible')) {
-                $container.slideUp('fast', function(){ $(this).empty(); });
+            } else if ($container.is(':visible')) {
+                $container.slideUp('fast', function () {
+                    $(this).empty();
+                });
             }
         }
 
         // 2) Fire on FoxyCart load
-        FC.onLoad = function() {
-            FC.client.on('ready.done', function() {
+        FC.onLoad = function () {
+            FC.client.on('ready.done', function () {
                 // A) Rename the “— or —” line
                 $('.fc-action--payment--or').text('Express checkout');
 
                 // B) Move express buttons above the email fieldset
-                var $express  = $('#fc-checkout__section--express-options');
+                var $express = $('#fc-checkout__section--express-options');
                 var $fieldset = $('#fc-checkout__section--email fieldset#fc-email');
                 if ($express.length && $fieldset.length) {
                     $express.insertBefore($fieldset);
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $express.addClass('positioned');
                         // inject divider right below the express block
                         var $divider = $(
@@ -129,7 +130,7 @@
 
                 // C) Initial billing warning + listen for address changes
                 checkBillingAddressWarning();
-                $(document).on('change', '#use_different_addresses', function(){
+                $(document).on('change', '#use_different_addresses', function () {
                     setTimeout(checkBillingAddressWarning, 100);
                 });
 
@@ -144,19 +145,19 @@
                         console.error('Cancel-checkout link (fc-button--cancel) not found.');
                     } else {
                         // Open the dialog
-                        $cancelLink.on('click', function(e) {
+                        $cancelLink.on('click', function (e) {
                             e.preventDefault();
                             $('#ps-confirm-cancel-modal').modal();
                         });
 
                         // “No, continue checkout” inside the modal just closes it
-                        $('#ps-confirm-cancel-no').on('click', function(e) {
+                        $('#ps-confirm-cancel-no').on('click', function (e) {
                             e.preventDefault();
                             $.modal.close();
                         });
 
                         // “Yes, edit my cart” does the navigation then hides
-                        $('#ps-confirm-cancel-yes').on('click', function(e) {
+                        $('#ps-confirm-cancel-yes').on('click', function (e) {
                             e.preventDefault();
                             // close the modal cleanly
                             $.modal.close();
@@ -186,7 +187,7 @@
                 }
 
                 // Create an observer to watch for when the Amazon button is added to the page
-                const observer = new MutationObserver(function() {
+                const observer = new MutationObserver(function () {
                     // When any change happens on the page, try to run our function
                     hideAmazonMicroText();
                 });
@@ -201,8 +202,23 @@
                 hideAmazonMicroText();
             });
 
-            // E) Also re-check billing warning on cart updates
+            // F) Also re-check billing warning on cart updates
             FC.client.on('cart-update', checkBillingAddressWarning);
+
+            // MOBILE: class-toggle collapse of only the items block
+            if ( window.matchMedia('(max-width:767px)').matches ) {
+                var $wrap   = $('#fc-cart--fixed-width');
+                var $toggle = $('#ps-toggle-products');
+
+                $toggle.on('click', function(){
+                    $wrap.toggleClass('expanded');
+                    var txt = $wrap.hasClass('expanded')
+                        ? 'Hide items'
+                        : 'Show items';
+                    $(this).text(txt);
+                });
+            }
+
         };
 
     })(jQuery, FC);
