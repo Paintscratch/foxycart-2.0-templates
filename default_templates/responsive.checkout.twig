@@ -214,8 +214,13 @@
                     $wrap.toggleClass('expanded');
                     var txt = $wrap.hasClass('expanded')
                         ? 'Hide items'
-                        : 'Show items';
-                    $(this).text(txt);
+                        : 'Review items';
+
+                    // Update text content only, not the entire button
+                    $(this).find('.toggle-text').text(txt);
+
+                    // Toggle the expanded class on the button for chevron rotation
+                    $(this).toggleClass('expanded');
                 });
             }
 

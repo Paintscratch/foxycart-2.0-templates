@@ -82,19 +82,39 @@ div.blocker {
     display: none;
 }
 
+#fc .chevron {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 8px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #333;
+    transition: transform 0.2s ease;
+    vertical-align: middle; /* Add this */
+}
+
+#fc .expanded .chevron {
+    transform: rotate(180deg);
+}
+
 /* show it on phones */
 @media (max-width: 767px) {
     #fc .fc-checkout [data-fc-id="block-cart-items-divs"] {
-        display: none !important;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 1s ease;
     }
-    /* when our wrapper has “expanded”, show it again */
+
+    /* when our wrapper has "expanded", show it again */
     #fc .fc-checkout  #fc-cart--fixed-width.expanded [data-fc-id="block-cart-items-divs"] {
-        display: block !important;
+        max-height: 1000px; /* Adjust based on your content height */
     }
 
     #fc .fc-sidebar .ps-cart-toggle   {
         display: inline-block;
         padding: 5px;
+        margin-left: 10px;
     }
 }
 
