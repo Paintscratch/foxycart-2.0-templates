@@ -102,6 +102,9 @@
         // 2) Fire on FoxyCart load
         FC.onLoad = function () {
             FC.client.on('ready.done', function () {
+                // Capture the session ID and store it globally
+                window.foxySessionId = FC.json.session_id || null;
+
                 // A) Rename the “— or —” line
                 $('.fc-action--payment--or').text('Express checkout');
 
@@ -161,9 +164,15 @@
                             e.preventDefault();
                             // close the modal cleanly
                             $.modal.close();
+
+                            // Build cart URL with session preservation
+                            var cartUrl = '{{ config.template_config.custom_config.ps_domain }}/cgi-bin/shopping-cart.cgi';
+                            if (window.foxySessionId) {
+                                cartUrl += '?fcsid=' + encodeURIComponent(window.foxySessionId);
+                            }
+
                             // send them straight to your cart URL
-                            window.location.href = '{{ config.template_config.custom_config.ps_domain }}/cgi-bin/shopping-cart.cgi';
-                        });
+                            window.location.href = cartUrl;                        });
                     }
                 }
 
