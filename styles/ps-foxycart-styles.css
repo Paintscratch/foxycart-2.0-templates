@@ -1489,3 +1489,7 @@ div.blocker {
         display: none !important;
     }
 }
+
+/* Hide the top error banner until we intentionally allow it */
+#fc [data-fc-error-notifier] { display: none !important; }
+#fc.fc-show-errors [data-fc-error-notifier] { display: block !important; }

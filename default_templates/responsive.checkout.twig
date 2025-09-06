@@ -56,6 +56,49 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
+<script>
+    /** Hide Foxy’s top error banner until a real submit/express-pay attempt.
+     Re-enable it (and aria-live) on first attempt to avoid constant warnings. */
+    (function () {
+        var root = document.getElementById('fc') || document.body;
+        var notifierSel = '[data-fc-error-notifier]';
+
+        // Prevent screenreader spam until an attempt
+        var n0 = root.querySelector(notifierSel);
+        if (n0) n0.setAttribute('aria-live', 'off');
+
+        var attempted = false;
+
+        function allowGlobalErrors() {
+            if (attempted) return;
+            attempted = true;
+            root.classList.add('fc-show-errors');
+            // Restore polite announcements
+            var n = root.querySelector(notifierSel);
+            if (n) n.setAttribute('aria-live', 'polite');
+        }
+
+        // Treat these as "attempt to submit"
+        var triggers = [
+            'button[type="submit"]',
+            '.fc-button--submit',
+            '[data-fc-place-order]',
+            '[data-fc-paypal-button]',
+            '[data-fc-amazonpay-button]',
+            '[data-fc-venmo-button]'
+        ].join(',');
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest(triggers)) allowGlobalErrors();
+        }, true);
+
+        // Keyboard submit (Enter)
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') allowGlobalErrors();
+        }, true);
+    })();
+</script>
+
 {% include template_from_string(fc_footer_content) %}
 {% set warning_threshold = config.template_config.custom_config.fraud_amount_threshold %}
 <script>
@@ -173,7 +216,8 @@
                             }
 
                             // send them straight to your cart URL
-                            window.location.href = cartUrl;                        });
+                            window.location.href = cartUrl;
+                        });
                     }
                 }
 
@@ -216,11 +260,11 @@
             FC.client.on('cart-update', checkBillingAddressWarning);
 
             // MOBILE: class-toggle collapse of only the items block
-            if ( window.matchMedia('(max-width:767px)').matches ) {
-                var $wrap   = $('#fc-cart--fixed-width');
+            if (window.matchMedia('(max-width:767px)').matches) {
+                var $wrap = $('#fc-cart--fixed-width');
                 var $toggle = $('#ps-toggle-products');
 
-                $toggle.on('click', function(){
+                $toggle.on('click', function () {
                     $wrap.toggleClass('expanded');
                     var txt = $wrap.hasClass('expanded')
                         ? 'Hide items'
