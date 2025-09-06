@@ -18,8 +18,19 @@
     {% include 'svg.inc.twig' %}
 
     {% import "utils.inc.twig" as utils %}
-    {% embed 'receipt.inc.twig' %}
-    {% endembed %}
+{% embed 'receipt.inc.twig' %}
+    {% block messaging %}
+        {{ parent() }}
+        <!-- Order-status link inside the receipt card -->
+        <div id="fc-messages" class="fc-receipt__section">
+            <div class="fc-alert fc-alert--info">
+                <a href="https://www.test.paintscratch.com/support/order-status-check?email={{ customer_email|url_encode }}&order_id={{ order_id|url_encode }}">
+                    Check your order status
+                </a>
+            </div>
+        </div>
+    {% endblock %}
+{% endembed %}
 
     <!--[if lt IE 9 ]>
         <script src="{{ config.cdn_static_path }}scripts/respond/respond.1.4.2.js" charset="utf-8"></script>
