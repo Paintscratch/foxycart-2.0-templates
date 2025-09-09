@@ -28,24 +28,19 @@
 </div>
 
 {% import "utils.inc.twig" as utils %}
+
 {% embed 'checkout.inc.twig' %}
-    {# You can override blocks within checkout.inc.twig here if needed #}
-    {# For example, to ensure the fc-cancel-continue-shopping div has a unique ID or a link with an ID if it doesn't already: #}
-    {# {% block block_name_containing_cancel_link %}
-            <div class="fc-cancel-continue-shopping">
-                <a href="{{ cart_cancel_and_continue_link }}" id="ps-cancel-checkout-link" class="fc-button fc-button--minor fc-button--cancel">
-                    <span class="fc-icon">
-                        <svg class="fc-svg-icon fc-svg-icon--angle-double-left" aria-hidden="true" role="img" focusable="false"> <use xlink:href="#fc-icon-angle-double-left"></use> </svg>
-                    </span>
-                    <span>{{ lang.cart_continue_shopping }}</span>
-                </a>
-            </div>
-        {% endblock %} #}
-    {% block logo %}
+    {% block logo %}{% endblock %}
+
+    {% block submit_button %}
+        {{ parent() }}
+        <div id="ps-after-submit" \>
+            <div class="stjr-badge" data-version="seal_badge"></div>
+        </div>
     {% endblock %}
-
-
 {% endembed %}
+
+
 
 <div id="ps-confirm-cancel-modal" class="modal">
     <h5>Leave checkout to edit your cart?</h5>
@@ -98,6 +93,8 @@
         }, true);
     })();
 </script>
+
+<script>(function(d,s,id,c){var js,rC=[],uRC=[],r=0;Array.from(document.querySelectorAll('[class*="stjr-"]')).forEach(r=>{rC=[...rC,...Array.from(r.classList).filter((cl)=>{return /^stjr-/.test(cl);})]});uRC=[...new Set(rC)];t=d.getElementsByTagName(s)[0];js=d.createElement(s);js.id=id;js.src='https://www.sitejabber.com/js/v2/58f24d915ff71/widgets.js'+(uRC.length ? '?widget-classes=' + uRC.join("|") : '?widget-classes=stjr-base')+'';js.onload=js.onreadystatechange=function(){if(!r&&(!this.readyState||this.readyState[0]=='c')){r=1;c();}};t.parentNode.insertBefore(js,t);}(document,'script','sj-widget',function(){}));</script>
 
 {% include template_from_string(fc_footer_content) %}
 {% set warning_threshold = config.template_config.custom_config.fraud_amount_threshold %}

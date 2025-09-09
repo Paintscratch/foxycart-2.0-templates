@@ -43,10 +43,6 @@ div.blocker {
     vertical-align: top !important;
 }
 
-#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image,
-#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image .fc-cart__item__details {
-    width: 100%;
-}
 
 /* Basic layout containers */
 #fc .fc-cart__item {
@@ -64,6 +60,11 @@ div.blocker {
     min-width: 0; /* Prevents flex item from overflowing */
 }
 
+#fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image {
+    padding: 20px;
+    background: #EEEEEE;
+}
+
 #fc .fc-cart__item__details {
     display: flex;
     flex-direction: column;
@@ -78,6 +79,7 @@ div.blocker {
 #fc .fc-sidebar {
     background: #ffffff;
 }
+
 #fc .fc-sidebar .ps-cart-toggle {
     display: none;
 }
@@ -107,11 +109,20 @@ div.blocker {
     }
 
     /* when our wrapper has "expanded", show it again */
-    #fc .fc-checkout  #fc-cart--fixed-width.expanded [data-fc-id="block-cart-items-divs"] {
+    #fc .fc-checkout #fc-cart--fixed-width.expanded [data-fc-id="block-cart-items-divs"] {
         max-height: 1000px; /* Adjust based on your content height */
     }
 
-    #fc .fc-sidebar .ps-cart-toggle   {
+    #fc #fc-cart--fixed-width .fc-cart__item--parent-product .fc-cart__item__details-and-image {
+        padding-left: 40px;
+    }
+
+    .parent > *:not(:first-child) {
+        /* your styles */
+        margin-top: 10px;
+    }
+
+    #fc .fc-sidebar .ps-cart-toggle {
         display: inline-block;
         padding: 5px;
         margin-left: 10px;
@@ -155,11 +166,19 @@ div.blocker {
    ========================================================================== */
 
 /* Parent product styling (vehicle headers) */
-#fc .fc-cart__item--parent-product {
+#fc .fc-cart__items .fc-cart__item--parent-product {
     background: #FFFFFF;
     font-weight: bold;
     border-bottom: 1px solid #ddd;
+    padding: 0;
+    margin-left: -20px;
 }
+
+#fc .fc-cart__items .fc-cart__item--parent-product + .fc-cart__item--parent-product,
+#fc .fc-cart__items .fc-cart__item--parent-product ~ .fc-cart__item--parent-product {
+    margin-top: 40px; /* or margin-bottom, depending on spacing */
+}
+
 
 /* Remove total from parent products in cart */
 #fc .fc-cart__item--parent-product .fc-cart__item__total,
@@ -186,10 +205,17 @@ div.blocker {
 
 /* Child products styling */
 #fc .fc-cart__item.fc-cart__item--child-product {
-    padding-left: 25px;
+    padding-left: 40px;
     padding-right: 5px;
     background: #FFFFFF;
 }
+
+@media (max-width: 767px) {
+    #fc .fc-cart__item.fc-cart__item--child-product {
+        padding-left: 0;
+    }
+}
+
 
 /* ==========================================================================
    3. Cart Items & Product Display
@@ -200,12 +226,22 @@ div.blocker {
     width: 80px;
     min-width: 80px;
     margin-right: 15px;
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center; /* vertical center */
+    text-align: center; /* for inline fallback */
+}
+
+#fc .fc-cart__item__image span {
+    display: inline-block;
 }
 
 #fc .fc-cart__item__image__img {
     max-width: 100%;
     height: auto;
     display: block;
+    margin: 0 auto; /* centers inline images if flex isn't applied */
+
 }
 
 #fc .fc-checkout .fc-cart__item__image__img {
@@ -343,6 +379,10 @@ div.blocker {
     font-weight: bold !important;
 }
 
+#fc .ps-foxy .fc-checkout #ps-after-submit {
+    margin-top: 20px !important;
+}
+
 #fc .ps-foxy .fc-checkout .fc-alert-container--error .fc-input-group-container--active .fc-input-group-container__title:before {
     left: 10px !important;
 }
@@ -384,15 +424,17 @@ div.blocker {
     display: block !important;
     font-weight: bold !important;
     margin-bottom: 0;
+    font-size: 1.2em !important;
 }
 
 /* Center the express payment options under the email field */
 #fc .ps-foxy .fc-checkout div#fc-checkout__section--express-options {
-    margin: 10px 0 !important;
+    margin: 10px 0 30px 0 !important;
     width: 100% !important;
-    padding: 0 !important;
+    padding: 30px 0 !important;
     opacity: 0;
     transition: opacity 0.3s ease;
+    background: lightblue;
 }
 
 #fc .ps-foxy .fc-checkout div#fc-checkout__section--express-options.positioned {
@@ -422,11 +464,13 @@ div.blocker {
     margin: 1.5em 0;
     width: 100%;
 }
+
 #fc .ps-foxy .fc-checkout .fc-divider__line {
     flex: 1;
     height: 1px;
     background: #ccc;
 }
+
 #fc .ps-foxy .fc-checkout .fc-divider__text {
     margin: 0 0.75em;
     color: #666;
@@ -848,7 +892,7 @@ div.blocker {
 
 #fc .fc-order-quantity {
     display: inline-block;
-    margin-left:10px;
+    margin-left: 10px;
     font-weight: normal;
 }
 
@@ -1405,7 +1449,7 @@ div.blocker {
     #fc .fc-sidebar--checkout {
         padding-left: 20px !important;
         border-left: 1px solid #ddd !important;
-        margin-top: 50px !important;
+        margin-top: 14px !important;
     }
 }
 
@@ -1491,5 +1535,10 @@ div.blocker {
 }
 
 /* Hide the top error banner until we intentionally allow it */
-#fc [data-fc-error-notifier] { display: none !important; }
-#fc.fc-show-errors [data-fc-error-notifier] { display: block !important; }
+#fc [data-fc-error-notifier] {
+    display: none !important;
+}
+
+#fc.fc-show-errors [data-fc-error-notifier] {
+    display: block !important;
+}
