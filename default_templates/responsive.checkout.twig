@@ -14,7 +14,7 @@
     {% endfor %}
 
     <link rel="stylesheet"
-          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css?v={{ "now"|date("U") }}">
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css?v={{ config.template_config.custom_config.ps_template_version}}">
 
     {{ fc_header_content|raw }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
@@ -85,7 +85,7 @@
                                style="max-width:160px;"></a>
     <h6>
         <a href="{{ ps_google_reviews_url }}" target="_blank" title="{{ ps_google_reviews_title }}" rel="noopener noreferrer">
-            Read all 3,031+ five-star Google reviews ›
+            Read all 3,031+ five-star Google reviews &gt;
         </a>
     </h6>
 
