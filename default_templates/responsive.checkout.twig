@@ -14,7 +14,7 @@
     {% endfor %}
 
     <link rel="stylesheet"
-          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css">
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css?v={{ "now"|date("U") }}">
 
     {{ fc_header_content|raw }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
