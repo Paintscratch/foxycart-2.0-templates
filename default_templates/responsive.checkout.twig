@@ -34,12 +34,85 @@
 
     {% block submit_button %}
         {{ parent() }}
-        <div id="ps-after-submit" \>
-            <div class="stjr-badge" data-version="seal_badge"></div>
+        <div class="ps-trust-badges">
+            <img id="ps-color-match-badge" src="/shop/foxycart_templates/images/colormatch.png" alt="Color Match Guaranteed" title="Your paint will match your car's original color or we'll make it right">
+            <img id="ps-reviews-badge" src="/shop/foxycart_templates/images/reviews.png" alt="Verified reviews on Google badge" title="Trusted by thousands of real customers - see why 3,031+ buyers rate us highly.">
+            <img id="ps-security-badge" src="/shop/foxycart_templates/images/security.png" alt="Your payment is protected badge" title="Your payment is protected with 256-bit SSL encryption for complete safety">
         </div>
     {% endblock %}
 {% endembed %}
 
+<div id="ps-color-match-modal" class="modal ps-modal" aria-labelledby="ps-color-match-title" role="dialog">
+    <h5 id="ps-color-match-title">Color Match Guarantee</h5>
+    <p>
+        We guarantee our paint will match the original color... or we will send you a new order!
+        We mix paint based on the original color provided by your vehicle's manufacturer.
+        If your paint is old or faded, it may differ from the original color. We recommend ordering
+        a small quantity of paint to check the match first.
+    </p>
+    <h6>Custom Matching Services</h6>
+    <p>
+        If your paint has faded over time, or you're unsure of your color, PaintScratch offers custom
+        matching services. Our experts can duplicate nearly any color on any surface! If you choose to
+        have a custom match, you'll need to send us a painted part at least 2" square.
+        <a href="https://www.paintscratch.com/products/custom.html" target="_blank">Learn more &gt;</a>
+    </p>
+
+    <div style="margin-top:15px; text-align:right;">
+        <button type="button" class="btn btn-default" data-ps-close>Close</button>
+    </div>
+
+</div>
+
+{% set ps_google_reviews_url = "https://google.com/m/storepages?q=paintscratch.com&c=US&rf=FIVE_STARS#reviews" %}
+{% set ps_google_reviews_title = "Click to read the reviews in a new window." %}
+
+
+<div id="ps-reviews-modal" class="modal ps-modal" aria-labelledby="ps-reviews-title" role="dialog">
+    <h5 id="ps-reviews-title">Over 3,031 Five-Star Reviews</h5>
+    <p>
+        PaintScratch customers have left <strong>3,031 five-star reviews (and counting)</strong> on Google.
+    </p>
+    <p>
+        They praise our accurate color matching, fast shipping, and reliable service.
+    </p>
+    <p>
+    <img src="/shop/foxycart_templates/images/paintscratch-shop-image-800x400.jpg" alt="Paintscratch technician mixing fresh paint">
+    </p>
+    <a href="{{ ps_google_reviews_url }}" target="_blank" title="{{ ps_google_reviews_title }}" rel="noopener noreferrer">
+        <img src="/shop/foxycart_templates/images/reviews.png"
+             alt="Google Five Star Reviews Badge"
+                               style="max-width:160px;"></a>
+    <h6>
+        <a href="{{ ps_google_reviews_url }}" target="_blank" title="{{ ps_google_reviews_title }}" rel="noopener noreferrer">
+            Read all 3,031+ five-star Google reviews ›
+        </a>
+    </h6>
+
+    <div style="margin-top:15px; text-align:right;">
+        <button type="button" class="btn btn-default" data-ps-close>Close</button>
+    </div>
+
+</div>
+
+
+
+<div id="ps-security-modal" class="modal ps-modal" aria-labelledby="ps-security-modal-title" role="dialog">
+    <h5 id="ps-security-modal-title">Safe and Secure Checkout</h5>
+    <p>
+        PaintScratch uses 256-bit encryption to protect your personal and financial information. It is the gold
+        standard for online security, used by governments and financial institutions. This means you can checkout without worry!
+    </p>
+    <p>
+        256-bit encryption is highly resistant to current and near-future attacks, including from quantum computing.
+        It scrambles data using an immense number of possible keys (about 1.1 with 77 zeros after it), making it
+        virtually impossible to hack.
+    </p>
+
+    <div style="margin-top:15px; text-align:right;">
+        <button type="button" class="btn btn-default" data-ps-close>Close</button>
+    </div>
+</div>
 
 
 <div id="ps-confirm-cancel-modal" class="modal">
@@ -92,9 +165,48 @@
             if (e.key === 'Enter') allowGlobalErrors();
         }, true);
     })();
-</script>
 
-<script>(function(d,s,id,c){var js,rC=[],uRC=[],r=0;Array.from(document.querySelectorAll('[class*="stjr-"]')).forEach(r=>{rC=[...rC,...Array.from(r.classList).filter((cl)=>{return /^stjr-/.test(cl);})]});uRC=[...new Set(rC)];t=d.getElementsByTagName(s)[0];js=d.createElement(s);js.id=id;js.src='https://www.sitejabber.com/js/v2/58f24d915ff71/widgets.js'+(uRC.length ? '?widget-classes=' + uRC.join("|") : '?widget-classes=stjr-base')+'';js.onload=js.onreadystatechange=function(){if(!r&&(!this.readyState||this.readyState[0]=='c')){r=1;c();}};t.parentNode.insertBefore(js,t);}(document,'script','sj-widget',function(){}));</script>
+    // Trust badges javascript
+    // Open security modal when the badge is clicked
+    $(document).on('click', '#ps-security-badge', function (e) {
+        e.preventDefault();
+        if ($.modal) {
+            $('#ps-security-modal').modal();
+        } else {
+            console.error('jQuery Modal not loaded; security modal will not open.');
+        }
+    });
+
+    // Open reviews modal when the badge is clicked
+    $(document).on('click', '#ps-reviews-badge', function (e) {
+        e.preventDefault();
+        if ($.modal) {
+            $('#ps-reviews-modal').modal();
+        } else {
+            console.error('jQuery Modal not loaded; reviews modal will not open.');
+        }
+    });
+
+
+    // Open color match modal when the badge is clicked
+    $(document).on('click', '#ps-color-match-badge', function (e) {
+        e.preventDefault();
+        if ($.modal) {
+            $('#ps-color-match-modal').modal();
+        } else {
+            console.error('jQuery Modal not loaded; color match modal will not open.');
+        }
+    });
+
+    // Works for any button or link with data-ps-close inside a .ps-modal
+    $(document).on('click', '.ps-modal [data-ps-close]', function (e) {
+        e.preventDefault();
+        if ($.modal) $.modal.close();
+    });
+
+
+
+</script>
 
 {% include template_from_string(fc_footer_content) %}
 {% set warning_threshold = config.template_config.custom_config.fraud_amount_threshold %}

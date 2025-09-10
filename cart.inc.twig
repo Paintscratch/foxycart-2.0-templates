@@ -874,7 +874,7 @@
                                                                     <span class="fc-gift-card__code">{{ gift_card_code }}</span>
                                                                     {% if enable_coupon_and_gift_cart_controls %}
                                                                         <span class="fc-action--close">
-                                                    <a href="https://www.paintscratch.com/shop/foxycart/"
+                                                    <a href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart/"
                                                        data-fc-id="remove-gift-card-link"
                                                        data-fc-gift-card-code-id="{{ gift_card.code_id }}">
                                                         <svg class="fc-svg-icon" title="Remove Gift Card"
@@ -1221,6 +1221,11 @@
                 </form>
                 {% endif %}
                 {% endblock cart_form_end %}
+                {# Save for future enhancement
+                <div class="ps-cart-sidebar-banners">
+                    <img src="/shop/foxycart_templates/images/shipping-message.jpg" alt="All orders are mixed fresh and shipped in 5-10 business days image.">
+                </div>
+                #}
             </div>
             {# .fc-cart-container #}
 
