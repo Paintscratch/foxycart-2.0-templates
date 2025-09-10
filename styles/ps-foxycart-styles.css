@@ -293,6 +293,16 @@ div.blocker {
     display: inline-block;
 }
 
+/* Save for future enhancement
+#fc .ps-cart-sidebar-banners {
+    position: relative;
+}
+
+#fc .ps-cart-sidebar-banners img {
+    width: 100%;
+}
+*/
+
 /* ==========================================================================
    Section Title Alignment & Numbered Icon Removal
    ========================================================================== */
@@ -434,7 +444,7 @@ div.blocker {
     padding: 30px 0 !important;
     opacity: 0;
     transition: opacity 0.3s ease;
-    background: lightblue;
+    background: #EBF5FF;
 }
 
 #fc .ps-foxy .fc-checkout div#fc-checkout__section--express-options.positioned {
@@ -1542,3 +1552,46 @@ div.blocker {
 #fc.fc-show-errors [data-fc-error-notifier] {
     display: block !important;
 }
+
+/* Desktop/tablet: one row, natural image size, centered, no giant gaps */
+.ps-trust-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* keep the group centered */
+    gap: 1rem;                  /* consistent spacing */
+    flex-wrap: nowrap;          /* never wrap on desktop/tablet */
+    overflow-x: auto;           /* allow scroll instead of shrinking/wrapping */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: .25rem;     /* room for hidden scrollbar on some OSes */
+}
+
+/* hide scrollbars where possible */
+.ps-trust-badges::-webkit-scrollbar { display: none; }
+.ps-trust-badges { scrollbar-width: none; }
+
+.ps-trust-badges img {
+    max-width: none;            /* do not shrink */
+    height: auto;
+    flex: 0 0 auto;             /* keep each image its natural width */
+}
+
+/* Desktop ?992px: align left */
+@media (min-width: 992px) {
+    .ps-trust-badges {
+        justify-content: flex-start;
+        gap: 5rem;
+    }
+}
+
+/* Mobile: stack vertically and center */
+@media (max-width: 600px) {
+    .ps-trust-badges {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;        /* no horizontal scroll needed */
+        gap: 1rem;
+    }
+}
+
+
