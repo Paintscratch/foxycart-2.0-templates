@@ -1,6 +1,6 @@
 {# BEGIN CART TWIG TEMPLATE - Modified for PaintScratch #}
 <!-- Add this at the top of cart.inc.twig -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
 <script>
     // Only load modal library if not already loaded
     if (typeof jQuery !== 'undefined' && !jQuery.fn.modal) {
@@ -82,45 +82,51 @@
 
     <div id="{{ container_id }}">
         <header class="fc-cart__header fc-container__row" role="banner">
+            {% if context != 'receipt' %}
+                {# Standard header for pages except receipt #}
                 <div class="fc-cart__title fc-container__grid">
-                    {% block cart_title %}
-                        <h2 class="fc-cart__title__header">{{ config.lang.cart_caption|raw }}</h2>
-                        {% if context == 'cart' %}
-                            <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
-                                <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
-                                    <use xlink:href="#fa-times-circle"/>
-                                </svg>
-                            </a>
-                        {% endif %}
-                        <p class="fc-order-quantity">
-                            {% set temp_lang_cart_items = config.lang.cart_items|raw %}
-                            {% if display_item_count == 1 %}
-                                {% set temp_lang_cart_items = config.lang.cart_item|raw %}
-                            {% endif %}
-                            <span data-fc-order-quantity-integer="fc-order-quantity-integer">{{ display_item_count }}</span>
-                            <span data-fc-lang-cart-item="{{ config.lang.cart_item }}"
-                                  data-fc-lang-cart-items="{{ config.lang.cart_items }}">{{ temp_lang_cart_items|lower }}</span>
-                            {{ config.lang.cart_in_your_order|raw }}
-                        </p>
-                    {% endblock cart_title %}
-                    {% if cart_is_fullpage or context == 'checkout' %}
-                        <button id="ps-toggle-products" type="button" class="ps-cart-toggle btn btn-default">
-                            <span class="toggle-text">Review items</span>
-                            <span class="chevron"></span>
-                        </button>
-                        <div class="fc-cancel-continue-shopping fc-container__grid">
-                            {% block continue_shopping %}
-                                {% if cart_cancel_and_continue_link != '' %}
-                                    <a href="{{ cart_cancel_and_continue_link }}" class="fc-button fc-button--cancel">
-                                        {{ config.lang.cart_cancel_and_continue|raw }}
-                                    </a>
-                                {% endif %}
-                            {% endblock continue_shopping %}
-                        </div>
+                {% block cart_title %}
+                    <h2 class="fc-cart__title__header">{{ config.lang.cart_caption|raw }}</h2>
+                    {% if context == 'cart' %}
+                        <a data-fc-sidecart-dismiss class="fc-sidecart-button fc-btn-action">
+                            <svg class="fc-svg-icon fc-icon-small" role="presentation" title="Close Icon">
+                                <use xlink:href="#fa-times-circle"/>
+                            </svg>
+                        </a>
                     {% endif %}
-                    {% if not is_updateinfo %}
-                </div>
-            {% endif %}
+                    <p class="fc-order-quantity">
+                        {% set temp_lang_cart_items = config.lang.cart_items|raw %}
+                        {% if display_item_count == 1 %}
+                            {% set temp_lang_cart_items = config.lang.cart_item|raw %}
+                        {% endif %}
+                        <span data-fc-order-quantity-integer="fc-order-quantity-integer">{{ display_item_count }}</span>
+                        <span data-fc-lang-cart-item="{{ config.lang.cart_item }}"
+                              data-fc-lang-cart-items="{{ config.lang.cart_items }}">{{ temp_lang_cart_items|lower }}</span>
+                        {{ config.lang.cart_in_your_order|raw }}
+                    </p>
+                {% endblock cart_title %}
+                {% if cart_is_fullpage or context == 'checkout' %}
+                    <button id="ps-toggle-products" type="button" class="ps-cart-toggle btn btn-default">
+                        <span class="toggle-text">Review items</span>
+                        <span class="chevron"></span>
+                    </button>
+                    <div class="fc-cancel-continue-shopping fc-container__grid">
+                        {% block continue_shopping %}
+                            {% if cart_cancel_and_continue_link != '' %}
+                                <a href="{{ cart_cancel_and_continue_link }}" class="fc-button fc-button--cancel">
+                                    {{ config.lang.cart_cancel_and_continue|raw }}
+                                </a>
+                            {% endif %}
+                        {% endblock continue_shopping %}
+                    </div>
+                {% endif %}
+                {% if not is_updateinfo %}
+                    </div>
+                {% endif %}
+            {% else %}
+                {# Simple header for receipt  #}
+                <h3>Your Order</h3>
+            {% endif %}{# END IF/ELSE for cart/checkout vs. receipt #}
         </header>
 
         {% if not is_updateinfo %}
@@ -202,9 +208,11 @@
 
                                         {# bug in twig.js keeps us from just setting a variable. hopefully this is resolved
                             eventually #}
-                                        <div data-fc-item-id="{{ item.id }}"
-                                             class="fc-container__row fc-cart__item {% if item.parent_code %}fc-cart__item--child-product{% elseif item.is_parent %}fc-cart__item--parent-product{% endif %} {% if loop.last %}fc-cart__item--last{% endif %}"
-                                             {% if item.code !='' %}data-item-code="{{ item.code|escape('html_attr') }}" {% endif %}>
+                                    <div data-fc-item-id="{{ item.id }}"
+                                         class="fc-container__row fc-cart__item {% if item.parent_code %}fc-cart__item--child-product{% elseif item.is_parent %}fc-cart__item--parent-product{% endif %} {% if loop.last %}fc-cart__item--last{% endif %}"
+                                         {% if item.code !='' %}data-item-code="{{ item.code|escape('html_attr') }}" {% endif %}>
+                                        {% if context != 'receipt' %}
+                                            {# Normal item rows for cart/checkout #}
 
                                             {% if with_controls and checkout_sub_cancel == false and (item.parent_code == '' or (item.parent_code != '' and item.quantity_min == 0)) %}
                                                 <div class="fc-cart__item__remove-action">
@@ -263,8 +271,10 @@
                                                         {# Check if a valid RGB value was found before rendering #}
                                                         {% if item_color_rgb is not empty and item_color_rgb != '' %}
                                                             <div class="fc-cart__item__name-with-color">
-                                                                <span class="fc-cart__item__color__swatch" style="background-color: {{ item_color_rgb | raw }};"></span>
-                                                                <p class="fc-cart__item__name">Products in {{ item.name }}</p>
+                                                                <span class="fc-cart__item__color__swatch"
+                                                                      style="background-color: {{ item_color_rgb | raw }};"></span>
+                                                                <p class="fc-cart__item__name">Products
+                                                                    in {{ item.name }}</p>
                                                             </div>
                                                         {% else %}
                                                             <p class="fc-cart__item__name">{{ item.name }}</p>
@@ -471,7 +481,48 @@
                                                     {% endblock %}
                                                 </div>
                                             </div>
-                                        </div>
+                                        {% else %}
+                                            {# Special item rows for Receipt #}
+                                            {% if item.is_parent %}
+                                                <div class="fc-cart__item__details-and-image">
+                                                    <h4>{{ item.name }}</h4>
+                                                </div>
+                                            {% else %}{# Item is NOT a parent #}
+                                                <div class="fc-cart__item__details-and-image ps-receipt-row">
+                                                    {# IMAGE (fixed width) #}
+                                                    {% if has_product_images and item.parent_code != '' and item.image %}
+                                                        <div class="ps-col ps-col--image">
+                                                          <span>
+                                                            <img class="fc-cart__item__image__img"
+                                                                 src="{{ item.image }}"
+                                                                 alt="{{ item.alt_name }}">
+                                                          </span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="ps-col ps-col--image"></div>
+                                                    {% endif %}
+
+                                                    {# DETAILS (flex:1) #}
+                                                    <div class="ps-col ps-col--info">
+                                                        <p class="ps-item-name">
+                                                            {{ item.name }} × {{ item.quantity }}
+                                                        </p>
+                                                        <small class="ps-item-ea">
+                                                            ({{ config.currency_symbol }}{{ item.price_each|money_format }}
+                                                            ea.)
+                                                        </small>
+                                                    </div>
+
+                                                    {# TOTAL (right aligned) #}
+                                                    <div class="ps-col ps-col--total">
+                                                        <span class="ps-item-total">
+                                                          {{ config.currency_symbol }}{{ (item.price)|money_format }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}{# END if/else item.is_parent #}
+                                        {% endif %}{# END if/else cart/checkout vs. receipt #}
+                                        </div>{# END div data-fc-item-id=... #}
 
                                     {% endfor %}
                                 </div>
@@ -560,10 +611,11 @@
                                     {% set has_qualified_for_free_shipping = false %}
                                 {% endif %}
 
+                                {% if context != 'receipt' %}
+                                    {# Totals for templates except receipt #}
+                                    <h2 class="fc-transaction__header">{{ config.lang.cart_order_summary|raw }}</h2>
 
-                                <h2 class="fc-transaction__header">{{ config.lang.cart_order_summary|raw }}</h2>
-
-                                <ul class="fc-transaction">
+                                    <ul class="fc-transaction">
                                     {% if shipping_address.has_shippable_products or has_taxes or has_discounts %}
                                         <li class="fc-transaction__subtotal fc-transaction__section">
                                             {% if has_future_products %}
@@ -865,7 +917,8 @@
                                                     {% if total_tax > 0 %}
                                                         <tr class="fc-subtotal--row">
                                                             <td class="fc-subtotal__label">
-                                                                <h5 class="fc-transaction__ui__header">{{ config.lang.cart_tax|raw }}:</h5>
+                                                                <h5 class="fc-transaction__ui__header">{{ config.lang.cart_tax|raw }}
+                                                                    :</h5>
                                                             </td>
                                                             <td class="fc-subtotal__value">
                                                                 {{ total_tax|money_format }}
@@ -890,7 +943,35 @@
                                             </tr>
                                         </table>
                                     </li>
-                                </ul>
+                                    </ul>{# END ul fc-transaction #}
+
+                                {% else %}{# Receipt context #}
+                                    <h3 class="fc-transaction__header">Order Total</h3>
+                                    <div class="ps-totals">
+                                        <div class="ps-totals__row">
+                                            <span class="ps-totals__label">Subtotal</span>
+                                            <span class="ps-totals__value">{{ total_item_price|money_format }}</span>
+                                        </div>
+
+                                        <div class="ps-totals__row">
+                                            <span class="ps-totals__label">Shipping</span>
+                                            <span class="ps-totals__value">{{ current_shipping_cost_display|money_format }}</span>
+                                        </div>
+
+                                        <div class="ps-totals__row ps-totals__row--last-before-total">
+                                            <span class="ps-totals__label">Sales tax</span>
+                                            <span class="ps-totals__value">{{ total_tax|money_format }}</span>
+                                        </div>
+
+                                        <div class="ps-totals__row ps-totals__row--grand">
+                                            <span class="ps-totals__label">Total</span>
+                                            <span class="ps-totals__value">{{ total_order|money_format }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}{# END if/else context != 'receipt' #}
+
+
+
 
                                 {% if context == "checkout" and has_multiple_addresses and multiship_data|length > 1 %}
                                     <div class="fc-transaction fc-transaction--multiship">
@@ -1023,7 +1104,43 @@
                                     {% endblock future_products %}
                                 {% endif %}
                             {% endblock order_totals %}
-                        </div>
+                        </div>{# END div data-fc-id="block-order-totals" #}
+
+                        {% if context == 'receipt' %}
+                            <div class="ps-links-info">
+                                <h3 class="fc-transaction__header ">Helpful links & info</h3>
+                                <ul>
+                                    <li>
+                                        <a href="{{ config.template_config.custom_config.ps_domain }}/touch-up-paint-directions/"
+                                           title="Everything you need to know for you repair" target="_blank">Touch
+                                            up paint directions</a></li>
+                                    <li>
+                                        <a href="{{ config.template_config.custom_config.ps_domain }}/support/returns.htm"
+                                           title="Get help with your order here." target="_blank">Customer service
+                                            and returns</a></li>
+                                    <li><a href="{{ config.template_config.custom_config.ps_domain }}/shiptime.htm"
+                                           title="Estimates based on your shipping address" target="_blank">Shipment
+                                            times</a></li>
+                                    <li>
+                                        <a href="{{ config.template_config.custom_config.ps_domain }}/cgi-bin/stats/helpCenter.cgi"
+                                           title="Help with a wide variety of topics" target="_blank">Help
+                                            center</a></li>
+                                    <li>
+                                        <a href="{{ config.template_config.custom_config.ps_domain }}/support/addorder.htm"
+                                           title="Make changes before 5 PM PST on {{ params.date }}"
+                                           target="_blank">Add to or change your order</a></li>
+                                    <li>
+                                        <a href="{{ config.template_config.custom_config.ps_domain }}/company/contact-us.php"
+                                           title="We''re here to help!" target="_blank">Contact us</a></li>
+                                </ul>
+
+                                <p class="ps-company-info">
+                                    PaintScratch, Inc.<br>
+                                    770 Mays Blvd STE 1 #5288, 89450<br>
+                                    Incline Village, NV 89450
+                                </p>
+                            </div>
+                        {% endif %}{# END if context == 'receipt' #}
 
                         {% block order_payment_actions %}
                             {% if context == 'cart' %}
