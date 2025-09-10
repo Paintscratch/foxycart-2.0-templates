@@ -976,31 +976,6 @@
                                         </div>
                                     </div>
 
-                                    <h3 class="fc-transaction__header ps-links-list">Helpful links & info</h3>
-                                    <ul>
-                                        <li><a href="{{ config.template_config.custom_config.ps_domain }}/touch-up-paint-directions/"
-                                               title="Everything you need to know for you repair" target="_blank">Touch
-                                                up paint directions</a></li>
-                                        <li><a href="{{ config.template_config.custom_config.ps_domain }}/support/returns.htm"
-                                               title="Get help with your order here." target="_blank">Customer service
-                                                and returns</a></li>
-                                        <li><a href="{{ config.template_config.custom_config.ps_domain }}/shiptime.htm"
-                                               title="Estimates based on your shipping address" target="_blank">Shipment
-                                                times</a></li>
-                                        <li><a href="{{ config.template_config.custom_config.ps_domain }}/cgi-bin/stats/helpCenter.cgi"
-                                               title="Help with a wide variety of topics" target="_blank">Help
-                                                center</a></li>
-                                        <li><a href="{{ config.template_config.custom_config.ps_domain }}/support/addorder.htm"
-                                               title="Make changes before 5 PM PST on {{ params.date }}"
-                                               target="_blank">Add to or change your order</a></li>
-                                        <li><a href="{{ config.template_config.custom_config.ps_domain }}/company/contact-us.php"
-                                               title="We''re here to help!" target="_blank">Contact us</a></li>
-                                    </ul>
-
-                                    <p class="ps-company-info">PaintScratch, Inc.<br>
-                                        770 Mays Blvd STE 1 #5288, 89450, Incline Village, NV 89450</p>
-
-
                                 {% endif %}
 
                                 {% if context == "checkout" and has_multiple_addresses and multiship_data|length > 1 %}
@@ -1135,6 +1110,39 @@
                                 {% endif %}
                             {% endblock order_totals %}
                         </div>
+                        <div class="ps-links-info">
+                            {% if context == 'receipt' %}
+                            <h3 class="fc-transaction__header ">Helpful links & info</h3>
+                            <ul>
+                                <li>
+                                    <a href="{{ config.template_config.custom_config.ps_domain }}/touch-up-paint-directions/"
+                                       title="Everything you need to know for you repair" target="_blank">Touch
+                                        up paint directions</a></li>
+                                <li><a href="{{ config.template_config.custom_config.ps_domain }}/support/returns.htm"
+                                       title="Get help with your order here." target="_blank">Customer service
+                                        and returns</a></li>
+                                <li><a href="{{ config.template_config.custom_config.ps_domain }}/shiptime.htm"
+                                       title="Estimates based on your shipping address" target="_blank">Shipment
+                                        times</a></li>
+                                <li>
+                                    <a href="{{ config.template_config.custom_config.ps_domain }}/cgi-bin/stats/helpCenter.cgi"
+                                       title="Help with a wide variety of topics" target="_blank">Help
+                                        center</a></li>
+                                <li><a href="{{ config.template_config.custom_config.ps_domain }}/support/addorder.htm"
+                                       title="Make changes before 5 PM PST on {{ params.date }}"
+                                       target="_blank">Add to or change your order</a></li>
+                                <li>
+                                    <a href="{{ config.template_config.custom_config.ps_domain }}/company/contact-us.php"
+                                       title="We''re here to help!" target="_blank">Contact us</a></li>
+                            </ul>
+
+                            <p class="ps-company-info">
+                                PaintScratch, Inc.<br>
+                                770 Mays Blvd STE 1 #5288, 89450<br>
+                                Incline Village, NV 89450
+                            </p>
+                        </div>
+                        {% endif %}
 
                         {% block order_payment_actions %}
                             {% if context == 'cart' %}

@@ -241,18 +241,20 @@
     color: #1a1a1a;
 }
 
-#fc .fc-sidebar--cart .ps-links-list {
+#fc .ps-links-info {
     margin-top: 60px;
 }
 
-#fc .fc-sidebar--cart .ps-links-list ul {
+#fc .ps-links-info ul {
     padding-left: 18px !important;
 }
 
-#fc .fc-sidebar--cart .ps-links-list li {
+#fc .ps-links-info li {
 }
 
-#fc .fc-sidebar--cart .ps-links-list li a {
+#fc .ps-links-info li a {
+    font-size: 1.2em;
+    color: #15c;
 }
 
 
@@ -289,6 +291,7 @@
 #fc .ps-totals__row--grand {
     padding-top: 12px;
     font-weight: 700;
+    font-size: 1.2em;
 }
 
 #fc .ps-company-info {
