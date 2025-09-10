@@ -76,25 +76,11 @@
     border-color: #9ca3af;
 }
 
-/* On mobile stack them but keep centered */
-@media (max-width: 768px) {
-    .ps-links-bar {
-        flex-direction: column;
-        align-items: center; /* keep center aligned */
-    }
-
-    .ps-links-bar a {
-        width: auto; /* shrink to fit content */
-        min-width: 300px; /* optional: consistent size */
-    }
-}
-
-
 #fc #fc-receipt__section--general-information, #fc #fc-receipt__section--billing-information, #fc #fc-receipt__section--shipping-information, #fc #fc-receipt__section--custom-fields {
     width: 100%;
 }
 
-#fc #fc-receipt-container fieldset {
+#fc #fc-receipt-container fieldset, #fc #fc-receipt-container #fc-cart--responsive {
     width: 60% !important;
     margin: 0 auto 30px auto !important;
 }
@@ -125,23 +111,6 @@
 }
 
 
-@media (min-width: 768px) and (max-width: 991px) {
-    #fc #fc-receipt-container fieldset {
-        width: 78% !important;
-    }
-
-}
-
-@media (max-width: 768px) {
-    #fc #fc-receipt-container fieldset {
-        width: 90% !important;
-        max-width: 500px;
-    }
-
-
-    #fc #fc-receipt-container fieldset legend {
-    }
-}
 
 /* Your Order Section with Vehicles and Items */
 #fc .fc-cart__items__header {
@@ -152,6 +121,10 @@
     font-size: 26px;
     font-weight: bold;
     color: #1a1a1a;
+}
+
+#fc #fc-cart--responsive .fc-cart__main__content {
+    width: 100%;
 }
 
 #fc #fc-cart--responsive .fc-cart__main__content {
@@ -301,12 +274,24 @@
 
 
 @media (max-width: 768px) {
+    .ps-links-bar {
+        flex-direction: column;
+        align-items: center; /* keep center aligned */
+    }
+
+    .ps-links-bar a {
+        width: auto; /* shrink to fit content */
+        min-width: 300px; /* optional: consistent size */
+    }
+
     #fc #fc-cart--responsive .fc-cart__header {
-        padding-left: 30px !important;
     }
 
     #fc #fc-cart--responsive .fc-cart__main__content {
-        padding-left: 20px !important;
+    }
+
+    #fc .fc-cart__item__details-and-image {
+        padding-left: 5px;
     }
 
     #fc .fc-cart__item--parent-product .fc-cart__item__details-and-image h4 {
@@ -319,6 +304,22 @@
 
     #fc .ps-totals__row {
         padding: 6px 0;
+    }
+
+    #fc #fc-receipt-container fieldset, #fc #fc-receipt-container #fc-cart--responsive {
+        width: 90% !important;
+        max-width: 500px;
+    }
+    #fc .fc-cart__item.fc-cart__item--child-product {
+        padding-left: 0;
+    }
+
+
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #fc #fc-receipt-container fieldset, #fc #fc-receipt-container #fc-cart--responsive {
+        width: 78% !important;
     }
 
 }
