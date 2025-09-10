@@ -11,9 +11,9 @@
 
     <link href="{{ config.css_file }}" rel="stylesheet" media="all">
     <link rel="stylesheet"
-          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css">
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css?v={{ config.template_config.custom_config.ps_template_version}}">
     <link rel="stylesheet"
-          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-receipt-styles.css">
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-receipt-styles.css?v={{ config.template_config.custom_config.ps_template_version}}">
 
     <!-- FC script insertion -->{{ fc_header_content|raw }}<!-- /FC script insertion -->
 </head>
