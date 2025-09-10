@@ -205,6 +205,7 @@
 #fc #fc-cart--responsive .fc-sidebar--cart {
     width: 100% !important;
     margin-top: 10px;
+    padding-right: 5px;
 }
 
 #fc .fc-sidebar--cart .fc-transaction__header {
@@ -228,12 +229,6 @@
 #fc .ps-links-info li a {
     font-size: 1.2em;
     color: #15c;
-}
-
-
-/* Order total container */
-#fc .ps-totals {
-    width: 66.6666666%;
 }
 
 /* rows = label left, value right */

@@ -1554,7 +1554,7 @@ div.blocker {
 }
 
 /* Desktop/tablet: one row, natural image size, centered, no giant gaps */
-.ps-trust-badges {
+#fc .ps-trust-badges {
     display: flex;
     align-items: center;
     justify-content: center;   /* keep the group centered */
@@ -1566,18 +1566,64 @@ div.blocker {
 }
 
 /* hide scrollbars where possible */
-.ps-trust-badges::-webkit-scrollbar { display: none; }
-.ps-trust-badges { scrollbar-width: none; }
+#fc .ps-trust-badges::-webkit-scrollbar { display: none; }
+#fc .ps-trust-badges { scrollbar-width: none; }
 
-.ps-trust-badges img {
+#fc .ps-trust-badges img {
     max-width: none;            /* do not shrink */
     height: auto;
     flex: 0 0 auto;             /* keep each image its natural width */
+    cursor: pointer;
 }
+
+/* Simple PaintScratch modal styles */
+#fc .ps-modal.modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+#fc .ps-modal p {
+    text-align: left;
+    padding: 0 10px 20px 10px;
+}
+
+/* Headings inside modal */
+#fc .ps-modal h5,  #fc .ps-modal h6 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #111;
+}
+
+#fc .ps-modal h6 {
+    font-size: 1.1rem;
+    padding-top: 20px;
+}
+
+/* Links inside modal */
+#fc .ps-modal a {
+    color: #1d4ed8;
+}
+#fc .ps-modal a:hover {
+    text-decoration: underline;
+}
+
+#fc .ps-modal img {
+    max-width: 100%;
+}
+
+
+
 
 /* Desktop ?992px: align left */
 @media (min-width: 992px) {
-    .ps-trust-badges {
+    #fc .ps-trust-badges {
         justify-content: flex-start;
         gap: 5rem;
     }
@@ -1585,7 +1631,7 @@ div.blocker {
 
 /* Mobile: stack vertically and center */
 @media (max-width: 600px) {
-    .ps-trust-badges {
+    #fc .ps-trust-badges {
         flex-direction: column;
         align-items: center;
         justify-content: center;
