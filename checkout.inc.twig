@@ -373,7 +373,7 @@ CONVENTIONS:
     {# PAYMENT METHOD ===================================================== #}
     <section data-fc-id="block-payment-method" class="fc-checkout__section--payment">
     {% block payment_method %}
-        {% set show_payment_type_block = config.supports_pay_with_plastic or config.supports_purchase_order or hosted_payment_gateways|length > 0 or config.supports_pay_with_stripe_connect or config.supports_pay_with_adyen_embedded or config.supports_pay_with_klarna or config.supports_pay_with_square_up or config.supports_pay_with_square_platform or config.supports_pay_with_pp_platform or show_paypal_express_payment_option %}
+        {% set show_payment_type_block = config.supports_pay_with_plastic or config.supports_purchase_order or hosted_payment_gateways|length > 0 or config.supports_pay_with_stripe_connect or config.supports_pay_with_adyen_embedded or config.supports_pay_with_klarna or config.supports_pay_with_square_up or config.supports_pay_with_square_platform or config.supports_pay_with_pp_platform or show_paypal_express_payment_option or paypal_platform_data.apple_pay_enabled %}
         {% if show_payment_type_block %}
             {% set payment_method_input_type = config.has_multiple_payment_options or has_saved_cc or stripe_connect_data.has_saved_cc or adyen_embedded_data.has_saved_cc or square_data.has_saved_cc or is_apple_pay_enabled or square_data.cash_app_enabled or square_data.apple_pay_enabled ? 'radio' : 'hidden' %}
             {% set show_no_payment_needed_msg = true %}
@@ -845,6 +845,24 @@ CONVENTIONS:
                 {% endif %}
                 {% endif %}{# paypal_platform #}
 
+                {% if paypal_platform_data.apple_pay_enabled and payment_info_required %}
+                    <div class="fc-form-group">
+                        <div class="fc-container__grid--payment-method fc-payment-method--paypal_platform_paypal_apple_pay">
+                            <div class="fc-input-group-container fc-input-group-container--radio {% if payment_method_type == 'paypal_platform_apple_pay' %} fc-input-group-container--active{% endif %}">
+                                <label class="{% if payment_method_input_type != 'radio' %}fc-input-group-container__title fc-input-group-container__title--forced{% else %} fc-input-group-container__title{% endif %}">
+                                    <input type="radio" id="fc_paypal_platform_apple_pay" {{ checked(payment_method_type, 'paypal_platform_apple_pay') }} name="fc_payment_method" value="paypal_platform_apple_pay" autocomplete="off" class="fc-form-control fc-payment-method--paypal_platform_paypal_apple_pay">
+                                    {{config.lang.checkout_pay_with_apple_pay_auth_net | raw}}
+                                </label>
+                                {% if payment_method_type == 'paypal_platform_apple_pay' %}
+                                    <div id="apple-pay-container">
+                                        {{config.lang.checkout_payment_method_apple}}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}{# paypal_platform apple_pay #}
+
                 {% if not is_updateinfo and payment_info_required %}
                 {% if klarna_data and has_subscriptions == false %}
                     {% for paymentMethod in klarna_data.sessionData.payment_method_categories %}
@@ -1149,7 +1167,7 @@ CONVENTIONS:
 
                 {% endif %}{# not is_updateinfo and payment_info_required #}
 
-                {% if not payment_info_required and show_no_payment_needed_msg%}
+                {% if not payment_info_required and show_no_payment_needed_msg %}
                 <div class="fc-form-group">
                     <div id="fc-payment-method-no-payment-needed" class="fc-container__grid--payment-method fc-payment-method--no-payment fc-payment-method col-md-8 col-md-offset-3">
                     {{ config.lang.checkout_no_payment_needed|raw }}
