@@ -46,6 +46,10 @@
             <div class="fc-alert fc-alert--success">
                 {{ config.lang.checkout_subscription_cancel_completed|raw }}
             </div>
+            {% elseif status in negativeStatuses %}
+            <div class="fc-alert fc-alert--danger">
+                {{ config.lang.receipt_message_order_error|raw }}
+            </div>
             {% else %}
             <div class="fc-alert fc-alert--success">
                 {{ config.lang.receipt_message_order|raw }}
