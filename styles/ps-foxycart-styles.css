@@ -432,16 +432,16 @@ div.blocker {
 /* Center the "— or —" text under the email field */
 #fc .ps-foxy .fc-checkout p.fc-action--payment--or {
     display: block !important;
-    font-weight: bold !important;
+    font-weight: 600 !important;
     margin-bottom: 0;
-    font-size: 1.2em !important;
+    font-size: 1em !important;
 }
 
 /* Center the express payment options under the email field */
 #fc .ps-foxy .fc-checkout div#fc-checkout__section--express-options {
-    margin: 10px 0 30px 0 !important;
+    margin: 10px 0 20px 0 !important;
     width: 100% !important;
-    padding: 30px 0 !important;
+    padding: 10px 0 0 !important;
     opacity: 0;
     transition: opacity 0.3s ease;
     background: #EBF5FF;
@@ -462,10 +462,6 @@ div.blocker {
 #fc .ps-foxy .fc-checkout #amazon-pay-button {
     margin: 0 auto !important;
     display: inline-block !important;
-}
-
-#fc .ps-foxy .fc-checkout #fc-payment-method-amazon_v2 {
-    display: none !important;
 }
 
 #fc .ps-foxy .fc-checkout .fc-divider {
@@ -490,6 +486,7 @@ div.blocker {
 
 
 #fc .ps-foxy .fc-checkout #fc-email {
+    margin-top: 10px !important;
     width: 100% !important;
 }
 
