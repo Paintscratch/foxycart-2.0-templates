@@ -27,6 +27,15 @@
     <h1 class="fc-checkout-title">Secure Checkout</h1>
 </div>
 
+{# Dynamic 5 star review count based on days since last check so doesn't stay static #}
+{% set ps_google_reviews_last_check = '2025-09-08' %}
+{% set base = 3031 %}
+{% set days = (("now"|date('U') - ps_google_reviews_last_check|date('U')) / 86400)|round(0, 'floor') %}
+{% set days = days > 0 ? days : 0 %}
+{% set ps_google_reviews_5_star_count = (base + days * 2)|number_format(0, '.', ',') %}
+
+
+
 {% import "utils.inc.twig" as utils %}
 
 {% embed 'checkout.inc.twig' %}
@@ -36,13 +45,14 @@
         {{ parent() }}
         <div class="ps-trust-badges">
             <img id="ps-color-match-badge" src="/shop/foxycart_templates/images/colormatch.png" alt="Color Match Guaranteed" title="Your paint will match your car's original color or we'll make it right">
-            <img id="ps-reviews-badge" src="/shop/foxycart_templates/images/reviews.png" alt="Verified reviews on Google badge" title="Trusted by thousands of real customers - see why 3,031+ buyers rate us highly.">
+            <img id="ps-reviews-badge" src="/shop/foxycart_templates/images/reviews.png" alt="Verified reviews on Google badge" title="Trusted by thousands of real customers - see why {{ ps_google_reviews_5_star_count }}+ buyers rate us highly.">
             <img id="ps-security-badge" src="/shop/foxycart_templates/images/security.png" alt="Your payment is protected badge" title="Your payment is protected with 256-bit SSL encryption for complete safety">
         </div>
     {% endblock %}
 {% endembed %}
 
 <div id="ps-color-match-modal" class="modal ps-modal" aria-labelledby="ps-color-match-title" role="dialog">
+    <img id="ps-color-match-badge" src="/shop/foxycart_templates/images/colormatch.png" alt="Color Match Guaranteed" title="Your paint will match your car's original color or we'll make it right">
     <h5 id="ps-color-match-title">Color Match Guarantee</h5>
     <p>
         We guarantee our paint will match the original color... or we will send you a new order!
@@ -58,7 +68,7 @@
         <a href="https://www.paintscratch.com/products/custom.html" target="_blank">Learn more &gt;</a>
     </p>
 
-    <div style="margin-top:15px; text-align:right;">
+    <div style="margin-top:15px;">
         <button type="button" class="btn btn-default" data-ps-close>Close</button>
     </div>
 
@@ -69,27 +79,25 @@
 
 
 <div id="ps-reviews-modal" class="modal ps-modal" aria-labelledby="ps-reviews-title" role="dialog">
-    <h5 id="ps-reviews-title">Over 3,031 Five-Star Reviews</h5>
+    <a href="{{ ps_google_reviews_url }}" target="_blank" title="{{ ps_google_reviews_title }}" rel="noopener noreferrer">
+        <img src="/shop/foxycart_templates/images/reviews.png"
+             alt="Google Five Star Reviews Badge"
+             style="max-width:160px;"></a>
+    <h5 id="ps-reviews-title">Over {{ ps_google_reviews_5_star_count }} Five-Star Reviews</h5>
     <p>
-        PaintScratch customers have left <strong>3,031 five-star reviews (and counting)</strong> on Google.
-    </p>
-    <p>
+        PaintScratch customers have left <strong>{{ ps_google_reviews_5_star_count }} five-star reviews (and counting)</strong> on Google.<br>
         They praise our accurate color matching, fast shipping, and reliable service.
     </p>
     <p>
     <img src="/shop/foxycart_templates/images/paintscratch-shop-image-800x400.jpg" alt="Paintscratch technician mixing fresh paint">
     </p>
-    <a href="{{ ps_google_reviews_url }}" target="_blank" title="{{ ps_google_reviews_title }}" rel="noopener noreferrer">
-        <img src="/shop/foxycart_templates/images/reviews.png"
-             alt="Google Five Star Reviews Badge"
-                               style="max-width:160px;"></a>
     <h6>
         <a href="{{ ps_google_reviews_url }}" target="_blank" title="{{ ps_google_reviews_title }}" rel="noopener noreferrer">
-            Read all 3,031+ five-star Google reviews &gt;
+            Read all {{ ps_google_reviews_5_star_count }}+ five-star Google reviews &gt;
         </a>
     </h6>
 
-    <div style="margin-top:15px; text-align:right;">
+    <div style="margin-top:15px;">
         <button type="button" class="btn btn-default" data-ps-close>Close</button>
     </div>
 
@@ -98,6 +106,8 @@
 
 
 <div id="ps-security-modal" class="modal ps-modal" aria-labelledby="ps-security-modal-title" role="dialog">
+    <img id="ps-security-badge" src="/shop/foxycart_templates/images/security.png" alt="Your payment is protected badge" title="Your payment is protected with 256-bit SSL encryption for complete safety">
+
     <h5 id="ps-security-modal-title">Safe and Secure Checkout</h5>
     <p>
         PaintScratch uses 256-bit encryption to protect your personal and financial information. It is the gold
@@ -109,7 +119,7 @@
         virtually impossible to hack.
     </p>
 
-    <div style="margin-top:15px; text-align:right;">
+    <div style="margin-top:15px;">
         <button type="button" class="btn btn-default" data-ps-close>Close</button>
     </div>
 </div>

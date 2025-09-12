@@ -1595,14 +1595,14 @@ div.blocker {
 
 /* Headings inside modal */
 #fc .ps-modal h5,  #fc .ps-modal h6 {
-    margin-top: 0;
-    font-size: 1.2rem;
+    margin-top: 20px  !important;;
+    font-size: 1.4rem !important;
     font-weight: bold;
     color: #111;
 }
 
 #fc .ps-modal h6 {
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;;
     padding-top: 20px;
 }
 
