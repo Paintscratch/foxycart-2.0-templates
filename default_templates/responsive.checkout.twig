@@ -134,6 +134,21 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 
+
+<script>
+    (function($){
+        $(document).on('change', '#customer_email', function(){
+            if ($(this).val().trim().length > 0) {
+                $('body').addClass('ps-email-entered');
+            } else {
+                $('body').removeClass('ps-email-entered');
+            }
+        });
+    })(jQuery);
+</script>
+
+
+
 <script>
     /** Hide Foxy’s top error banner until a real submit/express-pay attempt.
      Re-enable it (and aria-live) on first attempt to avoid constant warnings. */
@@ -213,9 +228,6 @@
         e.preventDefault();
         if ($.modal) $.modal.close();
     });
-
-
-
 </script>
 
 {% include template_from_string(fc_footer_content) %}

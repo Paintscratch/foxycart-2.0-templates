@@ -451,6 +451,10 @@ div.blocker {
     opacity: 1;
 }
 
+#fc .ps-email-entered div#fc-checkout__section--express-options {
+    display: none !important;
+}
+
 /* Center the Amazon Pay button within its container */
 #fc .ps-foxy .fc-checkout .fc-container__grid--authentication-button--amazon.fc-express-option {
     text-align: left !important;
@@ -463,6 +467,15 @@ div.blocker {
     margin: 0 auto !important;
     display: inline-block !important;
 }
+
+#fc .ps-foxy .fc-checkout .fc-input-group-container--active .fc-form-group {
+    display: none;
+}
+
+#fc .ps-foxy .fc-checkout #fc-payment-method-plastic-new .fc-input-group-container--active .fc-form-group {
+    display: block !important;
+}
+
 
 #fc .ps-foxy .fc-checkout .fc-divider {
     display: flex;
@@ -1554,22 +1567,27 @@ div.blocker {
 #fc .ps-trust-badges {
     display: flex;
     align-items: center;
-    justify-content: center;   /* keep the group centered */
-    gap: 1rem;                  /* consistent spacing */
-    flex-wrap: nowrap;          /* never wrap on desktop/tablet */
-    overflow-x: auto;           /* allow scroll instead of shrinking/wrapping */
+    justify-content: center; /* keep the group centered */
+    gap: 1rem; /* consistent spacing */
+    flex-wrap: nowrap; /* never wrap on desktop/tablet */
+    overflow-x: auto; /* allow scroll instead of shrinking/wrapping */
     -webkit-overflow-scrolling: touch;
-    padding-bottom: .25rem;     /* room for hidden scrollbar on some OSes */
+    padding-bottom: .25rem; /* room for hidden scrollbar on some OSes */
 }
 
 /* hide scrollbars where possible */
-#fc .ps-trust-badges::-webkit-scrollbar { display: none; }
-#fc .ps-trust-badges { scrollbar-width: none; }
+#fc .ps-trust-badges::-webkit-scrollbar {
+    display: none;
+}
+
+#fc .ps-trust-badges {
+    scrollbar-width: none;
+}
 
 #fc .ps-trust-badges img {
-    max-width: none;            /* do not shrink */
+    max-width: none; /* do not shrink */
     height: auto;
-    flex: 0 0 auto;             /* keep each image its natural width */
+    flex: 0 0 auto; /* keep each image its natural width */
     cursor: pointer;
 }
 
@@ -1591,8 +1609,8 @@ div.blocker {
 }
 
 /* Headings inside modal */
-#fc .ps-modal h5,  #fc .ps-modal h6 {
-    margin-top: 20px  !important;;
+#fc .ps-modal h5, #fc .ps-modal h6 {
+    margin-top: 20px !important;;
     font-size: 1.4rem !important;
     font-weight: bold;
     color: #111;
@@ -1607,6 +1625,7 @@ div.blocker {
 #fc .ps-modal a {
     color: #1d4ed8;
 }
+
 #fc .ps-modal a:hover {
     text-decoration: underline;
 }
@@ -1614,8 +1633,6 @@ div.blocker {
 #fc .ps-modal img {
     max-width: 100%;
 }
-
-
 
 
 /* Desktop ?992px: align left */
@@ -1632,7 +1649,7 @@ div.blocker {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        overflow: visible;        /* no horizontal scroll needed */
+        overflow: visible; /* no horizontal scroll needed */
         gap: 1rem;
     }
 }
