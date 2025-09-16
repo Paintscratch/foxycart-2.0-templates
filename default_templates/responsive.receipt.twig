@@ -11,9 +11,9 @@
 
     <link href="{{ config.css_file }}" rel="stylesheet" media="all">
     <link rel="stylesheet"
-          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css?v={{ config.template_config.custom_config.ps_template_version}}">
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-styles.css?v={{ config.template_config.custom_config.ps_template_version }}">
     <link rel="stylesheet"
-          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-receipt-styles.css?v={{ config.template_config.custom_config.ps_template_version}}">
+          href="{{ config.template_config.custom_config.ps_domain }}/shop/foxycart_templates/styles/ps-foxycart-receipt-styles.css?v={{ config.template_config.custom_config.ps_template_version }}">
 
     <!-- FC script insertion -->{{ fc_header_content|raw }}<!-- /FC script insertion -->
 </head>
@@ -29,7 +29,7 @@
         <div class="ps-links-bar">
             {% if order_id and customer_email %}
                 <a href="{{ config.template_config.custom_config.ps_domain }}/support/order-status-check?email={{ customer_email|url_encode }}&order_id={{ order_id|url_encode }}"
-                   title="View the current status of your PaintScratch order"  target="_blank">
+                   title="View the current status of your PaintScratch order" target="_blank">
                     Check order status
                 </a>
                 <a href="#" onclick="window.print(); return false;"
@@ -48,6 +48,78 @@
         </div>
     {% endblock %}
 {% endembed %}
+
+{# Expose order id + total for GTM; no disallowed filters #}
+<script>
+    window.FC_ORDER_ID = "{{ order_id }}";
+    window.FC_ORDER_TOTAL = {% if total_order is defined and total_order is not null %}{{ total_order }}{% else %}null{% endif %};
+    (function () {
+        var host = location.hostname;
+        var apiBase =
+            host.indexOf('pstest.foxycart.com') !== -1 ? 'https://www.test.paintscratch.com' :
+                host.indexOf('checkout.paintscratch.com') !== -1 ? 'https://www.paintscratch.com' :
+                    (location.protocol + '//' + location.hostname);
+
+        var API = apiBase + '/api/abtests';
+        var EXP_ID = 'checkout_test_v1';
+
+        var orderId = String(window.FC_ORDER_ID || '').trim();
+        var revenue = (typeof window.FC_ORDER_TOTAL === 'number')
+            ? window.FC_ORDER_TOTAL
+            : (window.FC_ORDER_TOTAL ? parseFloat(window.FC_ORDER_TOTAL) : null);
+        if (!orderId) return;
+
+        function getCookie(name) {
+            var pattern = new RegExp('(?:^|; )' + name + '=([^;]*)');
+            var match = document.cookie.match(pattern);
+            return match ? decodeURIComponent(match[1]) : null;
+        }
+
+        function uuid4(){return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);});}
+
+        // Prefer prod cookies when available (checkout.paintscratch.com can read .paintscratch.com)
+        var variant   = getCookie('ps_checkout_test');
+        var visitorId = getCookie('ps_ab_vid');
+
+        // Minimal test fallback on pstest.foxycart.com so API calls still fire
+        if ((!variant || !visitorId) && host.indexOf('pstest.foxycart.com') !== -1) {
+            try {
+                visitorId = visitorId || localStorage.getItem('ps_ab_vid_local') || uuid4();
+                localStorage.setItem('ps_ab_vid_local', visitorId);
+            } catch(e) { visitorId = visitorId || uuid4(); }
+            // Try URL param ?test=A|B, else default to 'B' for quick testing
+            var p = new URLSearchParams(location.search);
+            variant = variant || (p.get('test') ? String(p.get('test')).toUpperCase() : 'B');
+        }
+
+        if (!variant || !visitorId) {
+            console.log('Unable to get variant or visitorId');
+            return;
+        }
+
+        var sentKey = 'ps_ab_conv_' + orderId;
+        if (sessionStorage.getItem(sentKey)) return;
+
+        try {
+            fetch(API, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    event: 'conversion',
+                    exp_id: EXP_ID,
+                    variant: variant,
+                    visitor_id: visitorId,
+                    order_id: orderId,
+                    revenue: isFinite(revenue) ? Number(revenue).toFixed(2) : null
+                }),
+                keepalive: true,
+                credentials: 'omit'
+            }).catch(function(){});
+            sessionStorage.setItem(sentKey, '1');
+        } catch(e) {}
+    })();
+</script>
+
 
 <!--[if lt IE 9 ]>
         <script src="{{ config.cdn_static_path }}scripts/respond/respond.1.4.2.js" charset="utf-8"></script>
