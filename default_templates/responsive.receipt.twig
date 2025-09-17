@@ -49,7 +49,9 @@
     {% endblock %}
 {% endembed %}
 
-{# Expose order id + total for GTM; no disallowed filters #}
+{# Fires a one-time conversion event for the checkout A/B test.
+  To prevent duplicate tracking on receipt revisits, this script sets a flag
+  in localStorage using the order ID after sending the event. #}
 <script>
     window.FC_ORDER_ID = "{{ order_id }}";
     window.FC_ORDER_TOTAL = {% if total_order is defined and total_order is not null %}{{ total_order }}{% else %}null{% endif %};
@@ -98,7 +100,8 @@
         }
 
         var sentKey = 'ps_ab_conv_' + orderId;
-        if (sessionStorage.getItem(sentKey)) return;
+        // Check localStorage instead of sessionStorage
+        if (localStorage.getItem(sentKey)) return;
 
         try {
             fetch(API, {
@@ -115,11 +118,11 @@
                 keepalive: true,
                 credentials: 'omit'
             }).catch(function(){});
-            sessionStorage.setItem(sentKey, '1');
+            // Set localStorage instead of sessionStorage
+            localStorage.setItem(sentKey, '1');
         } catch(e) {}
     })();
 </script>
-
 
 <!--[if lt IE 9 ]>
         <script src="{{ config.cdn_static_path }}scripts/respond/respond.1.4.2.js" charset="utf-8"></script>
