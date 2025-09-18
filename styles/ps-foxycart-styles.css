@@ -468,11 +468,13 @@ div.blocker {
     display: inline-block !important;
 }
 
+/* Hide redundant express payment option text */
 #fc .ps-foxy .fc-checkout .fc-input-group-container--active .fc-form-group {
     display: none;
 }
 
-#fc .ps-foxy .fc-checkout #fc-payment-method-plastic-new .fc-input-group-container--active .fc-form-group {
+#fc .ps-foxy .fc-checkout #fc-payment-method-plastic-new .fc-input-group-container--active .fc-form-group,
+#fc .ps-foxy .fc-checkout #fc-additional-fields .fc-input-group-container--active .fc-form-group {
     display: block !important;
 }
 
